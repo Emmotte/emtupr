@@ -169,7 +169,7 @@ export default function Home() {
       </div>
 
       <div 
-        className="relative z-10 min-h-[80vh] flex flex-col items-center justify-center px-6 perspective-[1200px]"
+        className={`relative z-10 min-h-[80vh] flex flex-col items-center justify-center px-6 perspective-[1200px] ${theme === 'light' ? 'pt-20' : ''}`}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
@@ -220,13 +220,13 @@ export default function Home() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className={`mt-12 flex flex-col sm:flex-row flex-wrap justify-center gap-6 text-sm tracking-wide pointer-events-auto ${theme === 'dark' ? 'font-mono uppercase' : 'font-sans font-bold text-gray-300'}`}
+          className={`mt-12 flex flex-col sm:flex-row flex-wrap justify-center gap-6 text-sm tracking-wide pointer-events-auto ${theme === 'dark' ? 'font-mono uppercase' : 'font-sans font-bold text-gray-800'}`}
         >
-          <Link to="/engineering" className={`group flex items-center justify-center gap-3 px-8 py-5 transition-all w-full sm:w-[280px] ${theme === 'dark' ? 'border border-neutral-700 bg-neutral-900/50 hover:bg-neutral-800 text-neutral-200 uppercase hover:pr-4' : 'bg-white text-[#dfdfdf] hover:text-[#b0b0b0] uppercase tracking-[0.2em] shadow-sm border border-gray-100 flex-col'}`}>
+          <Link to="/engineering" className={`group flex items-center justify-center gap-3 px-8 py-5 transition-all w-full sm:w-[280px] ${theme === 'dark' ? 'border border-neutral-700 bg-neutral-900/50 hover:bg-neutral-800 text-neutral-200 uppercase hover:pr-4' : 'bg-white text-gray-700 hover:text-black hover:border-gray-300 hover:shadow-md uppercase tracking-[0.2em] shadow-sm border border-gray-200 flex-col'}`}>
             Engineering & Design
             {theme === 'dark' && <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />}
           </Link>
-          <Link to="/media" className={`group flex items-center justify-center gap-3 px-8 py-5 transition-all w-full sm:w-[280px] ${theme === 'dark' ? 'border border-neutral-700 bg-neutral-900/50 hover:bg-neutral-800 text-neutral-200 uppercase hover:pr-4' : 'bg-white text-[#dfdfdf] hover:text-[#b0b0b0] uppercase tracking-[0.2em] shadow-sm border border-gray-100 flex-col'}`}>
+          <Link to="/media" className={`group flex items-center justify-center gap-3 px-8 py-5 transition-all w-full sm:w-[280px] ${theme === 'dark' ? 'border border-neutral-700 bg-neutral-900/50 hover:bg-neutral-800 text-neutral-200 uppercase hover:pr-4' : 'bg-white text-gray-700 hover:text-black hover:border-gray-300 hover:shadow-md uppercase tracking-[0.2em] shadow-sm border border-gray-200 flex-col'}`}>
             Visual & Audio Media
             {theme === 'dark' && <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />}
           </Link>
@@ -345,7 +345,7 @@ export default function Home() {
       </div>
 
       {/* Contact Form Section */}
-      <div className={`relative z-10 w-full max-w-4xl mx-auto rounded-[3rem] mt-12 mb-24 overflow-hidden ${theme === 'dark' ? 'px-8 md:px-14 py-16 bg-[#e4e4e7] text-black shadow-lg' : 'win95-window backdrop-blur-sm'}`}>
+      <div className={`relative z-10 w-full max-w-4xl mx-auto mt-12 mb-24 ${theme === 'dark' ? 'rounded-[3rem] overflow-hidden px-8 md:px-14 py-16 bg-[#e4e4e7] text-black shadow-lg' : 'win95-window backdrop-blur-sm'}`}>
         {theme === 'dark' && (
            <div className="absolute bottom-0 left-0 w-full h-48 opacity-50 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#d1d5db 2px, transparent 2px)', backgroundSize: '12px 12px' }} />
         )}
@@ -381,7 +381,7 @@ export default function Home() {
                   name="name"
                   required
                   placeholder="Your Name"
-                  className={`w-full text-base rounded-md px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' ? 'bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
+                  className={`w-full text-base px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' ? 'rounded-md bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
                 />
               </div>
               <div className="flex flex-col gap-1">
@@ -391,7 +391,7 @@ export default function Home() {
                   name="email"
                   required
                   placeholder="Your Email"
-                  className={`w-full text-base rounded-md px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' ? 'bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
+                  className={`w-full text-base px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' ? 'rounded-md bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
                 />
               </div>
               <input type="hidden" name="to_email" value="emmetttupper1@gmail.com" />
@@ -402,7 +402,7 @@ export default function Home() {
                   required
                   rows={4}
                   placeholder="Your message..."
-                  className={`w-full text-base rounded-md px-4 py-3 focus:outline-none transition-colors resize-none ${theme === 'dark' ? 'bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
+                  className={`w-full text-base px-4 py-3 focus:outline-none transition-colors resize-none ${theme === 'dark' ? 'rounded-md bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
                 />
               </div>
               <button 
