@@ -8,13 +8,24 @@
 }
 
 body {
+  background-color: #ffffff;
+  color: #050505;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dark body {
   background-color: #050505;
   color: #ededed;
 }
 
 ::selection {
-  background-color: #ededed;
-  color: #050505;
+  background-color: #e5e5e5;
+  color: #000000;
+}
+
+.dark ::selection {
+  background-color: #262626;
+  color: #ffffff;
 }
 
 @layer utilities {

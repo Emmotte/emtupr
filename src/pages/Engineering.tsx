@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { motion } from 'motion/react';
+import { Search } from 'lucide-react';
 
 const ENGINEERING_PROJECTS = [
   {
@@ -36,6 +38,14 @@ const ENGINEERING_PROJECTS = [
 ];
 
 export default function Engineering() {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredProjects = ENGINEERING_PROJECTS.filter(project => 
+    searchQuery === '' ? true : 
+    project.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    project.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -44,43 +54,56 @@ export default function Engineering() {
       transition={{ duration: 0.5 }}
       className="max-w-4xl mx-auto px-6 py-24 w-full"
     >
-      <header className="mb-16">
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4">Engineering & Design</h1>
-        <p className="font-mono text-neutral-400 text-sm md:text-base leading-relaxed max-w-2xl">
+      <header className="mb-12">
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 text-neutral-900 dark:text-neutral-100">Engineering & Design</h1>
+        <p className="font-mono text-neutral-600 dark:text-neutral-400 text-sm md:text-base leading-relaxed max-w-2xl">
           Bridging the gap between robust network infrastructure and intuitive product design. Building systems that are reliable at the core and elegant at the surface.
         </p>
       </header>
 
+      <div className="mb-12 relative">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <Search className="h-4 w-4 text-neutral-400 dark:text-neutral-500" />
+        </div>
+        <input
+          type="text"
+          placeholder="Search by skill or title..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full bg-neutral-100 dark:bg-[#0a0a0a] border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 font-mono text-sm rounded-md pl-10 pr-4 py-3 focus:outline-none focus:ring-1 focus:ring-neutral-400 transition-colors"
+        />
+      </div>
+
       <div className="space-y-16">
-        {ENGINEERING_PROJECTS.map((item, idx) => (
+        {filteredProjects.length > 0 ? filteredProjects.map((item, idx) => (
           <motion.div 
             key={item.id}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: idx * 0.1 }}
-            className="group relative grid pb-1 sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 lg:group-hover/list:opacity-50 transition-opacity border-l border-neutral-800 pl-6"
+            className="group relative grid pb-1 sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 lg:group-hover/list:opacity-50 transition-opacity border-l border-neutral-300 dark:border-neutral-800 pl-6"
           >
-            <div className="absolute w-2 h-2 bg-neutral-800 rounded-full -left-[4.5px] top-2 transition-colors duration-300 group-hover:bg-neutral-400" />
+            <div className="absolute w-2 h-2 bg-neutral-300 dark:bg-neutral-800 rounded-full -left-[4.5px] top-2 transition-colors duration-300 group-hover:bg-neutral-600 dark:group-hover:bg-neutral-400" />
             
             <header className="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide text-neutral-500 sm:col-span-2 font-mono">
               {item.period}
             </header>
             
             <div className="z-10 sm:col-span-6">
-              <h3 className="font-medium leading-snug text-neutral-200 text-xl font-casual">
+              <h3 className="font-medium leading-snug text-neutral-800 dark:text-neutral-200 text-xl font-casual">
                 {item.title}
               </h3>
               <div className="text-sm text-neutral-500 mt-1 font-mono">{item.role}</div>
 
-              <p className="mt-4 text-sm leading-relaxed text-neutral-400">
+              <p className="mt-4 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
                 {item.description}
               </p>
               
               <ul className="mt-4 flex flex-wrap gap-2" aria-label="Tags">
                 {item.tags.map(tag => (
                   <li key={tag}>
-                    <div className="flex items-center rounded-full bg-neutral-900 border border-neutral-800 px-3 py-1 text-xs font-medium leading-5 text-neutral-300 font-mono">
+                    <div className="flex items-center rounded-full bg-neutral-200 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 px-3 py-1 text-xs font-medium leading-5 text-neutral-700 dark:text-neutral-300 font-mono">
                       {tag}
                     </div>
                   </li>
@@ -88,7 +111,9 @@ export default function Engineering() {
               </ul>
             </div>
           </motion.div>
-        ))}
+        )) : (
+          <div className="font-mono text-neutral-500 text-sm">No projects matching "{searchQuery}"</div>
+        )}
       </div>
     </motion.div>
   );

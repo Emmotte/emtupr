@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Play } from 'lucide-react';
+import { Play, Search } from 'lucide-react';
 
 const MEDIA_PROJECTS = [
   {
@@ -45,6 +46,14 @@ const MEDIA_PROJECTS = [
 ];
 
 export default function Media() {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredProjects = MEDIA_PROJECTS.filter(project => 
+    searchQuery === '' ? true : 
+    project.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    project.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -53,15 +62,28 @@ export default function Media() {
       transition={{ duration: 0.5 }}
       className="max-w-6xl mx-auto px-6 py-24 w-full"
     >
-      <header className="mb-16">
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4">Visual & Audio Media</h1>
-        <p className="font-mono text-neutral-400 text-sm md:text-base leading-relaxed max-w-2xl">
+      <header className="mb-12">
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 text-neutral-900 dark:text-neutral-100">Visual & Audio Media</h1>
+        <p className="font-mono text-neutral-600 dark:text-neutral-400 text-sm md:text-base leading-relaxed max-w-2xl">
           A collection of creative works spanning videography, photography, and audio production. Exploring the intersection of digital artifacts and human emotion.
         </p>
       </header>
 
+      <div className="mb-12 relative max-w-4xl">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <Search className="h-4 w-4 text-neutral-400 dark:text-neutral-500" />
+        </div>
+        <input
+          type="text"
+          placeholder="Search by skill or title..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full bg-neutral-100 dark:bg-[#0a0a0a] border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 font-mono text-sm rounded-md pl-10 pr-4 py-3 focus:outline-none focus:ring-1 focus:ring-neutral-400 transition-colors"
+        />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-        {MEDIA_PROJECTS.map((item, idx) => (
+        {filteredProjects.length > 0 ? filteredProjects.map((item, idx) => (
           <motion.div 
             key={item.id}
             initial={{ opacity: 0, scale: 0.95 }}
@@ -70,16 +92,16 @@ export default function Media() {
             transition={{ delay: idx * 0.1 }}
             className="group flex flex-col gap-4"
           >
-            <div className="relative aspect-[4/3] overflow-hidden bg-neutral-900 border border-neutral-800 flex items-center justify-center">
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10" />
+            <div className="relative aspect-[4/3] overflow-hidden bg-neutral-200 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 flex items-center justify-center">
+              <div className="absolute inset-0 bg-transparent dark:bg-black/20 group-hover:bg-transparent transition-colors z-10" />
               <img 
                 src={item.thumbnail} 
                 alt={item.title} 
-                className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
               />
               {item.category === 'Video' || item.category === 'Audio' ? (
                 <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center pl-1 shadow-2xl scale-50 group-hover:scale-100 transition-transform duration-500 delay-100">
+                  <div className="w-16 h-16 rounded-full bg-black/80 dark:bg-white text-white dark:text-black flex items-center justify-center pl-1 shadow-2xl scale-50 group-hover:scale-100 transition-transform duration-500 delay-100">
                     <Play className="w-6 h-6" />
                   </div>
                 </div>
@@ -89,17 +111,17 @@ export default function Media() {
             <div>
               <div className="flex items-center gap-3 mb-2">
                 <span className="text-xs font-mono font-semibold uppercase tracking-widest text-neutral-500">{item.category}</span>
-                <span className="w-1 h-1 bg-neutral-700 rounded-full" />
+                <span className="w-1 h-1 bg-neutral-300 dark:bg-neutral-700 rounded-full" />
                 <span className="text-xs font-mono uppercase tracking-widest text-neutral-500">{item.period}</span>
               </div>
-              <h3 className="text-2xl font-casual font-medium text-neutral-200 mb-1 group-hover:text-white transition-colors">{item.title}</h3>
+              <h3 className="text-2xl font-casual font-medium text-neutral-800 dark:text-neutral-200 mb-1 group-hover:text-black dark:group-hover:text-white transition-colors">{item.title}</h3>
               <p className="text-sm font-mono text-neutral-500 mb-3">{item.role}</p>
-              <p className="text-sm leading-relaxed text-neutral-400 mb-4">{item.description}</p>
+              <p className="text-sm leading-relaxed text-neutral-600 dark:text-neutral-400 mb-4">{item.description}</p>
               
               <ul className="flex flex-wrap gap-2">
                 {item.tags.map(tag => (
                   <li key={tag}>
-                    <div className="px-2 py-1 bg-neutral-900 text-neutral-400 text-xs font-mono uppercase tracking-wider">
+                    <div className="px-2 py-1 bg-neutral-200 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-400 text-xs font-mono uppercase tracking-wider">
                       {tag}
                     </div>
                   </li>
@@ -107,7 +129,9 @@ export default function Media() {
               </ul>
             </div>
           </motion.div>
-        ))}
+        )) : (
+          <div className="md:col-span-2 font-mono text-neutral-500 text-sm">No media matching "{searchQuery}"</div>
+        )}
       </div>
     </motion.div>
   );

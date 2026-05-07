@@ -1,7 +1,9 @@
 import { useEffect, useRef } from 'react';
+import { useTheme } from './ThemeProvider';
 
 export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -67,7 +69,8 @@ export default function ParticleBackground() {
         if (this.alpha <= 0) return;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha / 255})`;
+        const rgb = document.documentElement.classList.contains('dark') ? '255, 255, 255' : '10, 10, 10';
+        ctx.fillStyle = `rgba(${rgb}, ${this.alpha / 255})`;
         ctx.fill();
       }
     }
@@ -133,7 +136,8 @@ export default function ParticleBackground() {
                     ctx.moveTo(p.x, p.y);
                     ctx.lineTo(p2.x, p2.y);
                     const opacity = (1 - Math.sqrt(dist) / 100) * 0.3;
-                    ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+                    const rgb = document.documentElement.classList.contains('dark') ? '255, 255, 255' : '10, 10, 10';
+                    ctx.strokeStyle = `rgba(${rgb}, ${opacity})`;
                     ctx.lineWidth = 0.5;
                     ctx.stroke();
                 }
@@ -151,12 +155,12 @@ export default function ParticleBackground() {
       window.removeEventListener('click', handleClick);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [theme]);
 
   return (
     <canvas 
       ref={canvasRef} 
-      className="fixed inset-0 pointer-events-none z-0 mix-blend-screen opacity-20"
+      className="fixed inset-0 pointer-events-none z-0 opacity-20 dark:mix-blend-screen mix-blend-multiply"
     />
   );
 }

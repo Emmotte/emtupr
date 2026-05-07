@@ -5,6 +5,7 @@ import Navigation from './components/Navigation';
 import Home from './pages/Home';
 import Engineering from './pages/Engineering';
 import Media from './pages/Media';
+import { ThemeProvider } from './components/ThemeProvider';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -22,13 +23,15 @@ function AnimatedRoutes() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <div className="min-h-screen bg-[#050505] text-[#ededed] font-sans selection:bg-neutral-800 selection:text-white flex flex-col">
-        <Navigation />
-        <main className="flex-1 flex flex-col pt-[84px]"> {/* offset for fixed header */}
-          <AnimatedRoutes />
-        </main>
-      </div>
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter>
+        <div className="min-h-screen font-sans flex flex-col transition-colors duration-300">
+          <Navigation />
+          <main className="flex-1 flex flex-col pt-[84px]"> {/* offset for fixed header */}
+            <AnimatedRoutes />
+          </main>
+        </div>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
