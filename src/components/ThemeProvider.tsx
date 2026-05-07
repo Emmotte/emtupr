@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
 type Theme = 'dark' | 'light';
-type Style = 'vulfpeck' | 'classic';
+type Style = 'recursive' | '95';
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -16,7 +16,7 @@ interface ThemeProviderState {
 
 const initialState: ThemeProviderState = {
   theme: 'dark',
-  style: 'vulfpeck',
+  style: '95',
   toggleTheme: () => null,
   setStyle: () => null,
 };
@@ -31,7 +31,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
   const [style, setStyleState] = useState<Style>(() => {
     const saved = localStorage.getItem('style-preference') as Style;
-    return saved || 'vulfpeck';
+    return saved || '95';
   });
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.remove('style-vulfpeck', 'style-classic');
+    root.classList.remove('style-recursive', 'style-95');
     root.classList.add(`style-${style}`);
     localStorage.setItem('style-preference', style);
   }, [style]);

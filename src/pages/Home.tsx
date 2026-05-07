@@ -199,7 +199,7 @@ export default function Home() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className={`text-5xl md:text-8xl font-bold tracking-tighter text-center transition-all duration-300 ${theme === 'dark' && style === 'vulfpeck' ? 'font-vulfpeck text-white' : theme === 'dark' ? 'font-casual text-white' : 'scrapbook-cutout !text-black'}`}
+            className={`text-5xl md:text-8xl font-bold tracking-tighter text-center transition-all duration-300 ${theme === 'dark' && style === 'recursive' ? 'font-vulfpeck text-white' : theme === 'dark' ? 'font-casual text-white' : 'scrapbook-cutout !text-black'}`}
             style={{ translateZ: 50 }}
           >
             emtupr works.
@@ -209,7 +209,7 @@ export default function Home() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className={`mt-6 text-lg md:text-xl max-w-2xl text-center transition-all duration-300 ${theme === 'dark' && style === 'vulfpeck' ? 'font-vulfpeck text-[#888]' : theme === 'dark' ? 'font-mono text-neutral-400' : 'scrapbook-cutout-alt text-lg'}`}
+            className={`mt-6 text-lg md:text-xl max-w-2xl text-center transition-all duration-300 ${theme === 'dark' && style === 'recursive' ? 'font-vulfpeck text-[#888]' : theme === 'dark' ? 'font-mono text-neutral-400' : 'scrapbook-cutout-alt text-lg'}`}
             style={{ translateZ: 30 }}
           >
             Network Engineer / Product Designer / Audiovisual Artist
@@ -220,15 +220,15 @@ export default function Home() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className={`mt-12 flex flex-col sm:flex-row flex-wrap justify-center gap-6 text-sm tracking-wide pointer-events-auto ${theme === 'dark' && style === 'vulfpeck' ? 'font-vulfpeck' : theme === 'dark' ? 'font-mono uppercase' : 'font-sans font-bold text-gray-800'}`}
+          className={`mt-12 flex flex-col sm:flex-row flex-wrap justify-center gap-6 text-sm tracking-wide pointer-events-auto ${theme === 'dark' && style === 'recursive' ? 'font-vulfpeck' : theme === 'dark' ? 'font-mono uppercase' : 'font-sans font-bold text-gray-800'}`}
         >
-          <Link to="/engineering" className={`group flex items-center justify-center gap-3 px-8 py-5 transition-all w-full sm:w-[280px] ${theme === 'dark' && style === 'vulfpeck' ? 'border border-[#333] bg-[#111] hover:bg-[#1a1a1a] text-white' : theme === 'dark' ? 'border border-neutral-700 bg-neutral-900/50 hover:bg-neutral-800 text-neutral-200 uppercase hover:pr-4' : 'bg-white text-gray-700 hover:text-black hover:border-gray-300 hover:shadow-md uppercase tracking-[0.2em] shadow-sm border border-gray-200 flex-col'}`}>
+          <Link to="/engineering" className={`group flex items-center justify-center gap-3 px-8 py-5 transition-all w-full sm:w-[280px] ${theme === 'dark' && style === 'recursive' ? 'border border-[#333] bg-[#111] hover:bg-[#1a1a1a] text-white' : theme === 'dark' ? 'border border-neutral-700 bg-neutral-900/50 hover:bg-neutral-800 text-neutral-200 uppercase hover:pr-4' : 'bg-white text-gray-700 hover:text-black hover:border-gray-300 hover:shadow-md uppercase tracking-[0.2em] shadow-sm border border-gray-200 flex-col'}`}>
             Engineering & Design
-            {theme === 'dark' && style !== 'vulfpeck' && <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />}
+            {theme === 'dark' && style !== 'recursive' && <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />}
           </Link>
-          <Link to="/media" className={`group flex items-center justify-center gap-3 px-8 py-5 transition-all w-full sm:w-[280px] ${theme === 'dark' && style === 'vulfpeck' ? 'border border-[#333] bg-[#111] hover:bg-[#1a1a1a] text-white' : theme === 'dark' ? 'border border-neutral-700 bg-neutral-900/50 hover:bg-neutral-800 text-neutral-200 uppercase hover:pr-4' : 'bg-white text-gray-700 hover:text-black hover:border-gray-300 hover:shadow-md uppercase tracking-[0.2em] shadow-sm border border-gray-200 flex-col'}`}>
+          <Link to="/media" className={`group flex items-center justify-center gap-3 px-8 py-5 transition-all w-full sm:w-[280px] ${theme === 'dark' && style === 'recursive' ? 'border border-[#333] bg-[#111] hover:bg-[#1a1a1a] text-white' : theme === 'dark' ? 'border border-neutral-700 bg-neutral-900/50 hover:bg-neutral-800 text-neutral-200 uppercase hover:pr-4' : 'bg-white text-gray-700 hover:text-black hover:border-gray-300 hover:shadow-md uppercase tracking-[0.2em] shadow-sm border border-gray-200 flex-col'}`}>
             Visual & Audio Media
-            {theme === 'dark' && style !== 'vulfpeck' && <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />}
+            {theme === 'dark' && style !== 'recursive' && <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />}
           </Link>
         </motion.div>
 
@@ -237,7 +237,7 @@ export default function Home() {
            initial={{ opacity: 0, y: 20 }}
            animate={{ opacity: 1, y: 0 }}
            transition={{ duration: 0.8, delay: 0.8 }}
-           className={`mt-16 w-full max-w-sm font-mono text-sm pointer-events-auto ${theme === 'dark' && style === 'vulfpeck' ? 'font-vulfpeck' : theme === 'dark' ? 'opacity-80' : 'win95-window'}`}
+           className={`mt-16 w-full max-w-sm font-mono text-sm pointer-events-auto ${theme === 'dark' && style === 'recursive' ? 'font-vulfpeck' : theme === 'dark' ? 'opacity-80' : 'win95-window'}`}
         >
           {theme === 'light' && (
             <div className="win95-titlebar mb-1">
@@ -260,13 +260,13 @@ export default function Home() {
                 placeholder="Search by skill or title..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className={`w-full text-sm rounded-md pl-10 pr-4 py-3 focus:outline-none transition-colors ${theme === 'dark' && style === 'vulfpeck' ? 'bg-[#111] border border-[#333] text-white font-vulfpeck focus:border-[#666]' : theme === 'dark' ? 'bg-[#0a0a0a] border border-neutral-800 text-neutral-100 font-mono focus:ring-1 focus:ring-neutral-400' : 'bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
+                className={`w-full text-sm rounded-md pl-10 pr-4 py-3 focus:outline-none transition-colors ${theme === 'dark' && style === 'recursive' ? 'bg-[#111] border border-[#333] text-white font-vulfpeck focus:border-[#666]' : theme === 'dark' ? 'bg-[#0a0a0a] border border-neutral-800 text-neutral-100 font-mono focus:ring-1 focus:ring-neutral-400' : 'bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
               />
             </div>
 
-             <div className={`flex items-center justify-between mb-4 flex-none uppercase tracking-widest text-xs border-b pb-2 ${theme === 'dark' && style === 'vulfpeck' ? 'text-[#666] border-[#333]' : theme === 'dark' ? 'text-neutral-500 border-neutral-800' : 'text-black border-[#808080] font-bold'}`}>
+             <div className={`flex items-center justify-between mb-4 flex-none uppercase tracking-widest text-xs border-b pb-2 ${theme === 'dark' && style === 'recursive' ? 'text-[#666] border-[#333]' : theme === 'dark' ? 'text-neutral-500 border-neutral-800' : 'text-black border-[#808080] font-bold'}`}>
                <span>{searchQuery ? 'Search Results' : 'Recent Additions'}</span>
-               {!searchQuery && <span className={`w-2 h-2 rounded-full animate-pulse ${theme === 'dark' && style === 'vulfpeck' ? 'bg-[#888]' : theme === 'dark' ? 'bg-neutral-400' : 'bg-[#000080]'}`}></span>}
+               {!searchQuery && <span className={`w-2 h-2 rounded-full animate-pulse ${theme === 'dark' && style === 'recursive' ? 'bg-[#888]' : theme === 'dark' ? 'bg-neutral-400' : 'bg-[#000080]'}`}></span>}
             </div>
             
             <div className="flex flex-col gap-3 min-h-[60px]">
@@ -276,31 +276,31 @@ export default function Home() {
                     <Link
                       to={`/project/${project.id}`}
                       key={project.id}
-                      className={`flex justify-between items-center group/project transition-transform ${theme === 'dark' && style === 'vulfpeck' ? 'hover:translate-x-1' : theme === 'dark' ? 'hover:translate-x-1' : 'hover:bg-[#000080] hover:text-white px-2 py-1'}`}
+                      className={`flex justify-between items-center group/project transition-transform ${theme === 'dark' && style === 'recursive' ? 'hover:translate-x-1' : theme === 'dark' ? 'hover:translate-x-1' : 'hover:bg-[#000080] hover:text-white px-2 py-1'}`}
                     >
-                      <span className={`transition-colors ${theme === 'dark' && style === 'vulfpeck' ? 'text-[#ccc] group-hover/project:text-white' : theme === 'dark' ? 'text-neutral-300 group-hover/project:text-white' : 'text-black group-hover/project:text-white font-sans'}`}>{project.title}</span>
-                      <span className={`text-xs ${theme === 'dark' && style === 'vulfpeck' ? 'text-[#666]' : theme === 'dark' ? 'text-neutral-600' : 'text-[#808080] group-hover/project:text-[#c0c0c0] font-sans'}`}>{project.category}</span>
+                      <span className={`transition-colors ${theme === 'dark' && style === 'recursive' ? 'text-[#ccc] group-hover/project:text-white' : theme === 'dark' ? 'text-neutral-300 group-hover/project:text-white' : 'text-black group-hover/project:text-white font-sans'}`}>{project.title}</span>
+                      <span className={`text-xs ${theme === 'dark' && style === 'recursive' ? 'text-[#666]' : theme === 'dark' ? 'text-neutral-600' : 'text-[#808080] group-hover/project:text-[#c0c0c0] font-sans'}`}>{project.category}</span>
                     </Link>
                   ))
                 ) : (
-                  <div className={`italic ${theme === 'dark' && style === 'vulfpeck' ? 'text-[#666]' : theme === 'dark' ? 'text-neutral-500' : 'text-[#808080] font-sans px-2'}`}>No projects found.</div>
+                  <div className={`italic ${theme === 'dark' && style === 'recursive' ? 'text-[#666]' : theme === 'dark' ? 'text-neutral-500' : 'text-[#808080] font-sans px-2'}`}>No projects found.</div>
                 )
               ) : (
                 loading ? (
-                   <div className={`italic ${theme === 'dark' && style === 'vulfpeck' ? 'text-[#666]' : theme === 'dark' ? 'text-neutral-500' : 'text-[#808080] font-sans px-2'}`}>Connecting to database...</div>
+                   <div className={`italic ${theme === 'dark' && style === 'recursive' ? 'text-[#666]' : theme === 'dark' ? 'text-neutral-500' : 'text-[#808080] font-sans px-2'}`}>Connecting to database...</div>
                 ) : recentProjects.length > 0 ? (
                    recentProjects.map(project => (
                      <Link
                        to={`/project/${project.id}`}
                        key={project.id}
-                       className={`flex justify-between items-center group/project transition-transform ${theme === 'dark' && style === 'vulfpeck' ? 'hover:translate-x-1' : theme === 'dark' ? 'hover:translate-x-1' : 'hover:bg-[#000080] hover:text-white px-2 py-1'}`}
+                       className={`flex justify-between items-center group/project transition-transform ${theme === 'dark' && style === 'recursive' ? 'hover:translate-x-1' : theme === 'dark' ? 'hover:translate-x-1' : 'hover:bg-[#000080] hover:text-white px-2 py-1'}`}
                      >
-                       <span className={`transition-colors ${theme === 'dark' && style === 'vulfpeck' ? 'text-[#ccc] group-hover/project:text-white' : theme === 'dark' ? 'text-neutral-300 group-hover/project:text-white' : 'text-black group-hover/project:text-white font-sans'}`}>{project.title}</span>
-                       <span className={`text-xs ${theme === 'dark' && style === 'vulfpeck' ? 'text-[#666]' : theme === 'dark' ? 'text-neutral-600' : 'text-[#808080] group-hover/project:text-[#c0c0c0] font-sans'}`}>{project.category}</span>
+                       <span className={`transition-colors ${theme === 'dark' && style === 'recursive' ? 'text-[#ccc] group-hover/project:text-white' : theme === 'dark' ? 'text-neutral-300 group-hover/project:text-white' : 'text-black group-hover/project:text-white font-sans'}`}>{project.title}</span>
+                       <span className={`text-xs ${theme === 'dark' && style === 'recursive' ? 'text-[#666]' : theme === 'dark' ? 'text-neutral-600' : 'text-[#808080] group-hover/project:text-[#c0c0c0] font-sans'}`}>{project.category}</span>
                      </Link>
                    ))
                 ) : (
-                   <div className={`italic ${theme === 'dark' && style === 'vulfpeck' ? 'text-[#666]' : theme === 'dark' ? 'text-neutral-500' : 'text-[#808080] font-sans px-2'}`}>No recent public updates.</div>
+                   <div className={`italic ${theme === 'dark' && style === 'recursive' ? 'text-[#666]' : theme === 'dark' ? 'text-neutral-500' : 'text-[#808080] font-sans px-2'}`}>No recent public updates.</div>
                 )
               )}
             </div>
@@ -308,7 +308,7 @@ export default function Home() {
         </motion.div>
       </div>
 
-      <div className={`relative z-10 w-full max-w-4xl mx-auto mt-12 mb-12 ${theme === 'dark' && style === 'vulfpeck' ? 'border border-[#333] bg-[#111] px-8 md:px-14 py-16' : theme === 'dark' ? 'bg-[#f4f4f5] text-black px-8 md:px-14 py-16 shadow-lg rounded-none' : 'win95-window backdrop-blur-sm'}`}>
+      <div className={`relative z-10 w-full max-w-4xl mx-auto mt-12 mb-12 ${theme === 'dark' && style === 'recursive' ? 'border border-[#333] bg-[#111] px-8 md:px-14 py-16' : theme === 'dark' ? 'bg-[#f4f4f5] text-black px-8 md:px-14 py-16 shadow-lg rounded-none' : 'win95-window backdrop-blur-sm'}`}>
         {theme === 'light' && (
           <div className="win95-titlebar mb-2">
             <span>notepad.exe - about_me.txt</span>
@@ -321,23 +321,23 @@ export default function Home() {
         )}
         <div className={`${theme === 'light' ? 'win95-body' : ''} flex flex-col gap-8 md:flex-row md:items-start justify-between`}>
           <div className="flex-none">
-            <h2 className={`text-3xl md:text-5xl font-bold tracking-tight mb-2 ${theme === 'dark' && style === 'vulfpeck' ? 'font-vulfpeck text-white' : theme === 'dark' ? 'font-sans text-black leading-tight' : 'font-sans text-black font-bold'}`}>About Me</h2>
-            <p className={`text-xs uppercase tracking-widest font-bold ${theme === 'dark' && style === 'vulfpeck' ? 'font-vulfpeck text-[#666]' : theme === 'dark' ? 'font-sans text-gray-500' : 'font-sans text-[#808080]'}`}>Background & Philosophy</p>
+            <h2 className={`text-3xl md:text-5xl font-bold tracking-tight mb-2 ${theme === 'dark' && style === 'recursive' ? 'font-vulfpeck text-white' : theme === 'dark' ? 'font-sans text-black leading-tight' : 'font-sans text-black font-bold'}`}>About Me</h2>
+            <p className={`text-xs uppercase tracking-widest font-bold ${theme === 'dark' && style === 'recursive' ? 'font-vulfpeck text-[#666]' : theme === 'dark' ? 'font-sans text-gray-500' : 'font-sans text-[#808080]'}`}>Background & Philosophy</p>
           </div>
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className={`flex-1 max-w-2xl text-base md:text-xl font-medium leading-relaxed space-y-6 ${theme === 'dark' && style === 'vulfpeck' ? 'font-vulfpeck text-[#ccc]' : theme === 'dark' ? 'text-gray-800' : 'text-black font-sans bg-white border border-[#c0c0c0] p-4 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1)]'}`}
+            className={`flex-1 max-w-2xl text-base md:text-xl font-medium leading-relaxed space-y-6 ${theme === 'dark' && style === 'recursive' ? 'font-vulfpeck text-[#ccc]' : theme === 'dark' ? 'text-gray-800' : 'text-black font-sans bg-white border border-[#c0c0c0] p-4 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1)]'}`}
           >
             <p>
-              <span className={`${theme === 'dark' && style === 'vulfpeck' ? 'text-white' : theme === 'dark' ? 'text-black' : ''}`}>Hello, I'm Emmett.</span> I specialize in crafting seamless digital experiences at the intersection of robust network engineering, minimalist product design, and high-fidelity media production. Whether routing enterprise networks or editing digital films, my focus is always on usability and performance.
+              <span className={`${theme === 'dark' && style === 'recursive' ? 'text-white' : theme === 'dark' ? 'text-black' : ''}`}>Hello, I'm Emmett.</span> I specialize in crafting seamless digital experiences at the intersection of robust network engineering, minimalist product design, and high-fidelity media production. Whether routing enterprise networks or editing digital films, my focus is always on usability and performance.
             </p>
-            <p className={`${theme === 'dark' && style === 'vulfpeck' ? 'text-[#888]' : theme === 'dark' ? 'text-gray-500' : ''}`}>
+            <p className={`${theme === 'dark' && style === 'recursive' ? 'text-[#888]' : theme === 'dark' ? 'text-gray-500' : ''}`}>
               The digital space shouldn't be noisy. I aim to create architectures—both literal networks and conceptual digital products—that empower users without demanding attention.
             </p>
-            <p className={`text-sm pl-4 ${theme === 'dark' && style === 'vulfpeck' ? 'font-vulfpeck italic text-[#666] border-l-2 border-[#333]' : theme === 'dark' ? 'font-sans italic text-gray-400 border-l-2 border-gray-300' : 'font-serif italic text-black border-l-2 border-black'}`}>
+            <p className={`text-sm pl-4 ${theme === 'dark' && style === 'recursive' ? 'font-vulfpeck italic text-[#666] border-l-2 border-[#333]' : theme === 'dark' ? 'font-sans italic text-gray-400 border-l-2 border-gray-300' : 'font-serif italic text-black border-l-2 border-black'}`}>
               "The best infrastructure is invisible."
             </p>
           </motion.div>
@@ -345,7 +345,7 @@ export default function Home() {
       </div>
 
       {/* Contact Form Section */}
-      <div className={`relative z-10 w-full max-w-4xl mx-auto mt-12 mb-24 ${theme === 'dark' && style === 'vulfpeck' ? 'border border-[#333] bg-[#111] px-8 md:px-14 py-16' : theme === 'dark' ? 'rounded-none overflow-hidden px-8 md:px-14 py-16 bg-[#e4e4e7] text-black shadow-lg' : 'win95-window backdrop-blur-sm'}`}>
+      <div className={`relative z-10 w-full max-w-4xl mx-auto mt-12 mb-24 ${theme === 'dark' && style === 'recursive' ? 'border border-[#333] bg-[#111] px-8 md:px-14 py-16' : theme === 'dark' ? 'rounded-none overflow-hidden px-8 md:px-14 py-16 bg-[#e4e4e7] text-black shadow-lg' : 'win95-window backdrop-blur-sm'}`}>
         {theme === 'dark' && (
            <div className="absolute bottom-0 left-0 w-full h-48 opacity-50 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#d1d5db 2px, transparent 2px)', backgroundSize: '12px 12px' }} />
         )}
@@ -361,8 +361,8 @@ export default function Home() {
         )}
         <div className={`${theme === 'light' ? 'win95-body' : ''} relative z-10 flex flex-col gap-8 md:flex-row md:items-start justify-between`}>
           <div className="flex-none md:w-1/3">
-            <h2 className={`text-4xl md:text-6xl font-black tracking-tighter mb-2 ${theme === 'dark' && style === 'vulfpeck' ? 'font-vulfpeck text-white' : theme === 'dark' ? 'font-sans text-black leading-[0.9]' : 'font-sans text-black'}`}>Get in <br className="hidden md:block" />Touch</h2>
-            <p className={`text-xs uppercase tracking-widest leading-relaxed mt-6 font-bold ${theme === 'dark' && style === 'vulfpeck' ? 'font-vulfpeck text-[#666]' : theme === 'dark' ? 'font-sans text-gray-500' : 'font-sans text-[#808080]'}`}>
+            <h2 className={`text-4xl md:text-6xl font-black tracking-tighter mb-2 ${theme === 'dark' && style === 'recursive' ? 'font-vulfpeck text-white' : theme === 'dark' ? 'font-sans text-black leading-[0.9]' : 'font-sans text-black'}`}>Get in <br className="hidden md:block" />Touch</h2>
+            <p className={`text-xs uppercase tracking-widest leading-relaxed mt-6 font-bold ${theme === 'dark' && style === 'recursive' ? 'font-vulfpeck text-[#666]' : theme === 'dark' ? 'font-sans text-gray-500' : 'font-sans text-[#808080]'}`}>
               Interested in collaborating or just want to say hi? Send me a message below.
             </p>
           </div>
@@ -371,45 +371,45 @@ export default function Home() {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className={`flex-1 w-full ${theme === 'dark' && style === 'vulfpeck' ? 'bg-[#0a0a0a] border border-[#333] p-8' : theme === 'dark' ? 'bg-white rounded-none p-8 shadow-sm' : 'p-4 bg-[#c0c0c0] border-2 border-b-white border-r-white border-t-black border-l-black shadow-[inset_1px_1px_0_#808080]'}`}
+            className={`flex-1 w-full ${theme === 'dark' && style === 'recursive' ? 'bg-[#0a0a0a] border border-[#333] p-8' : theme === 'dark' ? 'bg-white rounded-none p-8 shadow-sm' : 'p-4 bg-[#c0c0c0] border-2 border-b-white border-r-white border-t-black border-l-black shadow-[inset_1px_1px_0_#808080]'}`}
           >
             <form ref={formRef} onSubmit={sendEmail} className="flex flex-col gap-4">
               <div className="flex flex-col gap-1">
-                <label className={`text-xs uppercase tracking-widest font-bold ${theme === 'dark' && style === 'vulfpeck' ? 'font-vulfpeck text-[#666]' : theme === 'dark' ? 'font-sans text-gray-400' : 'font-sans text-black'}`}>Name</label>
+                <label className={`text-xs uppercase tracking-widest font-bold ${theme === 'dark' && style === 'recursive' ? 'font-vulfpeck text-[#666]' : theme === 'dark' ? 'font-sans text-gray-400' : 'font-sans text-black'}`}>Name</label>
                 <input
                   type="text"
                   name="name"
                   required
                   placeholder="Your Name"
-                  className={`w-full text-base px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' && style === 'vulfpeck' ? 'bg-[#111] border border-[#333] text-white font-vulfpeck focus:border-[#666]' : theme === 'dark' ? 'rounded-none bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
+                  className={`w-full text-base px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' && style === 'recursive' ? 'bg-[#111] border border-[#333] text-white font-vulfpeck focus:border-[#666]' : theme === 'dark' ? 'rounded-none bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
                 />
               </div>
               <div className="flex flex-col gap-1">
-                <label className={`text-xs uppercase tracking-widest font-bold ${theme === 'dark' && style === 'vulfpeck' ? 'font-vulfpeck text-[#666]' : theme === 'dark' ? 'font-sans text-gray-400' : 'font-sans text-black'}`}>Email</label>
+                <label className={`text-xs uppercase tracking-widest font-bold ${theme === 'dark' && style === 'recursive' ? 'font-vulfpeck text-[#666]' : theme === 'dark' ? 'font-sans text-gray-400' : 'font-sans text-black'}`}>Email</label>
                 <input
                   type="email"
                   name="email"
                   required
                   placeholder="Your Email"
-                  className={`w-full text-base px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' && style === 'vulfpeck' ? 'bg-[#111] border border-[#333] text-white font-vulfpeck focus:border-[#666]' : theme === 'dark' ? 'rounded-none bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
+                  className={`w-full text-base px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' && style === 'recursive' ? 'bg-[#111] border border-[#333] text-white font-vulfpeck focus:border-[#666]' : theme === 'dark' ? 'rounded-none bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
                 />
               </div>
               <input type="hidden" name="to_email" value="emmetttupper1@gmail.com" />
               <div className="flex flex-col gap-1">
-                <label className={`text-xs uppercase tracking-widest font-bold ${theme === 'dark' && style === 'vulfpeck' ? 'font-vulfpeck text-[#666]' : theme === 'dark' ? 'font-sans text-gray-400' : 'font-sans text-black'}`}>Message</label>
+                <label className={`text-xs uppercase tracking-widest font-bold ${theme === 'dark' && style === 'recursive' ? 'font-vulfpeck text-[#666]' : theme === 'dark' ? 'font-sans text-gray-400' : 'font-sans text-black'}`}>Message</label>
                 <textarea
                   name="message"
                   required
                   rows={4}
                   placeholder="Your message..."
-                  className={`w-full text-base px-4 py-3 focus:outline-none transition-colors resize-none ${theme === 'dark' && style === 'vulfpeck' ? 'bg-[#111] border border-[#333] text-white font-vulfpeck focus:border-[#666]' : theme === 'dark' ? 'rounded-none bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
+                  className={`w-full text-base px-4 py-3 focus:outline-none transition-colors resize-none ${theme === 'dark' && style === 'recursive' ? 'bg-[#111] border border-[#333] text-white font-vulfpeck focus:border-[#666]' : theme === 'dark' ? 'rounded-none bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
                 />
               </div>
               <button
                 type="submit"
                 disabled={formStatus === 'sending' || formStatus === 'sent'}
                 className={`mt-4 flex items-center justify-center gap-2 py-4 px-8 text-sm uppercase tracking-widest font-bold transition-all ${
-                  theme === 'dark' && style === 'vulfpeck'
+                  theme === 'dark' && style === 'recursive'
                   ? 'bg-white text-black hover:bg-[#ccc] w-full disabled:opacity-50'
                   : theme === 'dark'
                   ? 'bg-[#1a1a1a] text-white hover:bg-black rounded-none w-full disabled:opacity-50'

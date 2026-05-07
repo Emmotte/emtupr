@@ -3,13 +3,13 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X } from 'lucide-react';
 
 interface StyleSelectorProps {
-  onStyleSelect: (style: 'vulfpeck' | 'classic') => void;
+  onStyleSelect: (style: 'recursive' | '95') => void;
 }
 
 export default function StyleSelector({ onStyleSelect }: StyleSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [sliderValue, setSliderValue] = useState(50);
-  const [selectedStyle, setSelectedStyle] = useState<'vulfpeck' | 'classic' | null>(null);
+  const [sliderValue, setSliderValue] = useState(0); // Default to 95 (left side)
+  const [selectedStyle, setSelectedStyle] = useState<'recursive' | '95' | null>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
 
@@ -44,9 +44,9 @@ export default function StyleSelector({ onStyleSelect }: StyleSelectorProps) {
     isDragging.current = false;
     // Auto-select based on slider position
     if (sliderValue < 50) {
-      setSelectedStyle('classic');
+      setSelectedStyle('95');
     } else {
-      setSelectedStyle('vulfpeck');
+      setSelectedStyle('recursive');
     }
   };
 
@@ -68,8 +68,8 @@ export default function StyleSelector({ onStyleSelect }: StyleSelectorProps) {
   };
 
   const handleSkip = () => {
-    localStorage.setItem('style-preference', 'vulfpeck');
-    onStyleSelect('vulfpeck');
+    localStorage.setItem('style-preference', '95');
+    onStyleSelect('95');
     setIsOpen(false);
   };
 
@@ -111,16 +111,18 @@ export default function StyleSelector({ onStyleSelect }: StyleSelectorProps) {
                     clipPath: `inset(0 ${100 - sliderValue}% 0 0)`,
                   }}
                 >
-                  {/* Vulfpeck Style Preview */}
-                  <div className="w-full h-full bg-[#0a0a0a] p-6 flex flex-col justify-center">
-                    <div className="font-vulfpeck text-white text-xl md:text-2xl font-bold mb-2">
-                      VULFPECK
+                  {/* 95 Style Preview */}
+                  <div className="w-full h-full bg-[#c0c0c0] p-6 flex flex-col justify-center">
+                    <div className="bg-[#000080] text-white px-3 py-1 mb-4 font-bold text-sm" style={{ fontFamily: 'Trebuchet MS, Arial, sans-serif' }}>
+                      Windows 95
                     </div>
-                    <div className="font-vulfpeck text-[#888] text-sm">
-                      Mono • Casual • Text-Heavy
-                    </div>
-                    <div className="mt-4 font-vulfpeck text-[#666] text-xs">
-                      Minimal gradients, maximum character
+                    <div className="bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] p-4 shadow-[inset_1px_1px_0px_0px_#808080]">
+                      <div className="text-black text-lg font-bold" style={{ fontFamily: 'Impact, Arial Black, sans-serif' }}>
+                        '95 STYLE
+                      </div>
+                      <div className="text-[#808080] text-xs mt-1" style={{ fontFamily: 'Times New Roman, serif' }}>
+                        Retro • Nostalgic • Classic
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -130,16 +132,16 @@ export default function StyleSelector({ onStyleSelect }: StyleSelectorProps) {
                     clipPath: `inset(0 0 0 ${sliderValue}%)`,
                   }}
                 >
-                  {/* Classic Style Preview */}
-                  <div className="w-full h-full bg-[#050505] p-6 flex flex-col justify-center">
-                    <div className="text-white text-xl md:text-2xl font-bold mb-2" style={{ fontFamily: 'Inter, sans-serif' }}>
-                      CLASSIC
+                  {/* Recursive Style Preview */}
+                  <div className="w-full h-full bg-[#0a0a0a] p-6 flex flex-col justify-center">
+                    <div className="font-vulfpeck text-white text-xl md:text-2xl font-bold mb-2">
+                      RECURSIVE
                     </div>
-                    <div className="text-[#888] text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>
-                      Modern • Clean • Balanced
+                    <div className="font-vulfpeck text-[#888] text-sm">
+                      Mono • Casual • Text-Heavy
                     </div>
-                    <div className="mt-4 text-[#666] text-xs" style={{ fontFamily: 'Inter, sans-serif' }}>
-                      Smooth gradients, contemporary feel
+                    <div className="mt-4 font-vulfpeck text-[#666] text-xs">
+                      Minimal gradients, maximum character
                     </div>
                   </div>
                 </div>
@@ -169,8 +171,8 @@ export default function StyleSelector({ onStyleSelect }: StyleSelectorProps) {
 
               {/* Labels */}
               <div className="flex justify-between text-xs text-[#666] mb-8 font-vulfpeck">
-                <span>CLASSIC</span>
-                <span>VULFPECK</span>
+                <span>'95</span>
+                <span>RECURSIVE</span>
               </div>
 
               {/* Selection Display */}
@@ -182,7 +184,7 @@ export default function StyleSelector({ onStyleSelect }: StyleSelectorProps) {
                 >
                   <div className="text-sm text-[#888] mb-1">Selected:</div>
                   <div className="text-white font-bold">
-                    {selectedStyle === 'vulfpeck' ? 'VULFPECK STYLE' : 'CLASSIC STYLE'}
+                    {selectedStyle === 'recursive' ? 'RECURSIVE STYLE' : "'95 STYLE"}
                   </div>
                 </motion.div>
               )}
