@@ -169,7 +169,7 @@ export default function Home() {
       </div>
 
       <div 
-        className={`relative z-10 min-h-[80vh] flex flex-col items-center justify-center px-6 perspective-[1200px] ${theme === 'light' ? 'pt-20' : ''}`}
+        className={`relative z-10 min-h-[80vh] flex flex-col items-center justify-center px-6 perspective-[1200px] ${theme === 'light' ? 'pt-32' : ''}`}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
@@ -264,9 +264,9 @@ export default function Home() {
               />
             </div>
 
-            <div className={`flex items-center justify-between mb-4 flex-none uppercase tracking-widest text-xs border-b pb-2 ${theme === 'dark' ? 'text-neutral-500 border-neutral-800' : 'text-black border-[#808080] font-bold'}`}>
+             <div className={`flex items-center justify-between mb-4 flex-none uppercase tracking-widest text-xs border-b pb-2 ${theme === 'dark' ? 'text-neutral-500 border-neutral-800' : 'text-black border-[#808080] font-bold'}`}>
                <span>{searchQuery ? 'Search Results' : 'Recent Additions'}</span>
-               {!searchQuery && <span className={`w-2 h-2 rounded-full animate-pulse ${theme === 'dark' ? 'bg-green-500' : 'bg-[#000080]'}`}></span>}
+               {!searchQuery && <span className={`w-2 h-2 rounded-full animate-pulse ${theme === 'dark' ? 'bg-neutral-400' : 'bg-[#000080]'}`}></span>}
             </div>
             
             <div className="flex flex-col gap-3 min-h-[60px]">
@@ -308,7 +308,7 @@ export default function Home() {
         </motion.div>
       </div>
 
-      <div className={`relative z-10 w-full max-w-4xl mx-auto mt-12 mb-12 ${theme === 'dark' ? 'bg-[#f4f4f5] text-black rounded-[3rem] px-8 md:px-14 py-16 shadow-lg' : 'win95-window backdrop-blur-sm'}`}>
+      <div className={`relative z-10 w-full max-w-4xl mx-auto mt-12 mb-12 ${theme === 'dark' ? 'bg-[#f4f4f5] text-black px-8 md:px-14 py-16 shadow-lg rounded-none' : 'win95-window backdrop-blur-sm'}`}>
         {theme === 'light' && (
           <div className="win95-titlebar mb-2">
             <span>notepad.exe - about_me.txt</span>
@@ -345,7 +345,7 @@ export default function Home() {
       </div>
 
       {/* Contact Form Section */}
-      <div className={`relative z-10 w-full max-w-4xl mx-auto mt-12 mb-24 ${theme === 'dark' ? 'rounded-[3rem] overflow-hidden px-8 md:px-14 py-16 bg-[#e4e4e7] text-black shadow-lg' : 'win95-window backdrop-blur-sm'}`}>
+      <div className={`relative z-10 w-full max-w-4xl mx-auto mt-12 mb-24 ${theme === 'dark' ? 'rounded-none overflow-hidden px-8 md:px-14 py-16 bg-[#e4e4e7] text-black shadow-lg' : 'win95-window backdrop-blur-sm'}`}>
         {theme === 'dark' && (
            <div className="absolute bottom-0 left-0 w-full h-48 opacity-50 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#d1d5db 2px, transparent 2px)', backgroundSize: '12px 12px' }} />
         )}
@@ -371,7 +371,7 @@ export default function Home() {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className={`flex-1 w-full ${theme === 'dark' ? 'bg-white rounded-[2rem] p-8 shadow-sm' : 'p-4 bg-[#c0c0c0] border-2 border-b-white border-r-white border-t-black border-l-black shadow-[inset_1px_1px_0_#808080]'}`}
+            className={`flex-1 w-full ${theme === 'dark' ? 'bg-white rounded-none p-8 shadow-sm' : 'p-4 bg-[#c0c0c0] border-2 border-b-white border-r-white border-t-black border-l-black shadow-[inset_1px_1px_0_#808080]'}`}
           >
             <form ref={formRef} onSubmit={sendEmail} className="flex flex-col gap-4">
               <div className="flex flex-col gap-1">
@@ -381,7 +381,7 @@ export default function Home() {
                   name="name"
                   required
                   placeholder="Your Name"
-                  className={`w-full text-base px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' ? 'rounded-md bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
+                  className={`w-full text-base px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' ? 'rounded-none bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
                 />
               </div>
               <div className="flex flex-col gap-1">
@@ -391,7 +391,7 @@ export default function Home() {
                   name="email"
                   required
                   placeholder="Your Email"
-                  className={`w-full text-base px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' ? 'rounded-md bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
+                  className={`w-full text-base px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' ? 'rounded-none bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
                 />
               </div>
               <input type="hidden" name="to_email" value="emmetttupper1@gmail.com" />
@@ -402,7 +402,7 @@ export default function Home() {
                   required
                   rows={4}
                   placeholder="Your message..."
-                  className={`w-full text-base px-4 py-3 focus:outline-none transition-colors resize-none ${theme === 'dark' ? 'rounded-md bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
+                  className={`w-full text-base px-4 py-3 focus:outline-none transition-colors resize-none ${theme === 'dark' ? 'rounded-none bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
                 />
               </div>
               <button 
@@ -410,7 +410,7 @@ export default function Home() {
                 disabled={formStatus === 'sending' || formStatus === 'sent'}
                 className={`mt-4 flex items-center justify-center gap-2 py-4 px-8 text-sm uppercase tracking-widest font-bold transition-all ${
                   theme === 'dark' 
-                  ? 'bg-[#1a1a1a] text-white hover:bg-black rounded-full w-full disabled:opacity-50' 
+                  ? 'bg-[#1a1a1a] text-white hover:bg-black rounded-none w-full disabled:opacity-50' 
                   : 'bg-[#c0c0c0] text-black border-2 border-b-black border-r-black border-t-white border-l-white hover:active:border-b-white hover:active:border-r-white hover:active:border-t-black hover:active:border-l-black hover:active:bg-[#d0d0d0] disabled:opacity-50'
                 }`}
               >

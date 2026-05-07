@@ -37,14 +37,14 @@ body {
 }
 
 .text-gradient-contact {
-  background: linear-gradient(90deg, #d4af37 0%, #ff4b4b 30%, #9b4dca 70%, #4a90e2 100%);
+  background: linear-gradient(90deg, #666666 0%, #ffffff 30%, #999999 70%, #dddddd 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .blob-shape {
-  background: linear-gradient(45deg, #ffb03a, #ff3a54, #8a2be2);
+  background: linear-gradient(45deg, #222222, #444444, #333333);
   filter: blur(80px);
   border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
   animation: morph 8s ease-in-out infinite;
