@@ -17,9 +17,11 @@ body {
 }
 
 .dark body {
-  background-color: #050505;
+  background-color: #0a0a0a;
   background-image: none;
-  color: #ededed;
+  color: #e5e5e5;
+  font-family: 'Recursive', monospace;
+  font-variation-settings: "CASL" 1, "MONO" 1;
 }
 
 ::selection {
@@ -44,10 +46,10 @@ body {
 }
 
 .blob-shape {
-  background: linear-gradient(45deg, #222222, #444444, #333333);
-  filter: blur(80px);
-  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-  animation: morph 8s ease-in-out infinite;
+  background: #1a1a1a;
+  filter: blur(60px);
+  border-radius: 50%;
+  opacity: 0.3;
 }
 
 @keyframes morph {
@@ -103,6 +105,18 @@ html:not(.dark) .tape {
   .font-casual {
     font-family: 'Recursive', sans-serif;
     font-variation-settings: "CASL" 1, "MONO" 0;
+  }
+
+  .font-vulfpeck {
+    font-family: 'Recursive', monospace;
+    font-variation-settings: "CASL" 1, "MONO" 1;
+    letter-spacing: -0.02em;
+  }
+
+  .dark .font-vulfpeck {
+    font-family: 'Recursive', monospace;
+    font-variation-settings: "CASL" 1, "MONO" 1;
+    letter-spacing: -0.01em;
   }
 }
 
@@ -180,4 +194,56 @@ html:not(.dark) .win95-body {
   border-right-color: #fff;
   padding: 10px;
   margin-top: 2px;
+}
+
+/* Vulfpeck-style dark theme */
+.dark .vulfpeck-container {
+  font-family: 'Recursive', monospace;
+  font-variation-settings: "CASL" 1, "MONO" 1;
+}
+
+.dark .vulfpeck-heading {
+  font-family: 'Recursive', monospace;
+  font-variation-settings: "CASL" 1, "MONO" 1;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.dark .vulfpeck-text {
+  font-family: 'Recursive', monospace;
+  font-variation-settings: "CASL" 0.8, "MONO" 1;
+  letter-spacing: -0.01em;
+  line-height: 1.6;
+}
+
+.dark .vulfpeck-border {
+  border: 1px solid #333;
+}
+
+.dark .vulfpeck-bg {
+  background: #111;
+}
+
+.dark .vulfpeck-bg-light {
+  background: #1a1a1a;
+}
+
+.dark .vulfpeck-accent {
+  color: #fff;
+}
+
+.dark .vulfpeck-muted {
+  color: #888;
+}
+
+.dark .vulfpeck-link {
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.dark .vulfpeck-link:hover {
+  text-decoration-thickness: 2px;
 }
