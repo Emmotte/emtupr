@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
 import { Link } from 'react-router-dom';
-import emailjs from '@emailjs/browser';
 import AsciiWave from '../components/AsciiWave';
 import { ArrowRight, Search, Mail, Send } from 'lucide-react';
 import { useTheme } from '../components/ThemeProvider';
@@ -80,27 +79,32 @@ export default function Home() {
   const formRef = useRef<HTMLFormElement>(null);
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
-  const sendEmail = (e: React.FormEvent) => {
+  const sendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formRef.current) return;
     
     setFormStatus('sending');
-    emailjs.sendForm(
-      'YOUR_SERVICE_ID', // Replace with your standard EmailJS Service ID
-      'YOUR_TEMPLATE_ID', // Replace with your standard EmailJS Template ID
-      formRef.current,
-      'YOUR_PUBLIC_KEY' // Replace with your public key
-    ).then((result) => {
-      console.log('Success:', result.text);
-      setFormStatus('sent');
-      formRef.current?.reset();
+    const formData = new FormData(formRef.current);
+    formData.append("access_key", "6cf7d2ad-2e75-4b87-b384-a8da2873f1cf");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+      const data = await response.json();
+      if (data.success) {
+        setFormStatus('sent');
+        formRef.current?.reset();
+      } else {
+        setFormStatus('error');
+      }
       setTimeout(() => setFormStatus('idle'), 3000);
-    }).catch((error) => {
-      console.warn('EmailJS needs to be configured with valid keys:', error);
-      setFormStatus('sent'); // Mocks success for UI preview, but logs error.
-      formRef.current?.reset();
+    } catch (error) {
+      console.error(error);
+      setFormStatus('error');
       setTimeout(() => setFormStatus('idle'), 3000);
-    });
+    }
   };
 
   const allLocalProjects = [...ENGINEERING_PROJECTS, ...MEDIA_PROJECTS];
@@ -169,6 +173,9 @@ export default function Home() {
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
+        {theme === 'dark' && (
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] blob-shape opacity-20 pointer-events-none -z-10" />
+        )}
         <motion.div
           style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
           className="flex flex-col items-center justify-center pointer-events-none pt-12 relative"
@@ -176,11 +183,14 @@ export default function Home() {
           {theme === 'light' && (
             <>
               {/* Decorative light mode elements */}
-              <div className="absolute -top-12 -left-12 opacity-80 pointer-events-none rotate-12 drop-shadow-md z-0 text-7xl">
-                🌐
+              <div className="absolute -top-16 -left-16 pointer-events-none rotate-12 drop-shadow-xl z-0">
+                <img src="https://win98icons.alexmeub.com/icons/png/world-1.png" className="w-24 h-24" style={{ imageRendering: 'pixelated' }} alt="globe" />
               </div>
-              <div className="absolute -bottom-12 -right-8 opacity-80 pointer-events-none -rotate-12 drop-shadow-md z-0 text-7xl">
-                💽
+              <div className="absolute -bottom-16 -right-12 pointer-events-none -rotate-12 drop-shadow-xl z-0">
+                <img src="https://win98icons.alexmeub.com/icons/png/cd_drive-0.png" className="w-24 h-24" style={{ imageRendering: 'pixelated' }} alt="cd drive" />
+              </div>
+              <div className="absolute top-1/2 -right-32 pointer-events-none rotate-6 drop-shadow-xl z-0 hidden md:block">
+                <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-5.png" className="w-24 h-24" style={{ imageRendering: 'pixelated' }} alt="computer" />
               </div>
             </>
           )}
@@ -210,17 +220,15 @@ export default function Home() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-12 flex flex-col sm:flex-row flex-wrap justify-center gap-6 font-mono text-sm uppercase tracking-widest pointer-events-auto"
+          className={`mt-12 flex flex-col sm:flex-row flex-wrap justify-center gap-6 text-sm tracking-wide pointer-events-auto ${theme === 'dark' ? 'font-mono uppercase' : 'font-sans font-bold text-gray-300'}`}
         >
-          <Link to="/engineering" className="group flex items-center gap-3 border border-neutral-300 dark:border-neutral-700 bg-neutral-100/50 dark:bg-neutral-900/50 hover:bg-neutral-200 dark:hover:bg-neutral-800 px-6 py-4 transition-all hover:pr-4 text-neutral-800 dark:text-neutral-200 scrapbook-element polaroid relative">
-            <div className="tape hidden dark:hidden sm:block"></div>
+          <Link to="/engineering" className={`group flex items-center justify-center gap-3 px-8 py-5 transition-all w-full sm:w-[280px] ${theme === 'dark' ? 'border border-neutral-700 bg-neutral-900/50 hover:bg-neutral-800 text-neutral-200 uppercase hover:pr-4' : 'bg-white text-[#dfdfdf] hover:text-[#b0b0b0] uppercase tracking-[0.2em] shadow-sm border border-gray-100 flex-col'}`}>
             Engineering & Design
-            <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
+            {theme === 'dark' && <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />}
           </Link>
-          <Link to="/media" className="group flex items-center gap-3 border border-neutral-300 dark:border-neutral-700 bg-neutral-100/50 dark:bg-neutral-900/50 hover:bg-neutral-200 dark:hover:bg-neutral-800 px-6 py-4 transition-all hover:pr-4 text-neutral-800 dark:text-neutral-200 scrapbook-element polaroid relative">
-            <div className="tape hidden dark:hidden sm:block" style={{ top: '-15px', rotate: '3deg' }}></div>
+          <Link to="/media" className={`group flex items-center justify-center gap-3 px-8 py-5 transition-all w-full sm:w-[280px] ${theme === 'dark' ? 'border border-neutral-700 bg-neutral-900/50 hover:bg-neutral-800 text-neutral-200 uppercase hover:pr-4' : 'bg-white text-[#dfdfdf] hover:text-[#b0b0b0] uppercase tracking-[0.2em] shadow-sm border border-gray-100 flex-col'}`}>
             Visual & Audio Media
-            <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
+            {theme === 'dark' && <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />}
           </Link>
         </motion.div>
 
@@ -300,7 +308,7 @@ export default function Home() {
         </motion.div>
       </div>
 
-      <div className={`relative z-10 w-full max-w-4xl mx-auto backdrop-blur-sm mt-12 mb-12 ${theme === 'dark' ? 'px-6 py-24 border-t border-neutral-800 bg-[#050505]/50' : 'win95-window'}`}>
+      <div className={`relative z-10 w-full max-w-4xl mx-auto mt-12 mb-12 ${theme === 'dark' ? 'bg-[#f4f4f5] text-black rounded-[3rem] px-8 md:px-14 py-16 shadow-lg' : 'win95-window backdrop-blur-sm'}`}>
         {theme === 'light' && (
           <div className="win95-titlebar mb-2">
             <span>notepad.exe - about_me.txt</span>
@@ -313,23 +321,23 @@ export default function Home() {
         )}
         <div className={`${theme === 'light' ? 'win95-body' : ''} flex flex-col gap-8 md:flex-row md:items-start justify-between`}>
           <div className="flex-none">
-            <h2 className={`text-2xl md:text-4xl font-medium mb-2 ${theme === 'dark' ? 'font-casual text-white' : 'font-sans text-black font-bold'}`}>About Me</h2>
-            <p className={`text-xs uppercase tracking-widest ${theme === 'dark' ? 'font-mono text-neutral-500' : 'font-sans text-[#808080] font-bold'}`}>Background & Philosophy</p>
+            <h2 className={`text-3xl md:text-5xl font-bold tracking-tight mb-2 ${theme === 'dark' ? 'font-sans text-black leading-tight' : 'font-sans text-black font-bold'}`}>About Me</h2>
+            <p className={`text-xs uppercase tracking-widest font-bold ${theme === 'dark' ? 'font-sans text-gray-500' : 'font-sans text-[#808080]'}`}>Background & Philosophy</p>
           </div>
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className={`flex-1 max-w-2xl text-base md:text-lg leading-relaxed space-y-6 ${theme === 'dark' ? 'text-neutral-400' : 'text-black font-sans bg-white border border-[#c0c0c0] p-4 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1)]'}`}
+            className={`flex-1 max-w-2xl text-base md:text-xl font-medium leading-relaxed space-y-6 ${theme === 'dark' ? 'text-gray-800' : 'text-black font-sans bg-white border border-[#c0c0c0] p-4 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1)]'}`}
           >
             <p>
-              Hello, I'm Emmett. I specialize in crafting seamless digital experiences at the intersection of robust network engineering, minimalist product design, and high-fidelity media production. Whether routing enterprise networks or editing digital films, my focus is always on usability and performance.
+              <span className={`${theme === 'dark' ? 'text-black' : ''}`}>Hello, I'm Emmett.</span> I specialize in crafting seamless digital experiences at the intersection of robust network engineering, minimalist product design, and high-fidelity media production. Whether routing enterprise networks or editing digital films, my focus is always on usability and performance.
             </p>
-            <p>
+            <p className={`${theme === 'dark' ? 'text-gray-500' : ''}`}>
               The digital space shouldn't be noisy. I aim to create architectures—both literal networks and conceptual digital products—that empower users without demanding attention.
             </p>
-            <p className={`text-sm pl-4 ${theme === 'dark' ? 'font-mono text-neutral-500 border-l border-neutral-800' : 'font-serif italic text-black border-l-2 border-black'}`}>
+            <p className={`text-sm pl-4 ${theme === 'dark' ? 'font-sans italic text-gray-400 border-l-2 border-gray-300' : 'font-serif italic text-black border-l-2 border-black'}`}>
               "The best infrastructure is invisible."
             </p>
           </motion.div>
@@ -337,7 +345,10 @@ export default function Home() {
       </div>
 
       {/* Contact Form Section */}
-      <div className={`relative z-10 w-full max-w-4xl mx-auto backdrop-blur-sm mt-12 mb-24 ${theme === 'dark' ? 'px-6 py-16 border-t border-neutral-800 bg-[#050505]/50' : 'win95-window'}`}>
+      <div className={`relative z-10 w-full max-w-4xl mx-auto rounded-[3rem] mt-12 mb-24 overflow-hidden ${theme === 'dark' ? 'px-8 md:px-14 py-16 bg-[#e4e4e7] text-black shadow-lg' : 'win95-window backdrop-blur-sm'}`}>
+        {theme === 'dark' && (
+           <div className="absolute bottom-0 left-0 w-full h-48 opacity-50 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#d1d5db 2px, transparent 2px)', backgroundSize: '12px 12px' }} />
+        )}
         {theme === 'light' && (
           <div className="win95-titlebar mb-2">
             <span>email_client.exe - Contact</span>
@@ -348,10 +359,10 @@ export default function Home() {
             </div>
           </div>
         )}
-        <div className={`${theme === 'light' ? 'win95-body' : ''} flex flex-col gap-8 md:flex-row md:items-start justify-between`}>
+        <div className={`${theme === 'light' ? 'win95-body' : ''} relative z-10 flex flex-col gap-8 md:flex-row md:items-start justify-between`}>
           <div className="flex-none md:w-1/3">
-            <h2 className={`text-2xl md:text-4xl font-medium mb-2 ${theme === 'dark' ? 'font-casual text-white' : 'font-sans text-black font-bold'}`}>Get in Touch</h2>
-            <p className={`text-xs uppercase tracking-widest leading-relaxed mt-4 ${theme === 'dark' ? 'font-mono text-neutral-500' : 'font-sans text-[#808080] font-bold'}`}>
+            <h2 className={`text-4xl md:text-6xl font-black tracking-tighter mb-2 ${theme === 'dark' ? 'font-sans text-black leading-[0.9]' : 'font-sans text-black'}`}>Get in <br className="hidden md:block" />Touch</h2>
+            <p className={`text-xs uppercase tracking-widest leading-relaxed mt-6 font-bold ${theme === 'dark' ? 'font-sans text-gray-500' : 'font-sans text-[#808080]'}`}>
               Interested in collaborating or just want to say hi? Send me a message below.
             </p>
           </div>
@@ -360,52 +371,53 @@ export default function Home() {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className={`flex-1 w-full ${theme === 'dark' ? '' : 'p-4 bg-[#c0c0c0] border-2 border-b-white border-r-white border-t-black border-l-black shadow-[inset_1px_1px_0_#808080]'}`}
+            className={`flex-1 w-full ${theme === 'dark' ? 'bg-white rounded-[2rem] p-8 shadow-sm' : 'p-4 bg-[#c0c0c0] border-2 border-b-white border-r-white border-t-black border-l-black shadow-[inset_1px_1px_0_#808080]'}`}
           >
             <form ref={formRef} onSubmit={sendEmail} className="flex flex-col gap-4">
               <div className="flex flex-col gap-1">
-                <label className={`text-xs uppercase tracking-widest ${theme === 'dark' ? 'font-mono text-neutral-400' : 'font-sans font-bold text-black'}`}>Name</label>
+                <label className={`text-xs uppercase tracking-widest font-bold ${theme === 'dark' ? 'font-sans text-gray-400' : 'font-sans text-black'}`}>Name</label>
                 <input 
                   type="text" 
-                  name="user_name"
+                  name="name"
                   required
                   placeholder="Your Name"
-                  className={`w-full text-sm rounded-md px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' ? 'bg-[#0a0a0a] border border-neutral-800 text-neutral-100 font-mono focus:ring-1 focus:ring-neutral-400' : 'bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
+                  className={`w-full text-base rounded-md px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' ? 'bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
                 />
               </div>
               <div className="flex flex-col gap-1">
-                <label className={`text-xs uppercase tracking-widest ${theme === 'dark' ? 'font-mono text-neutral-400' : 'font-sans font-bold text-black'}`}>Email</label>
+                <label className={`text-xs uppercase tracking-widest font-bold ${theme === 'dark' ? 'font-sans text-gray-400' : 'font-sans text-black'}`}>Email</label>
                 <input 
                   type="email" 
-                  name="user_email"
+                  name="email"
                   required
                   placeholder="Your Email"
-                  className={`w-full text-sm rounded-md px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' ? 'bg-[#0a0a0a] border border-neutral-800 text-neutral-100 font-mono focus:ring-1 focus:ring-neutral-400' : 'bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
+                  className={`w-full text-base rounded-md px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' ? 'bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
                 />
               </div>
               <input type="hidden" name="to_email" value="emmetttupper1@gmail.com" />
               <div className="flex flex-col gap-1">
-                <label className={`text-xs uppercase tracking-widest ${theme === 'dark' ? 'font-mono text-neutral-400' : 'font-sans font-bold text-black'}`}>Message</label>
+                <label className={`text-xs uppercase tracking-widest font-bold ${theme === 'dark' ? 'font-sans text-gray-400' : 'font-sans text-black'}`}>Message</label>
                 <textarea 
                   name="message"
                   required
                   rows={4}
                   placeholder="Your message..."
-                  className={`w-full text-sm rounded-md px-4 py-3 focus:outline-none transition-colors resize-none ${theme === 'dark' ? 'bg-[#0a0a0a] border border-neutral-800 text-neutral-100 font-mono focus:ring-1 focus:ring-neutral-400' : 'bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
+                  className={`w-full text-base rounded-md px-4 py-3 focus:outline-none transition-colors resize-none ${theme === 'dark' ? 'bg-gray-50 border-b-2 border-transparent focus:border-black font-sans' : 'bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
                 />
               </div>
               <button 
                 type="submit" 
                 disabled={formStatus === 'sending' || formStatus === 'sent'}
-                className={`mt-2 flex items-center justify-center gap-2 py-3 px-6 text-sm uppercase tracking-widest transition-all ${
+                className={`mt-4 flex items-center justify-center gap-2 py-4 px-8 text-sm uppercase tracking-widest font-bold transition-all ${
                   theme === 'dark' 
-                  ? 'bg-white text-black hover:bg-neutral-200 font-mono disabled:opacity-50' 
-                  : 'bg-[#c0c0c0] text-black border-2 border-b-black border-r-black border-t-white border-l-white font-sans font-bold hover:active:border-b-white hover:active:border-r-white hover:active:border-t-black hover:active:border-l-black hover:active:bg-[#d0d0d0] disabled:opacity-50'
+                  ? 'bg-[#1a1a1a] text-white hover:bg-black rounded-full w-full disabled:opacity-50' 
+                  : 'bg-[#c0c0c0] text-black border-2 border-b-black border-r-black border-t-white border-l-white hover:active:border-b-white hover:active:border-r-white hover:active:border-t-black hover:active:border-l-black hover:active:bg-[#d0d0d0] disabled:opacity-50'
                 }`}
               >
                 {formStatus === 'idle' && <><Send className="w-4 h-4" /> Send Message</>}
                 {formStatus === 'sending' && 'Sending...'}
                 {formStatus === 'sent' && 'Message Sent!'}
+                {formStatus === 'error' && 'Error. Try Again.'}
               </button>
             </form>
           </motion.div>
