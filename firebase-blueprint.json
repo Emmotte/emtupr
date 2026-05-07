@@ -7,12 +7,20 @@
       "properties": {
         "title": { "type": "string" },
         "category": { "type": "string" },
+        "skills": { 
+          "type": "array",
+          "items": { "type": "string" }
+        },
         "description": { "type": "string" },
+        "content": { "type": "string" },
         "link": { "type": "string" },
         "isPublic": { "type": "boolean" },
+        "period": { "type": "string" },
+        "role": { "type": "string" },
+        "thumbnail": { "type": "string" },
         "createdAt": { "type": "string", "format": "date-time" }
       },
-      "required": ["title", "category", "description", "isPublic", "createdAt"]
+      "required": ["title", "category", "description", "isPublic", "createdAt", "content", "skills"]
     }
   },
   "firestore": {

@@ -5,6 +5,7 @@ import Navigation from './components/Navigation';
 import Home from './pages/Home';
 import Engineering from './pages/Engineering';
 import Media from './pages/Media';
+import ProjectDetail from './pages/ProjectDetail';
 import { ThemeProvider } from './components/ThemeProvider';
 
 function AnimatedRoutes() {
@@ -16,6 +17,7 @@ function AnimatedRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/engineering" element={<Engineering />} />
         <Route path="/media" element={<Media />} />
+        <Route path="/project/:id" element={<ProjectDetail />} />
       </Routes>
     </AnimatePresence>
   );

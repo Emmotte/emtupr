@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
 import { Link } from 'react-router-dom';
 import AsciiWave from '../components/AsciiWave';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Search, Mail } from 'lucide-react';
 import { useTheme } from '../components/ThemeProvider';
 import { collection, query, where, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { db, auth } from '../firebase';
+import { ENGINEERING_PROJECTS } from './Engineering';
+import { MEDIA_PROJECTS } from './Media';
 
 enum OperationType {
   CREATE = 'create',
@@ -72,6 +74,14 @@ export default function Home() {
 
   const [recentProjects, setRecentProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const allLocalProjects = [...ENGINEERING_PROJECTS, ...MEDIA_PROJECTS];
+  const filteredProjects = allLocalProjects.filter(project => 
+    searchQuery === '' ? false : 
+    (project.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    project.title.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
 
   useEffect(() => {
     const q = query(
@@ -134,13 +144,25 @@ export default function Home() {
       >
         <motion.div
           style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-          className="flex flex-col items-center justify-center pointer-events-none pt-12"
+          className="flex flex-col items-center justify-center pointer-events-none pt-12 relative"
         >
+          {theme === 'light' && (
+            <>
+              {/* Decorative light mode elements */}
+              <div className="absolute -top-12 -left-12 opacity-80 pointer-events-none rotate-12 drop-shadow-md z-0 text-7xl">
+                🌐
+              </div>
+              <div className="absolute -bottom-12 -right-8 opacity-80 pointer-events-none -rotate-12 drop-shadow-md z-0 text-7xl">
+                💽
+              </div>
+            </>
+          )}
+
           <motion.h1 
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-8xl font-bold tracking-tighter text-center font-casual text-neutral-900 dark:text-white"
+            className={`text-5xl md:text-8xl font-bold tracking-tighter text-center transition-all duration-300 ${theme === 'dark' ? 'font-casual text-white' : 'scrapbook-cutout !text-black'}`}
             style={{ translateZ: 50 }}
           >
             emtupr works.
@@ -150,7 +172,7 @@ export default function Home() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="mt-6 text-lg md:text-xl font-mono text-neutral-600 dark:text-neutral-400 max-w-2xl text-center"
+            className={`mt-6 text-lg md:text-xl max-w-2xl text-center transition-all duration-300 ${theme === 'dark' ? 'font-mono text-neutral-400' : 'scrapbook-cutout-alt text-lg'}`}
             style={{ translateZ: 30 }}
           >
             Network Engineer / Product Designer / Audiovisual Artist
@@ -161,64 +183,123 @@ export default function Home() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-12 flex flex-col sm:flex-row gap-6 font-mono text-sm uppercase tracking-widest pointer-events-auto"
+          className="mt-12 flex flex-col sm:flex-row flex-wrap justify-center gap-6 font-mono text-sm uppercase tracking-widest pointer-events-auto"
         >
-          <Link to="/engineering" className="group flex items-center gap-3 border border-neutral-300 dark:border-neutral-700 bg-neutral-100/50 dark:bg-neutral-900/50 hover:bg-neutral-200 dark:hover:bg-neutral-800 px-6 py-4 transition-all hover:pr-4 text-neutral-800 dark:text-neutral-200">
+          <Link to="/engineering" className="group flex items-center gap-3 border border-neutral-300 dark:border-neutral-700 bg-neutral-100/50 dark:bg-neutral-900/50 hover:bg-neutral-200 dark:hover:bg-neutral-800 px-6 py-4 transition-all hover:pr-4 text-neutral-800 dark:text-neutral-200 scrapbook-element polaroid relative">
+            <div className="tape hidden dark:hidden sm:block"></div>
             Engineering & Design
             <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
           </Link>
-          <Link to="/media" className="group flex items-center gap-3 border border-neutral-300 dark:border-neutral-700 bg-neutral-100/50 dark:bg-neutral-900/50 hover:bg-neutral-200 dark:hover:bg-neutral-800 px-6 py-4 transition-all hover:pr-4 text-neutral-800 dark:text-neutral-200">
+          <Link to="/media" className="group flex items-center gap-3 border border-neutral-300 dark:border-neutral-700 bg-neutral-100/50 dark:bg-neutral-900/50 hover:bg-neutral-200 dark:hover:bg-neutral-800 px-6 py-4 transition-all hover:pr-4 text-neutral-800 dark:text-neutral-200 scrapbook-element polaroid relative">
+            <div className="tape hidden dark:hidden sm:block" style={{ top: '-15px', rotate: '3deg' }}></div>
             Visual & Audio Media
             <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
           </Link>
+          <a href="mailto:emmetttupper1@gmail.com" className="group flex items-center gap-3 border border-neutral-300 dark:border-neutral-700 bg-neutral-100/50 dark:bg-neutral-900/50 hover:bg-neutral-200 dark:hover:bg-neutral-800 px-6 py-4 transition-all hover:pr-4 text-neutral-800 dark:text-neutral-200 scrapbook-element polaroid relative">
+            <div className="tape hidden dark:hidden sm:block" style={{ top: '-10px', rotate: '-2deg' }}></div>
+            Contact Me
+            <Mail className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
+          </a>
         </motion.div>
 
-        {/* Recent database additions display */}
+        {/* Search and Recent database additions display */}
         <motion.div
            initial={{ opacity: 0, y: 20 }}
            animate={{ opacity: 1, y: 0 }}
            transition={{ duration: 0.8, delay: 0.8 }}
-           className="mt-16 w-full max-w-sm font-mono text-sm pointer-events-auto"
+           className={`mt-16 w-full max-w-sm font-mono text-sm pointer-events-auto ${theme === 'dark' ? 'opacity-80' : 'win95-window'}`}
         >
-          <div className="flex items-center justify-between mb-4 text-neutral-500 flex-none uppercase tracking-widest text-xs border-b border-neutral-300 dark:border-neutral-800 pb-2">
-             <span>Recent Additions</span>
-             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-          </div>
-          
-          <div className="flex flex-col gap-3 min-h-[60px]">
-            {loading ? (
-               <div className="text-neutral-500 italic">Connecting to database...</div>
-            ) : recentProjects.length > 0 ? (
-               recentProjects.map(project => (
-                 <motion.a 
-                   href={project.link || "#"}
-                   key={project.id}
-                   whileHover={{ x: 5 }}
-                   className="flex justify-between items-center group/project"
-                 >
-                   <span className="text-neutral-700 dark:text-neutral-300 group-hover/project:text-black dark:group-hover/project:text-white transition-colors">{project.title}</span>
-                   <span className="text-neutral-500 dark:text-neutral-600 text-xs">{project.category}</span>
-                 </motion.a>
-               ))
-            ) : (
-               <div className="text-neutral-500 italic">No recent public updates.</div>
-            )}
+          {theme === 'light' && (
+            <div className="win95-titlebar mb-1">
+              <span>explorer.exe</span>
+              <div className="flex gap-1">
+                <div className="win95-titlebar-btn">_</div>
+                <div className="win95-titlebar-btn">□</div>
+                <div className="win95-titlebar-btn">X</div>
+              </div>
+            </div>
+          )}
+
+          <div className={`${theme === 'light' ? 'win95-body' : ''}`}>
+            <div className="mb-6 relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className={`h-4 w-4 ${theme === 'dark' ? 'text-neutral-500' : 'text-neutral-800'}`} />
+              </div>
+              <input
+                type="text"
+                placeholder="Search by skill or title..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className={`w-full text-sm rounded-md pl-10 pr-4 py-3 focus:outline-none transition-colors ${theme === 'dark' ? 'bg-[#0a0a0a] border border-neutral-800 text-neutral-100 font-mono focus:ring-1 focus:ring-neutral-400' : 'bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
+              />
+            </div>
+
+            <div className={`flex items-center justify-between mb-4 flex-none uppercase tracking-widest text-xs border-b pb-2 ${theme === 'dark' ? 'text-neutral-500 border-neutral-800' : 'text-black border-[#808080] font-bold'}`}>
+               <span>{searchQuery ? 'Search Results' : 'Recent Additions'}</span>
+               {!searchQuery && <span className={`w-2 h-2 rounded-full animate-pulse ${theme === 'dark' ? 'bg-green-500' : 'bg-[#000080]'}`}></span>}
+            </div>
+            
+            <div className="flex flex-col gap-3 min-h-[60px]">
+              {searchQuery ? (
+                filteredProjects.length > 0 ? (
+                  filteredProjects.map(project => (
+                    <Link 
+                      to={`/project/${project.id}`}
+                      key={project.id}
+                      className={`flex justify-between items-center group/project transition-transform ${theme === 'dark' ? 'hover:translate-x-1' : 'hover:bg-[#000080] hover:text-white px-2 py-1'}`}
+                    >
+                      <span className={`transition-colors ${theme === 'dark' ? 'text-neutral-300 group-hover/project:text-white' : 'text-black group-hover/project:text-white font-sans'}`}>{project.title}</span>
+                      <span className={`text-xs ${theme === 'dark' ? 'text-neutral-600' : 'text-[#808080] group-hover/project:text-[#c0c0c0] font-sans'}`}>{project.category}</span>
+                    </Link>
+                  ))
+                ) : (
+                  <div className={`italic ${theme === 'dark' ? 'text-neutral-500' : 'text-[#808080] font-sans px-2'}`}>No projects found.</div>
+                )
+              ) : (
+                loading ? (
+                   <div className={`italic ${theme === 'dark' ? 'text-neutral-500' : 'text-[#808080] font-sans px-2'}`}>Connecting to database...</div>
+                ) : recentProjects.length > 0 ? (
+                   recentProjects.map(project => (
+                     <Link 
+                       to={`/project/${project.id}`}
+                       key={project.id}
+                       className={`flex justify-between items-center group/project transition-transform ${theme === 'dark' ? 'hover:translate-x-1' : 'hover:bg-[#000080] hover:text-white px-2 py-1'}`}
+                     >
+                       <span className={`transition-colors ${theme === 'dark' ? 'text-neutral-300 group-hover/project:text-white' : 'text-black group-hover/project:text-white font-sans'}`}>{project.title}</span>
+                       <span className={`text-xs ${theme === 'dark' ? 'text-neutral-600' : 'text-[#808080] group-hover/project:text-[#c0c0c0] font-sans'}`}>{project.category}</span>
+                     </Link>
+                   ))
+                ) : (
+                   <div className={`italic ${theme === 'dark' ? 'text-neutral-500' : 'text-[#808080] font-sans px-2'}`}>No recent public updates.</div>
+                )
+              )}
+            </div>
           </div>
         </motion.div>
       </div>
 
-      <div className="relative z-10 w-full max-w-4xl mx-auto px-6 py-24 border-t border-neutral-200 dark:border-neutral-800 bg-white/50 dark:bg-[#050505]/50 backdrop-blur-sm">
-        <div className="flex flex-col gap-8 md:flex-row md:items-start justify-between">
+      <div className={`relative z-10 w-full max-w-4xl mx-auto backdrop-blur-sm mt-12 mb-12 ${theme === 'dark' ? 'px-6 py-24 border-t border-neutral-800 bg-[#050505]/50' : 'win95-window'}`}>
+        {theme === 'light' && (
+          <div className="win95-titlebar mb-2">
+            <span>notepad.exe - about_me.txt</span>
+            <div className="flex gap-1">
+              <div className="win95-titlebar-btn">_</div>
+              <div className="win95-titlebar-btn">□</div>
+              <div className="win95-titlebar-btn">X</div>
+            </div>
+          </div>
+        )}
+        <div className={`${theme === 'light' ? 'win95-body' : ''} flex flex-col gap-8 md:flex-row md:items-start justify-between`}>
           <div className="flex-none">
-            <h2 className="text-2xl md:text-4xl font-casual font-medium text-neutral-900 dark:text-white mb-2">About Me</h2>
-            <p className="font-mono text-xs uppercase tracking-widest text-neutral-500">Background & Philosophy</p>
+            <h2 className={`text-2xl md:text-4xl font-medium mb-2 ${theme === 'dark' ? 'font-casual text-white' : 'font-sans text-black font-bold'}`}>About Me</h2>
+            <p className={`text-xs uppercase tracking-widest ${theme === 'dark' ? 'font-mono text-neutral-500' : 'font-sans text-[#808080] font-bold'}`}>Background & Philosophy</p>
           </div>
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="flex-1 max-w-2xl text-base md:text-lg leading-relaxed text-neutral-600 dark:text-neutral-400 space-y-6"
+            className={`flex-1 max-w-2xl text-base md:text-lg leading-relaxed space-y-6 ${theme === 'dark' ? 'text-neutral-400' : 'text-black font-sans bg-white border border-[#c0c0c0] p-4 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1)]'}`}
           >
             <p>
               Hello, I'm Emmett. I specialize in crafting seamless digital experiences at the intersection of robust network engineering, minimalist product design, and high-fidelity media production. Whether routing enterprise networks or editing digital films, my focus is always on usability and performance.
@@ -226,7 +307,7 @@ export default function Home() {
             <p>
               The digital space shouldn't be noisy. I aim to create architectures—both literal networks and conceptual digital products—that empower users without demanding attention.
             </p>
-            <p className="font-mono text-sm text-neutral-500 border-l border-neutral-300 dark:border-neutral-800 pl-4">
+            <p className={`text-sm pl-4 ${theme === 'dark' ? 'font-mono text-neutral-500 border-l border-neutral-800' : 'font-serif italic text-black border-l-2 border-black'}`}>
               "The best infrastructure is invisible."
             </p>
           </motion.div>

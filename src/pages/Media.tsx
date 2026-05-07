@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Play, Search } from 'lucide-react';
+import { Play, Search, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useTheme } from '../components/ThemeProvider';
 
-const MEDIA_PROJECTS = [
+export const MEDIA_PROJECTS = [
   {
     id: 'digital-junk',
     category: 'Video',
@@ -10,6 +12,7 @@ const MEDIA_PROJECTS = [
     role: 'Director / Editor',
     period: '2023',
     description: 'Directed and edited a stylized short film exploring the aesthetic of digital degradation and artifacts. Managed color grading and VFX pipelines.',
+    content: '### Direction\nExploring the beauty in broken things. We deliberately degraded 4K footage using analog tape workflows to create a unique texture.\n\n### Impact\nScreened at three underground video art festivals in 2023.',
     tags: ['Premiere Pro', 'After Effects', 'Color Grading'],
     thumbnail: '/IMG_6367.jpg'
   },
@@ -20,6 +23,7 @@ const MEDIA_PROJECTS = [
     role: 'Photographer',
     period: '2016 — Present',
     description: 'Ongoing photographic series documenting the intersection of modern architecture and human interaction. Exhibited in local galleries.',
+    content: '### Process\nShot entirely on 35mm film across various global cities. The focus is on finding stillness in chaotic environments.\n\n### Exhibitions\n- "Concrete & Glass", 2019\n- "The Spaces Between", 2021',
     tags: ['Portraiture', 'Street Photography', 'Lightroom'],
     thumbnail: '/IMG_6407.jpg'
   },
@@ -30,6 +34,7 @@ const MEDIA_PROJECTS = [
     role: 'Performer & Sound Designer',
     period: '2019 — Present',
     description: 'Crafted improvisational live sets blending hip-hop beats with generative electronic soundscapes. Utilized analog synthesizers and custom software patches.',
+    content: '### Setup\nHardware-centric live setup using Elektron rhythm machines and Moog synthesizers sequenced via Ableton Live.\n\n### Philosophy\nNo two performances are ever the same. The generative elements allow for structured improvisation.',
     tags: ['Ableton Live', 'Max/MSP', 'Sound Design'],
     thumbnail: '/IMG_6406.jpg'
   },
@@ -40,6 +45,7 @@ const MEDIA_PROJECTS = [
     role: 'Audio Engineer',
     period: '2017 — Present',
     description: 'Delivered professional mixing and mastering for independent artists. Focused on achieving pristine clarity and dynamic range across multiple genres.',
+    content: '### Technical Approach\nHybrid analog/digital workflow. Using high-end outboard gear for color and warmth, and precise digital EQs for surgical corrections.\n\n### Client Success\nSeveral tracks mixed in this studio have gone on to reach top spots on streaming playlists.',
     tags: ['Pro Tools', 'Logic Pro', 'Mixing', 'Mastering'],
     thumbnail: '/IMG_6514-2.jpg'
   }
@@ -47,6 +53,7 @@ const MEDIA_PROJECTS = [
 
 export default function Media() {
   const [searchQuery, setSearchQuery] = useState('');
+  const { theme } = useTheme();
 
   const filteredProjects = MEDIA_PROJECTS.filter(project => 
     searchQuery === '' ? true : 
@@ -60,29 +67,46 @@ export default function Media() {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5 }}
-      className="max-w-6xl mx-auto px-6 py-24 w-full"
+      className={`max-w-6xl mx-auto w-full ${theme === 'dark' ? 'px-6 py-24' : 'px-8 py-28'}`}
     >
-      <header className="mb-12">
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 text-neutral-900 dark:text-neutral-100">Visual & Audio Media</h1>
-        <p className="font-mono text-neutral-600 dark:text-neutral-400 text-sm md:text-base leading-relaxed max-w-2xl">
+      <header className={`mb-12 ${theme === 'dark' ? '' : 'scrapbook-cutout'}`}>
+        <h1 className={`text-4xl md:text-6xl font-bold tracking-tighter mb-4 ${theme === 'dark' ? 'text-neutral-100' : 'text-black'}`}>Visual & Audio Media</h1>
+      </header>
+      {theme === 'light' && (
+        <p className="font-mono text-black text-sm md:text-base leading-relaxed max-w-2xl bg-white border-2 border-black p-4 shadow-[4px_4px_0_#000] -rotate-1 mb-12 relative z-10 w-fit">
           A collection of creative works spanning videography, photography, and audio production. Exploring the intersection of digital artifacts and human emotion.
         </p>
-      </header>
+      )}
+      {theme === 'dark' && (
+        <p className="font-mono text-neutral-400 text-sm md:text-base leading-relaxed max-w-2xl mb-12">
+          A collection of creative works spanning videography, photography, and audio production. Exploring the intersection of digital artifacts and human emotion.
+        </p>
+      )}
 
-      <div className="mb-12 relative max-w-4xl">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <Search className="h-4 w-4 text-neutral-400 dark:text-neutral-500" />
+      <div className={`mb-12 relative max-w-4xl ${theme === 'dark' ? '' : 'win95-window'}`}>
+        {theme === 'light' && (
+           <div className="win95-titlebar mb-1">
+             <span>search_engine.exe</span>
+             <div className="flex gap-1">
+               <div className="win95-titlebar-btn">X</div>
+             </div>
+           </div>
+        )}
+        <div className={`${theme === 'light' ? 'win95-body relative' : ''}`}>
+          <div className={`absolute inset-y-0 left-0 flex items-center pointer-events-none ${theme === 'light' ? 'pl-6 pb-2' : 'pl-3'}`}>
+            <Search className={`h-4 w-4 ${theme === 'dark' ? 'text-neutral-500' : 'text-black'}`} />
+          </div>
+          <input
+            type="text"
+            placeholder="Search media by skill or title..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className={`w-full text-sm rounded-md pl-10 pr-4 py-3 focus:outline-none transition-colors ${theme === 'dark' ? 'bg-[#0a0a0a] border border-neutral-800 text-neutral-100 font-mono focus:ring-1 focus:ring-neutral-400' : 'bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
+          />
         </div>
-        <input
-          type="text"
-          placeholder="Search by skill or title..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full bg-neutral-100 dark:bg-[#0a0a0a] border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 font-mono text-sm rounded-md pl-10 pr-4 py-3 focus:outline-none focus:ring-1 focus:ring-neutral-400 transition-colors"
-        />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 pl-4">
         {filteredProjects.length > 0 ? filteredProjects.map((item, idx) => (
           <motion.div 
             key={item.id}
@@ -90,9 +114,10 @@ export default function Media() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: idx * 0.1 }}
-            className="group flex flex-col gap-4"
+            className={`group flex flex-col gap-4 relative ${theme === 'dark' ? '' : 'scrapbook-element polaroid'}`}
           >
-            <div className="relative aspect-[4/3] overflow-hidden bg-neutral-200 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 flex items-center justify-center">
+            {theme === 'light' && <div className="tape hidden sm:block"></div>}
+            <Link to={`/project/${item.id}`} className={`relative aspect-[4/3] overflow-hidden flex items-center justify-center cursor-pointer ${theme === 'dark' ? 'bg-neutral-900 border border-neutral-800' : 'bg-neutral-200 border-2 border-black shadow-[inset_2px_2px_0_rgba(0,0,0,0.5)]'}`}>
               <div className="absolute inset-0 bg-transparent dark:bg-black/20 group-hover:bg-transparent transition-colors z-10" />
               <img 
                 src={item.thumbnail} 
@@ -106,22 +131,28 @@ export default function Media() {
                   </div>
                 </div>
               ) : null}
-            </div>
+            </Link>
             
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <span className="text-xs font-mono font-semibold uppercase tracking-widest text-neutral-500">{item.category}</span>
-                <span className="w-1 h-1 bg-neutral-300 dark:bg-neutral-700 rounded-full" />
-                <span className="text-xs font-mono uppercase tracking-widest text-neutral-500">{item.period}</span>
+            <div className="flex flex-col">
+              <div className={`flex items-center gap-3 mb-2 uppercase tracking-widest ${theme === 'dark' ? 'text-neutral-500' : 'text-[#808080] font-sans font-bold text-[10px]'}`}>
+                <span>{item.category}</span>
+                <span className={`w-1 h-1 rounded-full ${theme === 'dark' ? 'bg-neutral-700' : 'bg-black'}`} />
+                <span>{item.period}</span>
               </div>
-              <h3 className="text-2xl font-casual font-medium text-neutral-800 dark:text-neutral-200 mb-1 group-hover:text-black dark:group-hover:text-white transition-colors">{item.title}</h3>
-              <p className="text-sm font-mono text-neutral-500 mb-3">{item.role}</p>
-              <p className="text-sm leading-relaxed text-neutral-600 dark:text-neutral-400 mb-4">{item.description}</p>
+              <Link to={`/project/${item.id}`} className={`transition-colors ${theme === 'dark' ? 'group-hover:text-white' : 'hover:bg-black hover:text-white w-fit px-1'}`}>
+                <h3 className={`text-2xl font-medium mb-1 ${theme === 'dark' ? 'font-casual text-neutral-200' : 'font-sans text-black font-bold'}`}>{item.title}</h3>
+              </Link>
+              <p className={`text-sm mb-3 ${theme === 'dark' ? 'font-mono text-neutral-500' : 'font-sans text-[#808080]'}`}>{item.role}</p>
+              <p className={`text-sm leading-relaxed mb-4 ${theme === 'dark' ? 'text-neutral-400' : 'text-black font-serif italic'}`}>{item.description}</p>
               
+              <Link to={`/project/${item.id}`} className={`mt-auto flex items-center gap-2 text-xs uppercase tracking-widest w-max mb-6 transition-colors ${theme === 'dark' ? 'font-mono text-neutral-500 hover:text-white' : 'font-sans text-black font-bold hover:!text-[#000080]'}`}>
+                 Read details <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+              </Link>
+
               <ul className="flex flex-wrap gap-2">
                 {item.tags.map(tag => (
                   <li key={tag}>
-                    <div className="px-2 py-1 bg-neutral-200 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-400 text-xs font-mono uppercase tracking-wider">
+                    <div className={`px-2 py-1 text-xs uppercase tracking-wider ${theme === 'dark' ? 'bg-neutral-900 text-neutral-400 font-mono' : 'border border-black bg-white text-black shadow-[2px_2px_0_#000] font-sans font-bold'}`}>
                       {tag}
                     </div>
                   </li>
@@ -130,7 +161,7 @@ export default function Media() {
             </div>
           </motion.div>
         )) : (
-          <div className="md:col-span-2 font-mono text-neutral-500 text-sm">No media matching "{searchQuery}"</div>
+          <div className={`md:col-span-2 font-mono text-sm ${theme === 'dark' ? 'text-neutral-500' : 'text-[#808080]'}`}>No media matching "{searchQuery}"</div>
         )}
       </div>
     </motion.div>

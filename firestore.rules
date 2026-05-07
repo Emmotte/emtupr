@@ -11,13 +11,19 @@ service cloud.firestore {
     function isSignedIn() { return request.auth != null; }
 
     function isValidProject(data) {
-      return data.keys().hasAll(['title', 'category', 'description', 'isPublic', 'createdAt']) &&
-             data.keys().size() <= 6 &&
-             data.title is string && data.title.size() > 0 && data.title.size() <= 100 &&
+      return data.keys().hasAll(['title', 'category', 'description', 'isPublic', 'createdAt', 'content', 'skills']) &&
+             data.keys().size() <= 11 &&
+             data.title is string && data.title.size() > 0 && data.title.size() <= 150 &&
              data.category is string && data.category.size() > 0 && data.category.size() <= 50 &&
              data.description is string && data.description.size() > 0 && data.description.size() <= 500 &&
+             data.content is string && data.content.size() <= 100000 &&
+             data.skills is list && data.skills.size() <= 20 &&
+             (data.skills.size() == 0 || data.skills[0] is string) &&
              data.isPublic is bool &&
-             data.link is string &&
+             data.get('link', '') is string &&
+             data.get('period', '') is string &&
+             data.get('role', '') is string &&
+             data.get('thumbnail', '') is string &&
              data.createdAt is timestamp;
     }
 
@@ -25,7 +31,7 @@ service cloud.firestore {
       allow get: if isValidId(projectId) && existing().isPublic == true;
       allow list: if resource.data.isPublic == true;
       allow create: if isSignedIn() && isValidId(projectId) && isValidProject(incoming()) && incoming().createdAt == request.time;
-      allow update: if isSignedIn() && isValidId(projectId) && isValidProject(incoming()) && incoming().diff(existing()).affectedKeys().hasOnly(['title', 'category', 'description', 'link', 'isPublic']) && incoming().createdAt == existing().createdAt;
+      allow update: if isSignedIn() && isValidId(projectId) && isValidProject(incoming()) && incoming().diff(existing()).affectedKeys().hasOnly(['title', 'category', 'description', 'content', 'skills', 'link', 'period', 'role', 'thumbnail', 'isPublic']) && incoming().createdAt == existing().createdAt;
       allow delete: if isSignedIn() && isValidId(projectId);
     }
   }
