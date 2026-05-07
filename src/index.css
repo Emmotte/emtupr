@@ -1,17 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Recursive:slnt,wght,CASL,CRSV,MONO@-15..0,300..1000,0..1,0..1,0..1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-mono: "Recursive", ui-monospace, SFMono-Regular, monospace;
 }
 
 body {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: #050505;
+  color: #ededed;
 }
 
 ::selection {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: #ededed;
+  color: #050505;
+}
+
+@layer utilities {
+  .font-casual {
+    font-family: 'Recursive', sans-serif;
+    font-variation-settings: "CASL" 1, "MONO" 0;
+  }
 }
