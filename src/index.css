@@ -214,23 +214,35 @@ html:not(.dark) .win95-body {
 
 /* Recursive/Vulfpeck-style dark theme */
 .dark.style-recursive .vulfpeck-container {
-  font-family: 'Recursive', monospace;
-  font-variation-settings: "CASL" 1, "MONO" 1;
+  font-family: 'Recursive', sans-serif;
+  font-variation-settings: "CASL" 1, "MONO" 0;
 }
 
 .dark.style-recursive .vulfpeck-heading {
+  font-family: 'Recursive', sans-serif;
+  font-variation-settings: "CASL" 1, "MONO" 0;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+
+.dark.style-recursive .vulfpeck-subheading {
   font-family: 'Recursive', monospace;
   font-variation-settings: "CASL" 1, "MONO" 1;
   font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 .dark.style-recursive .vulfpeck-text {
-  font-family: 'Recursive', monospace;
-  font-variation-settings: "CASL" 0.8, "MONO" 1;
+  font-family: 'Recursive', sans-serif;
+  font-variation-settings: "CASL" 0.6, "MONO" 0;
   letter-spacing: -0.01em;
   line-height: 1.6;
+}
+
+.dark.style-recursive .vulfpeck-mono {
+  font-family: 'Recursive', monospace;
+  font-variation-settings: "CASL" 0, "MONO" 1;
 }
 
 .dark.style-recursive .vulfpeck-border {
