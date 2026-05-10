@@ -2,6 +2,8 @@ import { useEffect, useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
 import { Link } from 'react-router-dom';
 import AsciiWave from '../components/AsciiWave';
+import TextType from '../components/TextType';
+import DecryptedText from '../components/DecryptedText';
 import { ArrowRight, Search, Mail, Send } from 'lucide-react';
 import { useTheme } from '../components/ThemeProvider';
 import { collection, query, where, orderBy, limit, onSnapshot } from 'firebase/firestore';
@@ -75,6 +77,19 @@ export default function Home() {
   const [recentProjects, setRecentProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  
+  const roles = ["Network Engineer", "Product Designer", "Audiovisual Artist"];
+  const [roleIndex, setRoleIndex] = useState(0);
+
+  useEffect(() => {
+    if (style !== '95') return;
+    
+    const interval = setInterval(() => {
+      setRoleIndex((prev) => (prev + 1) % roles.length);
+    }, 2000);
+    
+    return () => clearInterval(interval);
+  }, [style]);
   
   const formRef = useRef<HTMLFormElement>(null);
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
@@ -173,9 +188,6 @@ export default function Home() {
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
-        {theme === 'dark' && (
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] blob-shape opacity-20 pointer-events-none -z-10" />
-        )}
         <motion.div
           style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
           className="flex flex-col items-center justify-center pointer-events-none pt-12 relative"
@@ -199,10 +211,14 @@ export default function Home() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className={`text-5xl md:text-8xl font-bold tracking-tighter text-center transition-all duration-300 ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-heading text-white' : theme === 'dark' ? 'font-casual text-white' : 'scrapbook-cutout !text-black'}`}
+            className={`text-5xl md:text-8xl font-bold tracking-tighter text-center transition-all duration-300 ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-heading text-white' : theme === 'dark' ? 'font-display text-white' : 'scrapbook-cutout !text-black'}`}
             style={{ translateZ: 50 }}
           >
-            emtupr works.
+            {style === '95' ? (
+              <TextType text="emtupr works." delay={300} cursor={theme === 'light'} />
+            ) : (
+              "emtupr works."
+            )}
           </motion.h1>
           
           <motion.p
@@ -212,7 +228,19 @@ export default function Home() {
             className={`mt-6 text-lg md:text-xl max-w-2xl text-center transition-all duration-300 ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-subheading text-[#888]' : theme === 'dark' ? 'font-mono text-neutral-400' : 'scrapbook-cutout-alt text-lg'}`}
             style={{ translateZ: 30 }}
           >
-            Network Engineer / Product Designer / Audiovisual Artist
+            {style === '95' ? (
+              <div className="flex items-center justify-center min-h-[1.5em]">
+                <DecryptedText 
+                  key={roleIndex}
+                  text={roles[roleIndex]} 
+                  animateOn="view"
+                  revealDirection="center"
+                  speed={40}
+                />
+              </div>
+            ) : (
+              "Network Engineer / Product Designer / Audiovisual Artist"
+            )}
           </motion.p>
         </motion.div>
 
@@ -223,11 +251,11 @@ export default function Home() {
           className={`mt-12 flex flex-col sm:flex-row flex-wrap justify-center gap-6 text-sm tracking-wide pointer-events-auto ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-mono' : theme === 'dark' ? 'font-mono uppercase' : 'font-sans font-bold text-gray-800'}`}
         >
           <Link to="/engineering" className={`group flex items-center justify-center gap-3 px-8 py-5 transition-all w-full sm:w-[280px] ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-border vulfpeck-bg hover:bg-[#1a1a1a] text-white' : theme === 'dark' ? 'border border-neutral-700 bg-neutral-900/50 hover:bg-neutral-800 text-neutral-200 uppercase hover:pr-4' : 'bg-white text-gray-700 hover:text-black hover:border-gray-300 hover:shadow-md uppercase tracking-[0.2em] shadow-sm border border-gray-200 flex-col'}`}>
-            Engineering & Design
+            {style === '95' ? <DecryptedText text="Engineering & Design" /> : "Engineering & Design"}
             {theme === 'dark' && style !== 'recursive' && <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />}
           </Link>
           <Link to="/media" className={`group flex items-center justify-center gap-3 px-8 py-5 transition-all w-full sm:w-[280px] ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-border vulfpeck-bg hover:bg-[#1a1a1a] text-white' : theme === 'dark' ? 'border border-neutral-700 bg-neutral-900/50 hover:bg-neutral-800 text-neutral-200 uppercase hover:pr-4' : 'bg-white text-gray-700 hover:text-black hover:border-gray-300 hover:shadow-md uppercase tracking-[0.2em] shadow-sm border border-gray-200 flex-col'}`}>
-            Visual & Audio Media
+            {style === '95' ? <DecryptedText text="Visual & Audio Media" /> : "Visual & Audio Media"}
             {theme === 'dark' && style !== 'recursive' && <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />}
           </Link>
         </motion.div>
@@ -321,7 +349,9 @@ export default function Home() {
         )}
         <div className={`${theme === 'light' ? 'win95-body' : ''} flex flex-col gap-8 md:flex-row md:items-start justify-between`}>
           <div className="flex-none">
-            <h2 className={`text-3xl md:text-5xl font-bold tracking-tight mb-2 ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-heading text-white' : theme === 'dark' ? 'font-sans text-white leading-tight' : 'font-sans text-black font-bold'}`}>About Me</h2>
+            <h2 className={`text-3xl md:text-5xl font-bold tracking-tight mb-2 ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-heading text-white' : theme === 'dark' ? 'font-sans text-white leading-tight' : 'font-sans text-black font-bold'}`}>
+              {style === '95' ? <DecryptedText text="About Me" /> : "About Me"}
+            </h2>
             <p className={`text-xs uppercase tracking-widest font-bold ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-mono vulfpeck-muted' : theme === 'dark' ? 'font-sans text-neutral-500' : 'font-sans text-[#808080]'}`}>Background & Philosophy</p>
           </div>
           <motion.div
@@ -345,84 +375,89 @@ export default function Home() {
       </div>
 
       {/* Contact Form Section */}
-      <div className={`relative z-10 w-full max-w-4xl mx-auto mt-12 mb-24 ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-border vulfpeck-bg px-8 md:px-14 py-16' : theme === 'dark' ? 'rounded-none overflow-hidden px-8 md:px-14 py-16 bg-[#0a0a0a] border border-neutral-800 text-white shadow-lg' : 'win95-window backdrop-blur-sm'}`}>
-        {theme === 'dark' && (
-           <div className="absolute bottom-0 left-0 w-full h-48 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#d1d5db 2px, transparent 2px)', backgroundSize: '12px 12px' }} />
-        )}
-        {theme === 'light' && (
-          <div className="win95-titlebar mb-2">
-            <span>email_client.exe - Contact</span>
-            <div className="flex gap-1">
-              <div className="win95-titlebar-btn">_</div>
-              <div className="win95-titlebar-btn">□</div>
-              <div className="win95-titlebar-btn">X</div>
+      <div className="relative w-full max-w-4xl mx-auto mt-12 mb-24">
+        <div className={`relative z-10 w-full h-full ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-border vulfpeck-bg px-8 md:px-14 py-16' : theme === 'dark' ? 'rounded-none overflow-hidden px-8 md:px-14 py-16 bg-[#0a0a0a] border border-neutral-800 text-white shadow-lg' : 'win95-window backdrop-blur-sm'}`}>
+          {theme === 'light' && (
+            <div className="win95-titlebar mb-2">
+              <span>email_client.exe - Contact</span>
+              <div className="flex gap-1">
+                <div className="win95-titlebar-btn">_</div>
+                <div className="win95-titlebar-btn">□</div>
+                <div className="win95-titlebar-btn">X</div>
+              </div>
             </div>
+          )}
+          <div className={`${theme === 'light' ? 'win95-body' : ''} relative z-10 flex flex-col gap-8 md:flex-row md:items-start justify-between text-left`}>
+            <div className="flex-none md:w-1/3">
+              <h2 className={`text-4xl md:text-6xl font-black tracking-tighter mb-2 ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-heading text-white' : theme === 'dark' ? 'font-sans text-white leading-[0.9]' : 'font-sans text-black'}`}>
+                {style === '95' ? (
+                  <>Get in <br className="hidden md:block" /> <DecryptedText text="Touch" /></>
+                ) : (
+                  <>Get in <br className="hidden md:block" />Touch</>
+                )}
+              </h2>
+              <p className={`text-xs uppercase tracking-widest leading-relaxed mt-6 font-bold ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-text vulfpeck-muted' : theme === 'dark' ? 'font-sans text-neutral-400' : 'font-sans text-[#808080]'}`}>
+                Interested in collaborating or just want to say hi? Send me a message below.
+              </p>
+            </div>
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className={`flex-1 w-full ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-bg-light vulfpeck-border p-8' : theme === 'dark' ? 'bg-neutral-900/50 border border-neutral-800 p-8 shadow-sm' : 'p-4 bg-[#c0c0c0] border-2 border-b-white border-r-white border-t-black border-l-black shadow-[inset_1px_1px_0_#808080]'}`}
+            >
+              <form ref={formRef} onSubmit={sendEmail} className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1">
+                  <label className={`text-xs uppercase tracking-widest font-bold ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-mono vulfpeck-muted' : theme === 'dark' ? 'font-sans text-neutral-500' : 'font-sans text-black'}`}>Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    placeholder="Your Name"
+                    className={`w-full text-base px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-bg vulfpeck-border text-white vulfpeck-mono focus:border-[#666]' : theme === 'dark' ? 'rounded-none bg-neutral-900 border border-neutral-800 text-white font-sans focus:border-neutral-600' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label className={`text-xs uppercase tracking-widest font-bold ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-mono vulfpeck-muted' : theme === 'dark' ? 'font-sans text-neutral-500' : 'font-sans text-black'}`}>Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    placeholder="Your Email"
+                    className={`w-full text-base px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-bg vulfpeck-border text-white vulfpeck-mono focus:border-[#666]' : theme === 'dark' ? 'rounded-none bg-neutral-900 border border-neutral-800 text-white font-sans focus:border-neutral-600' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
+                  />
+                </div>
+                <input type="hidden" name="to_email" value="emmetttupper1@gmail.com" />
+                <div className="flex flex-col gap-1">
+                  <label className={`text-xs uppercase tracking-widest font-bold ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-mono vulfpeck-muted' : theme === 'dark' ? 'font-sans text-neutral-500' : 'font-sans text-black'}`}>Message</label>
+                  <textarea
+                    name="message"
+                    required
+                    rows={4}
+                    placeholder="Your message..."
+                    className={`w-full text-base px-4 py-3 focus:outline-none transition-colors resize-none ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-bg vulfpeck-border text-white vulfpeck-mono focus:border-[#666]' : theme === 'dark' ? 'rounded-none bg-neutral-900 border border-neutral-800 text-white font-sans focus:border-neutral-600' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={formStatus === 'sending' || formStatus === 'sent'}
+                  className={`mt-4 flex items-center justify-center gap-2 py-4 px-8 text-sm uppercase tracking-widest font-bold transition-all ${
+                    theme === 'dark' && style === 'recursive'
+                    ? 'bg-white text-black hover:bg-[#ccc] w-full disabled:opacity-50'
+                    : theme === 'dark'
+                    ? 'bg-white text-black hover:bg-neutral-200 rounded-none w-full disabled:opacity-50'
+                    : 'bg-[#c0c0c0] text-black border-2 border-b-black border-r-black border-t-white border-l-white hover:active:border-b-white hover:active:border-r-white hover:active:border-t-black hover:active:border-l-black hover:active:bg-[#d0d0d0] disabled:opacity-50'
+                  }`}
+                >
+                  {formStatus === 'idle' && <><Send className="w-4 h-4" /> Send Message</>}
+                  {formStatus === 'sending' && 'Sending...'}
+                  {formStatus === 'sent' && 'Message Sent!'}
+                  {formStatus === 'error' && 'Error. Try Again.'}
+                </button>
+              </form>
+            </motion.div>
           </div>
-        )}
-        <div className={`${theme === 'light' ? 'win95-body' : ''} relative z-10 flex flex-col gap-8 md:flex-row md:items-start justify-between`}>
-          <div className="flex-none md:w-1/3">
-            <h2 className={`text-4xl md:text-6xl font-black tracking-tighter mb-2 ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-heading text-white' : theme === 'dark' ? 'font-sans text-white leading-[0.9]' : 'font-sans text-black'}`}>Get in <br className="hidden md:block" />Touch</h2>
-            <p className={`text-xs uppercase tracking-widest leading-relaxed mt-6 font-bold ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-text vulfpeck-muted' : theme === 'dark' ? 'font-sans text-neutral-400' : 'font-sans text-[#808080]'}`}>
-              Interested in collaborating or just want to say hi? Send me a message below.
-            </p>
-          </div>
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className={`flex-1 w-full ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-bg-light vulfpeck-border p-8' : theme === 'dark' ? 'bg-neutral-900/50 border border-neutral-800 p-8 shadow-sm' : 'p-4 bg-[#c0c0c0] border-2 border-b-white border-r-white border-t-black border-l-black shadow-[inset_1px_1px_0_#808080]'}`}
-          >
-            <form ref={formRef} onSubmit={sendEmail} className="flex flex-col gap-4">
-              <div className="flex flex-col gap-1">
-                <label className={`text-xs uppercase tracking-widest font-bold ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-mono vulfpeck-muted' : theme === 'dark' ? 'font-sans text-neutral-500' : 'font-sans text-black'}`}>Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  required
-                  placeholder="Your Name"
-                  className={`w-full text-base px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-bg vulfpeck-border text-white vulfpeck-mono focus:border-[#666]' : theme === 'dark' ? 'rounded-none bg-neutral-900 border border-neutral-800 text-white font-sans focus:border-neutral-600' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label className={`text-xs uppercase tracking-widest font-bold ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-mono vulfpeck-muted' : theme === 'dark' ? 'font-sans text-neutral-500' : 'font-sans text-black'}`}>Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  placeholder="Your Email"
-                  className={`w-full text-base px-4 py-3 focus:outline-none transition-colors ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-bg vulfpeck-border text-white vulfpeck-mono focus:border-[#666]' : theme === 'dark' ? 'rounded-none bg-neutral-900 border border-neutral-800 text-white font-sans focus:border-neutral-600' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
-                />
-              </div>
-              <input type="hidden" name="to_email" value="emmetttupper1@gmail.com" />
-              <div className="flex flex-col gap-1">
-                <label className={`text-xs uppercase tracking-widest font-bold ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-mono vulfpeck-muted' : theme === 'dark' ? 'font-sans text-neutral-500' : 'font-sans text-black'}`}>Message</label>
-                <textarea
-                  name="message"
-                  required
-                  rows={4}
-                  placeholder="Your message..."
-                  className={`w-full text-base px-4 py-3 focus:outline-none transition-colors resize-none ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-bg vulfpeck-border text-white vulfpeck-mono focus:border-[#666]' : theme === 'dark' ? 'rounded-none bg-neutral-900 border border-neutral-800 text-white font-sans focus:border-neutral-600' : 'rounded-none bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black font-sans shadow-[inset_1px_1px_0px_0px_#808080]'}`}
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={formStatus === 'sending' || formStatus === 'sent'}
-                className={`mt-4 flex items-center justify-center gap-2 py-4 px-8 text-sm uppercase tracking-widest font-bold transition-all ${
-                  theme === 'dark' && style === 'recursive'
-                  ? 'bg-white text-black hover:bg-[#ccc] w-full disabled:opacity-50'
-                  : theme === 'dark'
-                  ? 'bg-white text-black hover:bg-neutral-200 rounded-none w-full disabled:opacity-50'
-                  : 'bg-[#c0c0c0] text-black border-2 border-b-black border-r-black border-t-white border-l-white hover:active:border-b-white hover:active:border-r-white hover:active:border-t-black hover:active:border-l-black hover:active:bg-[#d0d0d0] disabled:opacity-50'
-                }`}
-              >
-                {formStatus === 'idle' && <><Send className="w-4 h-4" /> Send Message</>}
-                {formStatus === 'sending' && 'Sending...'}
-                {formStatus === 'sent' && 'Message Sent!'}
-                {formStatus === 'error' && 'Error. Try Again.'}
-              </button>
-            </form>
-          </motion.div>
         </div>
       </div>
     </motion.div>

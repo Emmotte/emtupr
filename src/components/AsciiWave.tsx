@@ -49,7 +49,7 @@ const AsciiWave: React.FC<AsciiWaveProps> = ({
 
             ctx.clearRect(0, 0, width, height);
 
-            ctx.font = `${fontSize}px "Recursive", monospace`;
+            ctx.font = `${fontSize}px "Recursive Variable", monospace`;
             ctx.fillStyle = color;
 
             const columns = Math.ceil(width / columnWidth);

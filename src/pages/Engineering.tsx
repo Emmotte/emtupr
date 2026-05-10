@@ -4,6 +4,9 @@ import { Search, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../components/ThemeProvider';
 
+import TextType from '../components/TextType';
+import DecryptedText from '../components/DecryptedText';
+
 export const ENGINEERING_PROJECTS = [
   {
     id: 'network',
@@ -49,7 +52,7 @@ export const ENGINEERING_PROJECTS = [
 
 export default function Engineering() {
   const [searchQuery, setSearchQuery] = useState('');
-  const { theme } = useTheme();
+  const { theme, style } = useTheme();
 
   const filteredProjects = ENGINEERING_PROJECTS.filter(project => 
     searchQuery === '' ? true : 
@@ -63,19 +66,35 @@ export default function Engineering() {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5 }}
-      className={`max-w-4xl mx-auto w-full ${theme === 'dark' ? 'px-6 py-24' : 'px-8 py-28'}`}
+      className={`max-w-4xl mx-auto w-full relative ${theme === 'dark' ? 'px-6 py-24' : 'px-8 py-28'}`}
     >
-      <header className={`mb-12 ${theme === 'dark' ? '' : 'scrapbook-cutout'}`}>
-        <h1 className={`text-4xl md:text-6xl font-bold tracking-tighter mb-4 ${theme === 'dark' ? 'text-neutral-100' : 'text-black'}`}>Engineering & Design</h1>
+      <header className={`mb-12 relative z-10 ${theme === 'dark' ? '' : 'scrapbook-cutout'}`}>
+        <h1 className={`text-4xl md:text-6xl font-bold tracking-tighter mb-4 ${theme === 'dark' ? 'text-neutral-100' : 'text-black'}`}>
+          {style === '95' ? <DecryptedText text="Engineering & Design" /> : "Engineering & Design"}
+        </h1>
       </header>
       {theme === 'light' && (
         <p className="font-mono text-black text-sm md:text-base leading-relaxed max-w-2xl bg-white border-2 border-black p-4 shadow-[4px_4px_0_#000] rotate-1 mb-12 relative z-10 w-fit">
-          Bridging the gap between robust network infrastructure and intuitive product design. Building systems that are reliable at the core and elegant at the surface.
+          {style === '95' ? (
+            <DecryptedText 
+              text="Bridging the gap between robust network infrastructure and intuitive product design. Building systems that are reliable at the core and elegant at the surface." 
+              speed={30}
+            />
+          ) : (
+            "Bridging the gap between robust network infrastructure and intuitive product design. Building systems that are reliable at the core and elegant at the surface."
+          )}
         </p>
       )}
       {theme === 'dark' && (
         <p className="font-mono text-neutral-400 text-sm md:text-base leading-relaxed max-w-2xl mb-12">
-          Bridging the gap between robust network infrastructure and intuitive product design. Building systems that are reliable at the core and elegant at the surface.
+          {style === '95' ? (
+            <DecryptedText 
+              text="Bridging the gap between robust network infrastructure and intuitive product design. Building systems that are reliable at the core and elegant at the surface." 
+              speed={30}
+            />
+          ) : (
+            "Bridging the gap between robust network infrastructure and intuitive product design. Building systems that are reliable at the core and elegant at the surface."
+          )}
         </p>
       )}
 
@@ -121,7 +140,7 @@ export default function Engineering() {
             
             <div className="z-10 sm:col-span-6 flex flex-col">
               <Link to={`/project/${item.id}`} className={`inline-block transition-colors ${theme === 'dark' ? 'group-hover:text-white' : 'hover:bg-[#000080] hover:text-white w-fit px-1'}`}>
-                <h3 className={`font-medium leading-snug text-xl ${theme === 'dark' ? 'text-neutral-200 font-casual' : 'font-sans text-black font-bold'}`}>
+                <h3 className={`font-medium leading-snug text-xl ${theme === 'dark' ? 'text-neutral-200 font-display' : 'font-sans text-black font-bold'}`}>
                   {item.title}
                 </h3>
               </Link>

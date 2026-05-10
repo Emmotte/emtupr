@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Recursive:slnt,wght,CASL,CRSV,MONO@-15..0,300..1000,0..1,0..1,0..1&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Recursive:slnt,wght,CASL,MONO@-15..0,300..1000,0..1,0..1&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Recursive", sans-serif;
   --font-mono: "Recursive", ui-monospace, SFMono-Regular, monospace;
 }
 
@@ -14,14 +14,19 @@ body {
   color: #050505;
   transition: background-color 0.3s, color 0.3s;
   font-family: var(--font-sans);
+  font-variation-settings: "CASL" 0, "MONO" 0;
+}
+
+.dark {
+  --font-sans: "Recursive", sans-serif;
 }
 
 .dark body {
   background-color: #0a0a0a;
   background-image: none;
   color: #e5e5e5;
-  font-family: 'Recursive', monospace;
-  font-variation-settings: "CASL" 1, "MONO" 1;
+  font-family: var(--font-sans);
+  font-variation-settings: "CASL" 0.6, "MONO" 0;
 }
 
 /* 95-style dark theme override */
@@ -29,7 +34,26 @@ body {
   background-color: #050505;
   background-image: none;
   color: #ededed;
-  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-sans);
+  font-variation-settings: "CASL" 1, "MONO" 0.1;
+}
+
+.dark.style-recursive {
+  --font-sans: 'Recursive', sans-serif;
+  --font-mono: 'Recursive', monospace;
+}
+
+.dark.style-recursive body {
+  font-family: 'Recursive', sans-serif;
+  font-variation-settings: "CASL" 1, "MONO" 0, "wght" 400;
+}
+
+.dark * {
+  font-family: inherit;
+}
+
+.dark pre, .dark code, .dark .font-mono {
+  font-family: var(--font-mono) !important;
 }
 
 ::selection {
@@ -118,20 +142,24 @@ html:not(.dark) .tape {
 }
 
 @layer utilities {
+  .font-mono {
+    font-variation-settings: "MONO" 1, "CASL" 0;
+  }
+
   .font-casual {
     font-family: 'Recursive', sans-serif;
     font-variation-settings: "CASL" 1, "MONO" 0;
   }
 
   .font-vulfpeck {
-    font-family: 'Recursive', monospace;
-    font-variation-settings: "CASL" 1, "MONO" 1;
+    font-family: 'Recursive', sans-serif;
+    font-variation-settings: "CASL" 1, "MONO" 0;
     letter-spacing: -0.02em;
   }
 
   .dark .font-vulfpeck {
-    font-family: 'Recursive', monospace;
-    font-variation-settings: "CASL" 1, "MONO" 1;
+    font-family: 'Recursive', sans-serif;
+    font-variation-settings: "CASL" 1, "MONO" 0;
     letter-spacing: -0.01em;
   }
 }
@@ -214,35 +242,35 @@ html:not(.dark) .win95-body {
 
 /* Recursive/Vulfpeck-style dark theme */
 .dark.style-recursive .vulfpeck-container {
-  font-family: 'Recursive', sans-serif;
-  font-variation-settings: "CASL" 1, "MONO" 0;
+  font-family: 'Recursive', sans-serif !important;
+  font-variation-settings: "CASL" 1, "MONO" 0 !important;
 }
 
 .dark.style-recursive .vulfpeck-heading {
-  font-family: 'Recursive', sans-serif;
-  font-variation-settings: "CASL" 1, "MONO" 0;
+  font-family: 'Recursive', sans-serif !important;
+  font-variation-settings: "CASL" 1, "MONO" 0 !important;
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 0.95;
 }
 
 .dark.style-recursive .vulfpeck-subheading {
-  font-family: 'Recursive', monospace;
-  font-variation-settings: "CASL" 1, "MONO" 1;
+  font-family: 'Recursive', sans-serif !important;
+  font-variation-settings: "CASL" 1, "MONO" 0 !important;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
 
 .dark.style-recursive .vulfpeck-text {
-  font-family: 'Recursive', sans-serif;
-  font-variation-settings: "CASL" 0.6, "MONO" 0;
+  font-family: 'Recursive', sans-serif !important;
+  font-variation-settings: "CASL" 1, "MONO" 0 !important;
   letter-spacing: -0.01em;
   line-height: 1.6;
 }
 
 .dark.style-recursive .vulfpeck-mono {
-  font-family: 'Recursive', monospace;
-  font-variation-settings: "CASL" 0, "MONO" 1;
+  font-family: 'Recursive', monospace !important;
+  font-variation-settings: "CASL" 0, "MONO" 1 !important;
 }
 
 .dark.style-recursive .vulfpeck-border {

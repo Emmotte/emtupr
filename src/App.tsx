@@ -25,7 +25,7 @@ function AnimatedRoutes() {
 }
 
 function AppContent() {
-  const { style, setStyle } = useTheme();
+  const { theme, style, setStyle } = useTheme();
 
   return (
     <>
