@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
 import { Link } from 'react-router-dom';
-import AsciiWave from '../components/AsciiWave';
 import TextType from '../components/TextType';
 import DecryptedText from '../components/DecryptedText';
 import { ArrowRight, Search, Mail, Send } from 'lucide-react';
@@ -178,11 +177,6 @@ export default function Home() {
       transition={{ duration: 0.5 }}
       className="flex-1 flex flex-col relative"
     >
-      <div className="fixed inset-x-0 bottom-0 top-[60%] z-0 pointer-events-none opacity-50 block mix-blend-multiply dark:mix-blend-screen scale-y-150 transform origin-bottom">
-        <div className="absolute inset-0 bg-gradient-to-b from-white dark:from-[#050505] to-transparent z-10" />
-        <AsciiWave className="opacity-30 dark:opacity-40" color={theme === 'dark' ? '#ffffff' : '#000000'} speed={0.5} />
-      </div>
-
       <div 
         className={`relative z-10 min-h-[80vh] flex flex-col items-center justify-center px-6 perspective-[1200px] ${theme === 'light' ? 'pt-32' : ''}`}
         onMouseMove={handleMouseMove}
@@ -217,31 +211,27 @@ export default function Home() {
             {style === '95' ? (
               <TextType text="emtupr works." delay={300} cursor={theme === 'light'} />
             ) : (
-              "emtupr works."
+              <DecryptedText text="emtupr works." animateOn="view" speed={100} />
             )}
           </motion.h1>
           
-          <motion.p
+          <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             className={`mt-6 text-lg md:text-xl max-w-2xl text-center transition-all duration-300 ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-subheading text-[#888]' : theme === 'dark' ? 'font-mono text-neutral-400' : 'scrapbook-cutout-alt text-lg'}`}
             style={{ translateZ: 30 }}
           >
-            {style === '95' ? (
-              <div className="flex items-center justify-center min-h-[1.5em]">
-                <DecryptedText 
-                  key={roleIndex}
-                  text={roles[roleIndex]} 
-                  animateOn="view"
-                  revealDirection="center"
-                  speed={40}
-                />
-              </div>
-            ) : (
-              "Network Engineer / Product Designer / Audiovisual Artist"
-            )}
-          </motion.p>
+            <div className="flex items-center justify-center min-h-[1.5em]">
+              <DecryptedText 
+                key={style === '95' ? roleIndex : 'recursive'}
+                text={style === '95' ? roles[roleIndex] : "Network Engineer / Product Designer / Audiovisual Artist"} 
+                animateOn="view"
+                revealDirection="center"
+                speed={40}
+              />
+            </div>
+          </motion.div>
         </motion.div>
 
         <motion.div

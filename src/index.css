@@ -9,8 +9,7 @@
 
 body {
   background-color: #fdfbf7;
-  background-image: linear-gradient(#d1cfcb 1px, transparent 1px), linear-gradient(90deg, #d1cfcb 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-image: none;
   color: #050505;
   transition: background-color 0.3s, color 0.3s;
   font-family: var(--font-sans);
@@ -32,7 +31,6 @@ body {
 /* 95-style dark theme override */
 .dark.style-95 body {
   background-color: #050505;
-  background-image: none;
   color: #ededed;
   font-family: var(--font-sans);
   font-variation-settings: "CASL" 1, "MONO" 0.1;
@@ -102,6 +100,52 @@ body {
   67% {
     border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%;
   }
+}
+
+/* 95-style grid movement */
+@keyframes grid-move {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(24px, -24px, 0);
+  }
+}
+
+html.style-95 body {
+  overflow-x: hidden;
+  background-image: none !important;
+}
+
+html.style-95 body::before {
+  content: "";
+  position: fixed;
+  top: -24px;
+  right: -24px;
+  bottom: -24px;
+  left: -24px;
+  z-index: -1;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(17, 17, 17, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(17, 17, 17, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+  animation: grid-move 2s linear infinite;
+  will-change: transform;
+}
+
+html.style-recursive body::before {
+  display: none !important;
+}
+
+html.dark.style-95 body::before {
+  background-image: linear-gradient(rgba(51, 51, 51, 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(51, 51, 51, 0.4) 1px, transparent 1px);
+}
+
+/* Instant kill for recursive components in 95 mode to prevent flashes */
+html.style-95 .particle-background-canvas,
+html.style-95 .ascii-wave-wrapper {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
 }
 
 .dot-pattern {

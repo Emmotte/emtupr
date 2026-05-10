@@ -13,7 +13,7 @@ export default function ParticleBackground() {
 
     let animationFrameId: number;
     let particles: Particle[] = [];
-    const NUM_PARTICLES = 80;
+    const NUM_PARTICLES = 120;
     
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -160,7 +160,7 @@ export default function ParticleBackground() {
   return (
     <canvas 
       ref={canvasRef} 
-      className="fixed inset-0 pointer-events-none z-0 opacity-20 dark:mix-blend-screen mix-blend-multiply"
+      className="particle-background-canvas fixed inset-0 pointer-events-none z-0 opacity-40 dark:mix-blend-screen mix-blend-multiply"
     />
   );
 }
