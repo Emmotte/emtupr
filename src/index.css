@@ -213,36 +213,33 @@ html:not(.dark) .win95-body {
 }
 
 /* Recursive/Vulfpeck-style dark theme */
-.dark.style-recursive .vulfpeck-container {
-  font-family: 'Recursive', sans-serif;
-  font-variation-settings: "CASL" 1, "MONO" 0;
+.dark.style-recursive * {
+  font-family: 'Recursive', sans-serif !important;
+  font-variation-settings: "CASL" 0.5, "MONO" 0 !important;
+}
+
+.dark.style-recursive body {
+  background-color: #050505;
+  color: #e5e5e5;
 }
 
 .dark.style-recursive .vulfpeck-heading {
-  font-family: 'Recursive', sans-serif;
-  font-variation-settings: "CASL" 1, "MONO" 0;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 0.95;
+  font-variation-settings: "CASL" 1, "MONO" 0 !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.04em !important;
+  line-height: 0.95 !important;
 }
 
 .dark.style-recursive .vulfpeck-subheading {
-  font-family: 'Recursive', monospace;
-  font-variation-settings: "CASL" 1, "MONO" 1;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-variation-settings: "CASL" 1, "MONO" 1 !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
 }
 
-.dark.style-recursive .vulfpeck-text {
-  font-family: 'Recursive', sans-serif;
-  font-variation-settings: "CASL" 0.6, "MONO" 0;
-  letter-spacing: -0.01em;
-  line-height: 1.6;
-}
-
-.dark.style-recursive .vulfpeck-mono {
-  font-family: 'Recursive', monospace;
-  font-variation-settings: "CASL" 0, "MONO" 1;
+.dark.style-recursive .vulfpeck-mono,
+.dark.style-recursive code,
+.dark.style-recursive pre {
+  font-variation-settings: "CASL" 0, "MONO" 1 !important;
 }
 
 .dark.style-recursive .vulfpeck-border {
