@@ -1,11 +1,21 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Emmett's Portfolio</title>
     <!-- Favicon using SVG with monospace styling for the 'e' -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' font-family='Recursive, monospace' font-style='italic' fill='%23050505'>e</text></svg>">
+    <script>
+      (function() {
+        try {
+          const theme = localStorage.getItem('ui-theme') || 'dark';
+          const style = localStorage.getItem('style-preference') || 'recursive';
+          document.documentElement.classList.add(theme);
+          document.documentElement.classList.add('style-' + style);
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

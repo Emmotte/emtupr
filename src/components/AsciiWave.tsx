@@ -49,7 +49,7 @@ const AsciiWave: React.FC<AsciiWaveProps> = ({
 
             ctx.clearRect(0, 0, width, height);
 
-            ctx.font = `${fontSize}px "Recursive", monospace`;
+            ctx.font = `${fontSize}px "Recursive Variable", monospace`;
             ctx.fillStyle = color;
 
             const columns = Math.ceil(width / columnWidth);
@@ -57,45 +57,40 @@ const AsciiWave: React.FC<AsciiWaveProps> = ({
 
             // "Fire" Logic: Pure Vertical Ascent
             for (let x = 0; x < columns; x++) {
-                // FIXED GEOMETRY (No traveling waves!)
-                // Amplitude modulation only (Standing Wave)
-                // x * 0.1 gives the mountain shape.
-                const shapeBase = Math.sin(x * 0.05) * 0.6 + Math.cos(x * 0.1) * 0.4;
+                for (let y = 0; y < rows; y++) {
+                    const flowShiftX = time * 0.001 * speed;
+                    const flowShiftY = time * 0.0015 * speed;
 
-                // Breath: Global pulsing to make it feel alive
-                const breath = Math.sin(time * 0.002 * speed) * 0.1;
+                    // Organic 2D wave pattern
+                    const waveX = Math.sin((x * 0.1) + flowShiftX) * 0.5;
+                    const waveY = Math.cos((y * 0.1) - flowShiftY) * 0.5;
+                    const breath = Math.sin(time * 0.002 * speed) * 0.2;
+                    
+                    const charNoise = waveX + waveY + breath;
 
-                // Flicker: High frequency jitter that does NOT travel
-                const flicker = Math.sin(time * 0.008 * speed + x * 100) * 0.05;
+                    // Compute distance from center to add some vignette/focus
+                    const centerX = columns / 2;
+                    const centerY = rows / 2;
+                    const distFromCenter = Math.sqrt(Math.pow((x - centerX) / columns, 2) + Math.pow((y - centerY) / rows, 2));
 
-                // Height calculation
-                const noise = shapeBase + breath + flicker;
-                const columnHeightNormal = Math.max(0.15, (noise + 1) / 2 * 0.8 + 0.15);
-                const activeRows = Math.floor(columnHeightNormal * rows);
+                    // Normalize noise roughly to 0-1
+                    let normalizedNoise = (charNoise + 1) / 2;
 
-                for (let y = rows - 1; y > rows - activeRows; y--) {
-                    // PURE VERTICAL FLOW
-                    const flowShift = time * 0.005 * speed;
+                    // Fade out slightly towards edges
+                    const fade = Math.max(0.1, 1 - (distFromCenter * 1.5));
 
-                    // Independent column noise
-                    const charNoise = Math.sin((y * 0.2) - flowShift + x * 10);
+                    // Only draw chars where noise is somewhat high, generating a wave map
+                    if (normalizedNoise < 0.3) continue;
 
-                    // Top fade
-                    const distFromTop = (y - (rows - activeRows));
-                    const fade = Math.min(1, distFromTop / 6);
-
-                    // Char selection
-                    const normalizedNoise = (charNoise + 1) / 2;
                     const charIndex = Math.floor(normalizedNoise * chars.length);
                     const char = chars[Math.min(charIndex, chars.length - 1)];
 
                     const posX = x * columnWidth;
                     const posY = y * fontSize;
 
-                    // Glitch dropouts (holes in the flame)
-                    if (Math.random() > 0.95) continue;
+                    if (Math.random() > 0.98) continue; // slight glitch
 
-                    ctx.globalAlpha = fade;
+                    ctx.globalAlpha = fade * ((normalizedNoise - 0.3) / 0.7);
                     ctx.fillText(char, posX, posY);
                 }
             }

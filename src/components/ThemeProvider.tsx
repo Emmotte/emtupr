@@ -16,7 +16,7 @@ interface ThemeProviderState {
 
 const initialState: ThemeProviderState = {
   theme: 'dark',
-  style: '95',
+  style: 'recursive',
   toggleTheme: () => null,
   setStyle: () => null,
 };
@@ -31,7 +31,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
   const [style, setStyleState] = useState<Style>(() => {
     const saved = localStorage.getItem('style-preference') as Style;
-    return saved || '95';
+    return saved || 'recursive';
   });
 
   useEffect(() => {

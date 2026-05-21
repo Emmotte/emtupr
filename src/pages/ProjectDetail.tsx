@@ -6,6 +6,8 @@ import ReactMarkdown from 'react-markdown';
 import { format } from 'date-fns';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
+import { useTheme } from '../components/ThemeProvider';
+import DecryptedText from '../components/DecryptedText';
 import { ENGINEERING_PROJECTS } from './Engineering';
 import { MEDIA_PROJECTS } from './Media';
 
@@ -27,6 +29,7 @@ export default function ProjectDetail() {
   const { id } = useParams<{ id: string }>();
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
+  const { theme, style } = useTheme();
 
   useEffect(() => {
     async function fetchProject() {
@@ -75,7 +78,7 @@ export default function ProjectDetail() {
   if (!project) {
     return (
       <div className="max-w-3xl mx-auto px-6 py-24 w-full">
-        <h1 className="text-3xl font-bold mb-4 font-casual text-neutral-900 dark:text-neutral-100">Project not found</h1>
+        <h1 className="text-3xl font-bold mb-4 font-display text-neutral-900 dark:text-neutral-100">Project not found</h1>
         <Link to="/" className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors flex items-center gap-2 font-mono text-sm uppercase tracking-widest">
           <ArrowLeft className="w-4 h-4" /> Back to Home
         </Link>
@@ -116,12 +119,12 @@ export default function ProjectDetail() {
           )}
         </div>
 
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-6 text-neutral-900 dark:text-neutral-100 font-casual">
-          {project.title}
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-6 text-neutral-900 dark:text-neutral-100 font-display">
+          {style === '95' ? <DecryptedText text={project.title} /> : project.title}
         </h1>
 
         <p className="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 font-mono leading-relaxed mb-6">
-          {project.description}
+          {style === '95' ? <DecryptedText text={project.description} speed={30} /> : project.description}
         </p>
 
         {project.role && (
@@ -145,7 +148,7 @@ export default function ProjectDetail() {
         </div>
       )}
 
-      <div className="prose prose-neutral dark:prose-invert max-w-none font-sans prose-headings:font-casual prose-a:text-neutral-900 dark:prose-a:text-white prose-a:underline-offset-4 hover:prose-a:text-neutral-600 dark:hover:prose-a:text-neutral-400 transition-colors">
+      <div className="prose prose-neutral dark:prose-invert max-w-none font-sans dark:prose-headings:font-display prose-headings:font-bold prose-a:text-neutral-900 dark:prose-a:text-white prose-a:underline-offset-4 hover:prose-a:text-neutral-600 dark:hover:prose-a:text-neutral-400 transition-colors">
         <div className="markdown-body">
           <ReactMarkdown>{project.content || '*No detailed content provided for this project.*'}</ReactMarkdown>
         </div>

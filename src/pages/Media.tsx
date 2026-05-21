@@ -4,6 +4,9 @@ import { Play, Search, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../components/ThemeProvider';
 
+import TextType from '../components/TextType';
+import DecryptedText from '../components/DecryptedText';
+
 export const MEDIA_PROJECTS = [
   {
     id: 'digital-junk',
@@ -53,7 +56,7 @@ export const MEDIA_PROJECTS = [
 
 export default function Media() {
   const [searchQuery, setSearchQuery] = useState('');
-  const { theme } = useTheme();
+  const { theme, style } = useTheme();
 
   const filteredProjects = MEDIA_PROJECTS.filter(project => 
     searchQuery === '' ? true : 
@@ -67,19 +70,35 @@ export default function Media() {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5 }}
-      className={`max-w-6xl mx-auto w-full ${theme === 'dark' ? 'px-6 py-24' : 'px-8 py-28'}`}
+      className={`max-w-6xl mx-auto w-full relative ${theme === 'dark' ? 'px-6 py-24' : 'px-8 py-28'}`}
     >
-      <header className={`mb-12 ${theme === 'dark' ? '' : 'scrapbook-cutout'}`}>
-        <h1 className={`text-4xl md:text-6xl font-bold tracking-tighter mb-4 ${theme === 'dark' ? 'text-neutral-100' : 'text-black'}`}>Visual & Audio Media</h1>
+      <header className={`mb-12 relative z-10 ${theme === 'dark' ? '' : 'scrapbook-cutout'}`}>
+        <h1 className={`text-4xl md:text-6xl font-bold tracking-tighter mb-4 ${theme === 'dark' ? 'text-neutral-100' : 'text-black'}`}>
+           {style === '95' ? <DecryptedText text="Visual & Audio Media" /> : "Visual & Audio Media"}
+        </h1>
       </header>
       {theme === 'light' && (
         <p className="font-mono text-black text-sm md:text-base leading-relaxed max-w-2xl bg-white border-2 border-black p-4 shadow-[4px_4px_0_#000] -rotate-1 mb-12 relative z-10 w-fit">
-          A collection of creative works spanning videography, photography, and audio production. Exploring the intersection of digital artifacts and human emotion.
+          {style === '95' ? (
+            <DecryptedText 
+              text="A collection of creative works spanning videography, photography, and audio production. Exploring the intersection of digital artifacts and human emotion." 
+              speed={30}
+            />
+          ) : (
+            "A collection of creative works spanning videography, photography, and audio production. Exploring the intersection of digital artifacts and human emotion."
+          )}
         </p>
       )}
       {theme === 'dark' && (
         <p className="font-mono text-neutral-400 text-sm md:text-base leading-relaxed max-w-2xl mb-12">
-          A collection of creative works spanning videography, photography, and audio production. Exploring the intersection of digital artifacts and human emotion.
+          {style === '95' ? (
+            <DecryptedText 
+              text="A collection of creative works spanning videography, photography, and audio production. Exploring the intersection of digital artifacts and human emotion." 
+              speed={30}
+            />
+          ) : (
+            "A collection of creative works spanning videography, photography, and audio production. Exploring the intersection of digital artifacts and human emotion."
+          )}
         </p>
       )}
 
@@ -140,7 +159,7 @@ export default function Media() {
                 <span>{item.period}</span>
               </div>
               <Link to={`/project/${item.id}`} className={`transition-colors ${theme === 'dark' ? 'group-hover:text-white' : 'hover:bg-black hover:text-white w-fit px-1'}`}>
-                <h3 className={`text-2xl font-medium mb-1 ${theme === 'dark' ? 'font-casual text-neutral-200' : 'font-sans text-black font-bold'}`}>{item.title}</h3>
+                <h3 className={`text-2xl font-medium mb-1 ${theme === 'dark' ? 'font-display text-neutral-200' : 'font-sans text-black font-bold'}`}>{item.title}</h3>
               </Link>
               <p className={`text-sm mb-3 ${theme === 'dark' ? 'font-mono text-neutral-500' : 'font-sans text-[#808080]'}`}>{item.role}</p>
               <p className={`text-sm leading-relaxed mb-4 ${theme === 'dark' ? 'text-neutral-400' : 'text-black font-serif italic'}`}>{item.description}</p>
