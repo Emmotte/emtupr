@@ -18,7 +18,7 @@ export default function Physical() {
   const filteredProjects = PHYSICAL_PROJECTS.filter(project => 
 // ...
         <h1 className={`text-4xl md:text-6xl font-bold tracking-tighter mb-4 ${theme === 'dark' ? 'text-neutral-100' : 'text-black'}`}>
-          {style === '95' ? <DecryptedText text="Physical & Design" /> : "Physical & Design"}
+          {style === '95' ? <DecryptedText text="Physical &amp; Design" /> : "Physical &amp; Design"}
         </h1>
       </header>
       {theme === 'light' && (
