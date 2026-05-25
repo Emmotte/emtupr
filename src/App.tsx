@@ -1,15 +1,20 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence } from 'motion/react';
-import Navigation from './components/Navigation';
-import Home from './pages/Home';
-import Physical from './pages/Physical';
-import Digital from './pages/Digital';
-import Admin from './pages/Admin';
-import ProjectDetail from './pages/ProjectDetail';
-import { ThemeProvider, useTheme } from './components/ThemeProvider';
-import StyleSelector from './components/StyleSelector';
-import AsciiWave from './components/AsciiWave';
+// ... (existing imports)
+
+function RedirectHandler() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const redirect = sessionStorage.redirect;
+    if (redirect) {
+      delete sessionStorage.redirect;
+      const path = redirect.replace(window.location.origin, '');
+      navigate(path);
+    }
+  }, [navigate]);
+  return null;
+}
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -18,10 +23,7 @@ function AnimatedRoutes() {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
-        <Route path="/physical" element={<Physical />} />
-        <Route path="/digital" element={<Digital />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/project/:id" element={<ProjectDetail />} />
+        {/* ... */}
       </Routes>
     </AnimatePresence>
   );
@@ -32,8 +34,10 @@ function AppContent() {
 
   return (
     <>
+      <RedirectHandler />
       <StyleSelector onStyleSelect={setStyle} />
-      {style === 'recursive' && (
+      {/* ... */}
+
         <div className="ascii-wave-wrapper fixed inset-0 z-0 pointer-events-none opacity-40">
           <AsciiWave className="opacity-30 dark:opacity-40 relative z-0" color={theme === 'dark' ? '#ffffff' : '#000000'} speed={0.4} />
         </div>
