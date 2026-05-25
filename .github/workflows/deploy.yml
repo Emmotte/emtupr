@@ -1,0 +1,29 @@
+name: Vite Github Pages Deploy
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy_to_pages.outputs.github_pages_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout @.bun\install\cache\@aws-sdk\core@3.973.26@@@1\dist-es\submodules\httpAuthSchemes\aws_sdk\AwsSdkSigV4ASigner.js
+
+      - name: Vite Github Pages Deployer
+        uses: skywarth/vite-github-pages-deployer @AppData\Local\Serato\Library\master.sqlite
+        id: deploy_to_pages
