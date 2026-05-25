@@ -16,23 +16,29 @@ export default function Physical() {
   const { theme, style } = useTheme();
 
   const filteredProjects = PHYSICAL_PROJECTS.filter(project => 
-// ...
+    searchQuery === '' ? true : 
+    project.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    project.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.5 }}
+      className={`max-w-4xl mx-auto w-full relative ${theme === 'dark' ? 'px-6 py-24' : 'px-8 py-28'}`}
+    >
+      <header className={`mb-12 relative z-10 ${theme === 'dark' ? '' : 'scrapbook-cutout'}`}>
         <h1 className={`text-4xl md:text-6xl font-bold tracking-tighter mb-4 ${theme === 'dark' ? 'text-neutral-100' : 'text-black'}`}>
-          {style === '95' ? <DecryptedText text="Physical &amp; Design" /> : "Physical &amp; Design"}
+          Physical and Design
         </h1>
       </header>
-      {theme === 'light' && (
-        <p className="font-mono text-black text-sm md:text-base leading-relaxed max-w-2xl bg-white border-2 border-black p-4 shadow-[4px_4px_0_#000] rotate-1 mb-12 relative z-10 w-fit">
-          {style === '95' ? (
-            <DecryptedText 
-              text="Bridging the gap between robust network infrastructure and intuitive product design. Building systems that are reliable at the core and elegant at the surface." 
-              speed={30}
-            />
-          ) : (
-            "Bridging the gap between robust network infrastructure and intuitive product design. Building systems that are reliable at the core and elegant at the surface."
-          )}
-        </p>
-      )}
+  {theme === 'light' && (
+    <p className="font-mono text-black text-sm md:text-base leading-relaxed max-w-2xl bg-white border-2 border-black p-4 shadow-[4px_4px_0_#000] rotate-1 mb-12 relative z-10 w-fit">
+      Bridging the gap between robust network infrastructure and intuitive product design. Building systems that are reliable at the core and elegant at the surface.
+    </p>
+  )}
       {theme === 'dark' && (
         <p className="font-mono text-neutral-400 text-sm md:text-base leading-relaxed max-w-2xl mb-12">
           {style === '95' ? (
