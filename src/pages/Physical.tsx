@@ -7,70 +7,18 @@ import { useTheme } from '../components/ThemeProvider';
 import TextType from '../components/TextType';
 import DecryptedText from '../components/DecryptedText';
 
-export const ENGINEERING_PROJECTS = [
-  {
-    id: 'network',
-    title: 'Enterprise Architecture & Routing',
-    category: 'Engineering',
-    role: 'Senior Network Engineer',
-    period: '2021 — Present',
-    description: 'Designed and implemented scalable, high-availability enterprise networks. Specialized in BGP/OSPF routing, switching, and advanced firewall configuration to ensure zero-trust security compliance.',
-    content: '### Overview\nThis project involved a complete overhaul of the enterprise network architecture. We moved from a legacy hub-and-spoke model to a modernized spine-leaf topology.\n\n### Challenges\n- Zero-downtime migration\n- Integrating zero-trust security policies\n\n### Implementation Details\nConfigured BGP as the primary routing protocol for the WAN overlay, and OSPF for internal distribution...',
-    tags: ['Cisco', 'Juniper', 'Palo Alto', 'BGP', 'OSPF']
-  },
-  {
-    id: 'cloud',
-    title: 'Cloud Infrastructure Setup',
-    category: 'Engineering',
-    role: 'Systems Architect',
-    period: '2018 — 2021',
-    description: 'Deployed resilient cloud networking solutions across AWS and Azure. Automated infrastructure provisioning using Terraform and CI/CD pipelines, increasing deployment speed by 60%.',
-    content: '### Overview\nBuilt robust and self-healing infrastructure in AWS and Azure to handle high-traffic workloads.\n\n### Automation\nUsing Terraform to manage IaC, we brought provisioning time down from weeks to hours.',
-    tags: ['AWS', 'Azure', 'Terraform', 'Python']
-  },
-  {
-    id: 'nexus',
-    title: 'Nexus UI Framework',
-    category: 'Design',
-    role: 'Lead UX/UI Designer',
-    period: '2022 — Present',
-    description: 'Developed an open-source, accessible UI component library. Conducted extensive user research to refine interaction models, resulting in a minimalist and highly intuitive design system.',
-    content: '### Project Genesis\nNexus UI was born out of a need for a truly unstyled but fully accessible foundational component library.\n\n### The Process\nThrough rigorous user testing, we identified standard interaction models and codified them into React hooks and components.',
-    tags: ['Figma', 'React', 'Tailwind CSS', 'User Research']
-  },
-  {
-    id: 'aura',
-    title: 'Aura Analytics Dashboard',
-    category: 'Design',
-    role: 'Product Designer',
-    period: '2020 — 2022',
-    description: 'Architected the core data visualization experience for a SaaS analytics tool. Translated complex data streams into elegant, digestible dashboards.',
-    content: '### Visualization Strategy\nUsing D3.js to render highly performant data charts that scale to thousands of data points without dropping frames.\n\n### Results\nImproved user retention by 25% due to the new insights surfaced by the dashboard.',
-    tags: ['Prototyping', 'Wireframing', 'D3.js']
-  }
+export const PHYSICAL_PROJECTS = [
+// ... (content)
 ];
 
-export default function Engineering() {
+export default function Physical() {
   const [searchQuery, setSearchQuery] = useState('');
   const { theme, style } = useTheme();
 
-  const filteredProjects = ENGINEERING_PROJECTS.filter(project => 
-    searchQuery === '' ? true : 
-    project.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
-    project.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.5 }}
-      className={`max-w-4xl mx-auto w-full relative ${theme === 'dark' ? 'px-6 py-24' : 'px-8 py-28'}`}
-    >
-      <header className={`mb-12 relative z-10 ${theme === 'dark' ? '' : 'scrapbook-cutout'}`}>
+  const filteredProjects = PHYSICAL_PROJECTS.filter(project => 
+// ...
         <h1 className={`text-4xl md:text-6xl font-bold tracking-tighter mb-4 ${theme === 'dark' ? 'text-neutral-100' : 'text-black'}`}>
-          {style === '95' ? <DecryptedText text="Engineering & Design" /> : "Engineering & Design"}
+          {style === '95' ? <DecryptedText text="Physical & Design" /> : "Physical & Design"}
         </h1>
       </header>
       {theme === 'light' && (

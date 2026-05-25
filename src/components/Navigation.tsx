@@ -9,8 +9,8 @@ export default function Navigation() {
 
   const links = [
     { name: 'Home', path: '/' },
-    { name: 'Engineering', path: '/engineering' },
-    { name: 'Media', path: '/media' },
+    { name: 'Physical', path: '/physical' },
+    { name: 'Digital', path: '/digital' },
   ];
 
   return (

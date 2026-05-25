@@ -3,8 +3,9 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'motion/react';
 import Navigation from './components/Navigation';
 import Home from './pages/Home';
-import Engineering from './pages/Engineering';
-import Media from './pages/Media';
+import Physical from './pages/Physical';
+import Digital from './pages/Digital';
+import Admin from './pages/Admin';
 import ProjectDetail from './pages/ProjectDetail';
 import { ThemeProvider, useTheme } from './components/ThemeProvider';
 import StyleSelector from './components/StyleSelector';
@@ -17,8 +18,9 @@ function AnimatedRoutes() {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
-        <Route path="/engineering" element={<Engineering />} />
-        <Route path="/media" element={<Media />} />
+        <Route path="/physical" element={<Physical />} />
+        <Route path="/digital" element={<Digital />} />
+        <Route path="/admin" element={<Admin />} />
         <Route path="/project/:id" element={<ProjectDetail />} />
       </Routes>
     </AnimatePresence>

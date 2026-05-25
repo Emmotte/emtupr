@@ -7,8 +7,8 @@ import { ArrowRight, Search, Mail, Send } from 'lucide-react';
 import { useTheme } from '../components/ThemeProvider';
 import { collection, query, where, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { db, auth } from '../firebase';
-import { ENGINEERING_PROJECTS } from './Engineering';
-import { MEDIA_PROJECTS } from './Media';
+import { PHYSICAL_PROJECTS } from './Physical';
+import { DIGITAL_PROJECTS } from './Digital';
 
 enum OperationType {
   CREATE = 'create',
@@ -121,7 +121,7 @@ export default function Home() {
     }
   };
 
-  const allLocalProjects = [...ENGINEERING_PROJECTS, ...MEDIA_PROJECTS];
+  const allLocalProjects = [...PHYSICAL_PROJECTS, ...DIGITAL_PROJECTS];
   const filteredProjects = allLocalProjects.filter(project => 
     searchQuery === '' ? false : 
     (project.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
@@ -240,12 +240,12 @@ export default function Home() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className={`mt-12 flex flex-col sm:flex-row flex-wrap justify-center gap-6 text-sm tracking-wide pointer-events-auto ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-mono' : theme === 'dark' ? 'font-mono uppercase' : 'font-sans font-bold text-gray-800'}`}
         >
-          <Link to="/engineering" className={`group flex items-center justify-center gap-3 px-8 py-5 transition-all w-full sm:w-[280px] ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-border vulfpeck-bg hover:bg-[#1a1a1a] text-white' : theme === 'dark' ? 'border border-neutral-700 bg-neutral-900/50 hover:bg-neutral-800 text-neutral-200 uppercase hover:pr-4' : 'bg-white text-gray-700 hover:text-black hover:border-gray-300 hover:shadow-md uppercase tracking-[0.2em] shadow-sm border border-gray-200 flex-col'}`}>
-            {style === '95' ? <DecryptedText text="Engineering & Design" /> : "Engineering & Design"}
+          <Link to="/physical" className={`group flex items-center justify-center gap-3 px-8 py-5 transition-all w-full sm:w-[280px] ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-border vulfpeck-bg hover:bg-[#1a1a1a] text-white' : theme === 'dark' ? 'border border-neutral-700 bg-neutral-900/50 hover:bg-neutral-800 text-neutral-200 uppercase hover:pr-4' : 'bg-white text-gray-700 hover:text-black hover:border-gray-300 hover:shadow-md uppercase tracking-[0.2em] shadow-sm border border-gray-200 flex-col'}`}>
+            {style === '95' ? <DecryptedText text="Physical & Design" /> : "Physical & Design"}
             {theme === 'dark' && style !== 'recursive' && <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />}
           </Link>
-          <Link to="/media" className={`group flex items-center justify-center gap-3 px-8 py-5 transition-all w-full sm:w-[280px] ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-border vulfpeck-bg hover:bg-[#1a1a1a] text-white' : theme === 'dark' ? 'border border-neutral-700 bg-neutral-900/50 hover:bg-neutral-800 text-neutral-200 uppercase hover:pr-4' : 'bg-white text-gray-700 hover:text-black hover:border-gray-300 hover:shadow-md uppercase tracking-[0.2em] shadow-sm border border-gray-200 flex-col'}`}>
-            {style === '95' ? <DecryptedText text="Visual & Audio Media" /> : "Visual & Audio Media"}
+          <Link to="/digital" className={`group flex items-center justify-center gap-3 px-8 py-5 transition-all w-full sm:w-[280px] ${theme === 'dark' && style === 'recursive' ? 'vulfpeck-border vulfpeck-bg hover:bg-[#1a1a1a] text-white' : theme === 'dark' ? 'border border-neutral-700 bg-neutral-900/50 hover:bg-neutral-800 text-neutral-200 uppercase hover:pr-4' : 'bg-white text-gray-700 hover:text-black hover:border-gray-300 hover:shadow-md uppercase tracking-[0.2em] shadow-sm border border-gray-200 flex-col'}`}>
+            {style === '95' ? <DecryptedText text="Digital Media" /> : "Digital Media"}
             {theme === 'dark' && style !== 'recursive' && <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />}
           </Link>
         </motion.div>

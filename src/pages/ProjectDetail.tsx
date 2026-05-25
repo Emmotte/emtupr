@@ -8,8 +8,8 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useTheme } from '../components/ThemeProvider';
 import DecryptedText from '../components/DecryptedText';
-import { ENGINEERING_PROJECTS } from './Engineering';
-import { MEDIA_PROJECTS } from './Media';
+import { PHYSICAL_PROJECTS } from './Physical';
+import { DIGITAL_PROJECTS } from './Digital';
 
 interface Project {
   title: string;
@@ -46,16 +46,16 @@ export default function ProjectDetail() {
       }
       
       // Fallback to local data
-      const localEngineering = ENGINEERING_PROJECTS.find(p => p.id === id);
-      if (localEngineering) {
-        setProject(localEngineering);
+      const localPhysical = PHYSICAL_PROJECTS.find(p => p.id === id);
+      if (localPhysical) {
+        setProject(localPhysical);
         setLoading(false);
         return;
       }
 
-      const localMedia = MEDIA_PROJECTS.find(p => p.id === id);
-      if (localMedia) {
-        setProject(localMedia);
+      const localDigital = DIGITAL_PROJECTS.find(p => p.id === id);
+      if (localDigital) {
+        setProject(localDigital);
         setLoading(false);
         return;
       }
@@ -98,8 +98,8 @@ export default function ProjectDetail() {
       className="max-w-3xl mx-auto px-6 py-24 w-full scrapbook-element polaroid mt-12 mb-12 relative"
     >
       <div className="tape hidden dark:hidden sm:block"></div>
-      <Link to={ project.category === 'Engineering' || project.category === 'Design' ? '/engineering' : '/media' } className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors flex items-center gap-2 mb-12 font-mono text-xs uppercase tracking-widest">
-        <ArrowLeft className="w-4 h-4" /> Back to {project.category}
+      <Link to={ project.category === 'Engineering' || project.category === 'Design' ? '/physical' : '/digital' } className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors flex items-center gap-2 mb-12 font-mono text-xs uppercase tracking-widest">
+        <ArrowLeft className="w-4 h-4" /> Back to {project.category === 'Engineering' || project.category === 'Design' ? 'Physical' : 'Digital'}
       </Link>
 
       <header className="mb-12">

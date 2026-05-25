@@ -7,7 +7,7 @@ import { useTheme } from '../components/ThemeProvider';
 import TextType from '../components/TextType';
 import DecryptedText from '../components/DecryptedText';
 
-export const MEDIA_PROJECTS = [
+export const DIGITAL_PROJECTS = [
   {
     id: 'digital-junk',
     category: 'Video',
@@ -54,11 +54,11 @@ export const MEDIA_PROJECTS = [
   }
 ];
 
-export default function Media() {
+export default function Digital() {
   const [searchQuery, setSearchQuery] = useState('');
   const { theme, style } = useTheme();
 
-  const filteredProjects = MEDIA_PROJECTS.filter(project => 
+  const filteredProjects = DIGITAL_PROJECTS.filter(project => 
     searchQuery === '' ? true : 
     project.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
     project.title.toLowerCase().includes(searchQuery.toLowerCase())
