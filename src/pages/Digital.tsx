@@ -9,6 +9,17 @@ import DecryptedText from '../components/DecryptedText';
 
 export const DIGITAL_PROJECTS = [
   {
+    id: 'wet-knee',
+    category: 'Photography',
+    title: 'Wet Knee Photoshoot',
+    role: 'Photographer',
+    period: '2026',
+    description: 'A stylistic series focusing on raw textures and outdoor exploration.',
+    content: '### Overview\nA candid series exploring urban textures.',
+    tags: ['Canon T2i', 'Lightroom'],
+    thumbnail: '/IMG_7902-2.jpg'
+  },
+  {
     id: 'digital-junk',
     category: 'Video',
     title: 'Digital Junk Collective',
