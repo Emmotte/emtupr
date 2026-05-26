@@ -36,8 +36,7 @@ function AppContent() {
     <>
       <RedirectHandler />
       <StyleSelector onStyleSelect={setStyle} />
-      {/* ... */}
-
+      {style === 'recursive' && (
         <div className="ascii-wave-wrapper fixed inset-0 z-0 pointer-events-none opacity-40">
           <AsciiWave className="opacity-30 dark:opacity-40 relative z-0" color={theme === 'dark' ? '#ffffff' : '#000000'} speed={0.4} />
         </div>
