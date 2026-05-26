@@ -1,4 +1,4 @@
-module emtupr
+module github.com/Emmotte/emtupr
 
 go 1.22
 

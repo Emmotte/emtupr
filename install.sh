@@ -1,14 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-GO_VERSION="1.22.6"
-INSTALL_ROOT="${HOME}/.local"
-GO_DIR="${INSTALL_ROOT}/go"
-GO_BIN="${GO_DIR}/bin"
-GOBIN="${HOME}/.local/bin"
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "${SCRIPT_DIR}"
+REPO="Emmotte/emtupr"
+BIN_NAME="emtupr"
+INSTALL_DIR="${HOME}/.local/bin"
 
 add_path_line() {
   local target_file="$1"
@@ -31,40 +26,43 @@ ensure_path() {
   fi
 }
 
-if ! command -v go >/dev/null 2>&1; then
-  OS="$(uname -s)"
-  ARCH="$(uname -m)"
+OS="$(uname -s)"
+ARCH="$(uname -m)"
 
-  case "${OS}" in
-    Darwin) GOOS="darwin" ;;
-    Linux) GOOS="linux" ;;
-    *) echo "Unsupported OS: ${OS}" >&2; exit 1 ;;
-  esac
+case "${OS}" in
+  Darwin) GOOS="darwin" ;;
+  Linux) GOOS="linux" ;;
+  *) echo "Unsupported OS: ${OS}" >&2; exit 1 ;;
+esac
 
-  case "${ARCH}" in
-    x86_64|amd64) GOARCH="amd64" ;;
-    arm64|aarch64) GOARCH="arm64" ;;
-    *) echo "Unsupported architecture: ${ARCH}" >&2; exit 1 ;;
-  esac
+case "${ARCH}" in
+  x86_64|amd64) GOARCH="amd64" ;;
+  arm64|aarch64) GOARCH="arm64" ;;
+  *) echo "Unsupported architecture: ${ARCH}" >&2; exit 1 ;;
+esac
 
-  URL="https://go.dev/dl/go${GO_VERSION}.${GOOS}-${GOARCH}.tar.gz"
-  TMP_FILE="$(mktemp -t go.tgz.XXXXXX)"
-
-  curl -fsSL "${URL}" -o "${TMP_FILE}"
-  rm -rf "${GO_DIR}"
-  mkdir -p "${INSTALL_ROOT}"
-  tar -C "${INSTALL_ROOT}" -xzf "${TMP_FILE}"
-  rm -f "${TMP_FILE}"
+TAG="$(curl -fsSL "https://api.github.com/repos/${REPO}/releases/latest" | grep -m1 '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')"
+if [[ -z "${TAG}" ]]; then
+  echo "Unable to determine latest release tag." >&2
+  exit 1
 fi
 
-ensure_path "${GO_BIN}"
+ARCHIVE="${BIN_NAME}_${TAG}_${GOOS}_${GOARCH}.tar.gz"
+URL="https://github.com/${REPO}/releases/download/${TAG}/${ARCHIVE}"
 
-if ! command -v gum >/dev/null 2>&1; then
-  mkdir -p "${GOBIN}"
-  export GOBIN
-  go install github.com/charmbracelet/gum@latest
-  ensure_path "${GOBIN}"
-fi
+TMP_DIR="$(mktemp -d -t emtupr.XXXXXX)"
+cleanup() {
+  rm -rf "${TMP_DIR}"
+}
+trap cleanup EXIT
 
-go mod tidy
-go run .
+curl -fsSL "${URL}" -o "${TMP_DIR}/${ARCHIVE}"
+tar -xzf "${TMP_DIR}/${ARCHIVE}" -C "${TMP_DIR}"
+
+mkdir -p "${INSTALL_DIR}"
+install -m 0755 "${TMP_DIR}/${BIN_NAME}" "${INSTALL_DIR}/${BIN_NAME}"
+
+ensure_path "${INSTALL_DIR}"
+
+echo "Installed ${BIN_NAME} to ${INSTALL_DIR}"
+"${INSTALL_DIR}/${BIN_NAME}"

@@ -1,11 +1,8 @@
 $ErrorActionPreference = 'Stop'
 
-$GoVersion = '1.22.6'
-$InstallRoot = Join-Path $env:USERPROFILE 'tools'
-$GoDir = Join-Path $InstallRoot 'go'
-$GoBin = Join-Path $GoDir 'bin'
-$GoExe = Join-Path $GoBin 'go.exe'
-$UserBin = Join-Path $env:USERPROFILE 'go\bin'
+$Repo = 'Emmotte/emtupr'
+$BinName = 'emtupr'
+$InstallDir = Join-Path $env:USERPROFILE '.local\bin'
 
 function Add-ToUserPath {
   param([string]$PathToAdd)
@@ -18,32 +15,34 @@ function Add-ToUserPath {
   }
 }
 
-$existingGo = Get-Command go -ErrorAction SilentlyContinue
-if ($existingGo) {
-  $GoExe = $existingGo.Source
-} elseif (-not (Test-Path $GoExe)) {
-  $zip = Join-Path $env:TEMP "go$GoVersion.zip"
-  Invoke-WebRequest -Uri "https://go.dev/dl/go$GoVersion.windows-amd64.zip" -OutFile $zip
-  if (Test-Path $GoDir) { Remove-Item $GoDir -Recurse -Force }
-  Expand-Archive -Path $zip -DestinationPath $InstallRoot -Force
+$release = Invoke-RestMethod -Uri "https://api.github.com/repos/$Repo/releases/latest"
+$tag = $release.tag_name
+if (-not $tag) {
+  Write-Error 'Unable to determine latest release tag.'
+  exit 1
 }
 
-Add-ToUserPath $GoBin
-
-& $GoExe version | Out-Null
-
-if (-not (Test-Path $UserBin)) {
-  New-Item -ItemType Directory -Force -Path $UserBin | Out-Null
+$assetName = "${BinName}_${tag}_windows_amd64.zip"
+$asset = $release.assets | Where-Object { $_.name -eq $assetName } | Select-Object -First 1
+if (-not $asset) {
+  Write-Error "Release asset not found: $assetName"
+  exit 1
 }
 
-if (-not (Get-Command gum -ErrorAction SilentlyContinue)) {
-  $env:GOBIN = $UserBin
-  & $GoExe install github.com/charmbracelet/gum@latest
+$tempDir = Join-Path $env:TEMP ("emtupr-" + [guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Force -Path $tempDir | Out-Null
+$zipPath = Join-Path $tempDir $assetName
+Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $zipPath
+Expand-Archive -Path $zipPath -DestinationPath $tempDir -Force
+
+if (-not (Test-Path $InstallDir)) {
+  New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
 }
 
-Add-ToUserPath $UserBin
+Copy-Item -Path (Join-Path $tempDir "$BinName.exe") -Destination (Join-Path $InstallDir "$BinName.exe") -Force
+Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue
 
-$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-Set-Location $scriptDir
-& $GoExe mod tidy
-& $GoExe run .
+Add-ToUserPath $InstallDir
+
+Write-Host "Installed $BinName to $InstallDir"
+& (Join-Path $InstallDir "$BinName.exe")

@@ -8,21 +8,24 @@ This branch converts the project into a terminal UI built with **Bubble Tea**, w
 
 ## Run the TUI
 
-**Prerequisites:** Go 1.22+
-
-### One-step install (recommended)
+### One-step install (no Go required)
 
 Windows (PowerShell):
-`.\install.ps1`
+`powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr -useb https://raw.githubusercontent.com/Emmotte/emtupr/tui/install.ps1 | iex"`
 
 macOS/Linux (bash):
-`bash install.sh`
+`curl -fsSL https://raw.githubusercontent.com/Emmotte/emtupr/tui/install.sh | bash`
 
-Windows one-liner (git clone + run):
-`powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr -useb https://raw.githubusercontent.com/Emmotte/emtupr/tui/bootstrap.ps1 | iex"`
+These installers download the latest **GitHub Release**. Create one by tagging:
+`git tag tui-v0.1.0 && git push origin tui-v0.1.0`
 
-macOS/Linux one-liner (git clone + run):
-`curl -fsSL https://raw.githubusercontent.com/Emmotte/emtupr/tui/bootstrap.sh | bash`
+### One-command run (requires Go installed)
+
+`go run github.com/Emmotte/emtupr@tui`
+
+### From source
+
+**Prerequisites:** Go 1.22+
 
 1. Run:
    `go run .`
