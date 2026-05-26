@@ -52,8 +52,10 @@ type projectItem struct {
 	project Project
 }
 
-func (p projectItem) Title() string       { return p.project.Title }
-func (p projectItem) Description() string { return fmt.Sprintf("%s · %s", p.project.Category, p.project.Period) }
+func (p projectItem) Title() string { return p.project.Title }
+func (p projectItem) Description() string {
+	return fmt.Sprintf("%s · %s", p.project.Category, p.project.Period)
+}
 func (p projectItem) FilterValue() string { return p.project.Title }
 
 type model struct {
@@ -69,9 +71,16 @@ type model struct {
 }
 
 var (
-	titleStyle  = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("212"))
-	helpStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("241"))
-	headerStyle = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("81"))
+	accentColor   = lipgloss.Color("205")
+	accentAlt     = lipgloss.Color("81")
+	mutedColor    = lipgloss.Color("241")
+	borderColor   = lipgloss.Color("238")
+	headerStyle   = lipgloss.NewStyle().Bold(true).Foreground(accentColor)
+	subtleStyle   = lipgloss.NewStyle().Foreground(mutedColor)
+	badgeStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("235")).Background(accentAlt).Bold(true).Padding(0, 1)
+	panelStyle    = lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(borderColor).Padding(0, 1)
+	keyStyle      = lipgloss.NewStyle().Foreground(accentColor).Bold(true)
+	selectedStyle = lipgloss.NewStyle().Foreground(accentColor).Bold(true)
 )
 
 func initialModel(start section) model {
@@ -83,14 +92,16 @@ func initialModel(start section) model {
 		menuItem{title: "Contact", desc: "Get in touch", section: sectionContact},
 	}
 
-	menu := list.New(menuItems, list.NewDefaultDelegate(), 0, 0)
-	menu.Title = "emtupr"
+	menu := list.New(menuItems, newMenuDelegate(), 0, 0)
+	menu.Title = ""
+	menu.SetShowTitle(false)
 	menu.SetShowStatusBar(false)
 	menu.SetFilteringEnabled(false)
 	menu.SetShowHelp(false)
 
-	projectList := list.New([]list.Item{}, list.NewDefaultDelegate(), 0, 0)
-	projectList.Title = "Projects"
+	projectList := list.New([]list.Item{}, newProjectDelegate(), 0, 0)
+	projectList.Title = ""
+	projectList.SetShowTitle(false)
 	projectList.SetShowStatusBar(false)
 	projectList.SetFilteringEnabled(true)
 	projectList.SetShowHelp(false)
@@ -147,10 +158,12 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.WindowSizeMsg:
 		m.width = msg.Width
 		m.height = msg.Height
-		m.menu.SetSize(max(20, msg.Width-4), max(8, msg.Height-8))
-		m.projectList.SetSize(max(20, msg.Width-4), max(8, msg.Height-8))
-		m.viewport.Width = max(20, msg.Width-4)
-		m.viewport.Height = max(8, msg.Height-8)
+		contentWidth := max(20, msg.Width-6)
+		contentHeight := max(8, msg.Height-6)
+		m.menu.SetSize(contentWidth, contentHeight)
+		m.projectList.SetSize(contentWidth, contentHeight)
+		m.viewport.Width = contentWidth
+		m.viewport.Height = contentHeight
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "ctrl+c", "q":
@@ -202,19 +215,21 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
+	header := renderHeader(m.sectionTitle())
+	footer := renderFooter(m.section)
 	switch m.section {
 	case sectionMenu:
-		return layoutView(titleStyle.Render("emtupr TUI"), m.menu.View(), helpStyle.Render("enter: open • q: quit"))
+		return layoutView(header, panelStyle.Render(m.menu.View()), footer)
 	case sectionDigital, sectionPhysical:
 		listView := m.projectList.View()
 		if len(m.projectList.Items()) == 0 {
-			listView = helpStyle.Render("No projects available yet.")
+			listView = subtleStyle.Render("No projects available yet.")
 		}
-		return layoutView(headerStyle.Render(m.projectLabel), listView, helpStyle.Render("enter: details • /: filter • esc: back • q: quit"))
+		return layoutView(header, panelStyle.Render(listView), footer)
 	case sectionDetail:
-		return layoutView(headerStyle.Render(m.contentTitle), m.viewport.View(), helpStyle.Render("esc: back • q: quit"))
+		return layoutView(header, panelStyle.Render(m.viewport.View()), footer)
 	case sectionHome, sectionAbout, sectionContact:
-		return layoutView(headerStyle.Render(m.contentTitle), m.viewport.View(), helpStyle.Render("esc: back • q: quit"))
+		return layoutView(header, panelStyle.Render(m.viewport.View()), footer)
 	default:
 		return ""
 	}
@@ -222,6 +237,75 @@ func (m model) View() string {
 
 func layoutView(title, body, footer string) string {
 	return lipgloss.JoinVertical(lipgloss.Left, title, "", body, "", footer)
+}
+
+func renderHeader(title string) string {
+	return lipgloss.JoinHorizontal(
+		lipgloss.Left,
+		badgeStyle.Render("emtupr"),
+		" ",
+		headerStyle.Render(title),
+	)
+}
+
+func renderFooter(current section) string {
+	var hint string
+	switch current {
+	case sectionMenu:
+		hint = "enter open • q quit"
+	case sectionDigital, sectionPhysical:
+		hint = "enter details • / filter • esc back • q quit"
+	default:
+		hint = "esc back • q quit"
+	}
+	parts := strings.Split(hint, " • ")
+	for i, part := range parts {
+		segments := strings.SplitN(part, " ", 2)
+		if len(segments) == 2 {
+			parts[i] = keyStyle.Render(segments[0]) + " " + subtleStyle.Render(segments[1])
+		} else {
+			parts[i] = subtleStyle.Render(part)
+		}
+	}
+	return subtleStyle.Render("keys: ") + strings.Join(parts, subtleStyle.Render("  "))
+}
+
+func (m model) sectionTitle() string {
+	switch m.section {
+	case sectionMenu:
+		return "Portfolio Menu"
+	case sectionDigital:
+		return "Digital Projects"
+	case sectionPhysical:
+		return "Physical & Design"
+	case sectionDetail:
+		if m.current != nil {
+			return m.current.Title
+		}
+		return m.contentTitle
+	default:
+		return m.contentTitle
+	}
+}
+
+func newMenuDelegate() list.DefaultDelegate {
+	delegate := list.NewDefaultDelegate()
+	delegate.ShowDescription = true
+	delegate.Styles.NormalTitle = delegate.Styles.NormalTitle.Foreground(mutedColor)
+	delegate.Styles.NormalDesc = delegate.Styles.NormalDesc.Foreground(mutedColor)
+	delegate.Styles.SelectedTitle = selectedStyle
+	delegate.Styles.SelectedDesc = selectedStyle.Copy().Foreground(mutedColor)
+	return delegate
+}
+
+func newProjectDelegate() list.DefaultDelegate {
+	delegate := list.NewDefaultDelegate()
+	delegate.ShowDescription = true
+	delegate.Styles.NormalTitle = delegate.Styles.NormalTitle.Foreground(lipgloss.Color("252"))
+	delegate.Styles.NormalDesc = delegate.Styles.NormalDesc.Foreground(mutedColor)
+	delegate.Styles.SelectedTitle = selectedStyle
+	delegate.Styles.SelectedDesc = selectedStyle.Copy().Foreground(mutedColor)
+	return delegate
 }
 
 func homeContent() string {
