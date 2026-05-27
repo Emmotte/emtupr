@@ -38,11 +38,6 @@ type Project struct {
 	Link        string
 }
 
-type card struct {
-	title string
-	body  string
-}
-
 type menuItem struct {
 	title   string
 	desc    string
@@ -67,7 +62,6 @@ type model struct {
 	width        int
 	height       int
 	section      section
-	theme        themeMode
 	menu         list.Model
 	projectList  list.Model
 	viewport     viewport.Model
@@ -76,33 +70,17 @@ type model struct {
 	projectLabel string
 }
 
-type themeMode string
-
-const (
-	themeDark  themeMode = "dark"
-	themeLight themeMode = "light"
-)
-
-type palette struct {
-	ink         lipgloss.Color
-	muted       lipgloss.Color
-	accent      lipgloss.Color
-	accentSoft  lipgloss.Color
-	border      lipgloss.Color
-	panel       lipgloss.Color
-	panelSoft   lipgloss.Color
-	chipBg      lipgloss.Color
-	chipFg      lipgloss.Color
-	statusBg    lipgloss.Color
-	statusFg    lipgloss.Color
-}
-
 var (
-	titleStyle    = lipgloss.NewStyle().Bold(true)
-	headerStyle   = lipgloss.NewStyle().Bold(true)
-	subtleStyle   = lipgloss.NewStyle()
-	keyStyle      = lipgloss.NewStyle().Bold(true)
-	selectedStyle = lipgloss.NewStyle().Bold(true)
+	accentColor   = lipgloss.Color("205")
+	accentAlt     = lipgloss.Color("81")
+	mutedColor    = lipgloss.Color("241")
+	borderColor   = lipgloss.Color("238")
+	headerStyle   = lipgloss.NewStyle().Bold(true).Foreground(accentColor)
+	subtleStyle   = lipgloss.NewStyle().Foreground(mutedColor)
+	badgeStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("235")).Background(accentAlt).Bold(true).Padding(0, 1)
+	panelStyle    = lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(borderColor).Padding(0, 1)
+	keyStyle      = lipgloss.NewStyle().Foreground(accentColor).Bold(true)
+	selectedStyle = lipgloss.NewStyle().Foreground(accentColor).Bold(true)
 )
 
 func initialModel(start section) model {
@@ -178,7 +156,14 @@ func (m model) Init() tea.Cmd {
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
-		m.handleResize(msg.Width, msg.Height)
+		m.width = msg.Width
+		m.height = msg.Height
+		contentWidth := max(20, msg.Width-6)
+		contentHeight := max(8, msg.Height-6)
+		m.menu.SetSize(contentWidth, contentHeight)
+		m.projectList.SetSize(contentWidth, contentHeight)
+		m.viewport.Width = contentWidth
+		m.viewport.Height = contentHeight
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "ctrl+c", "q":
@@ -230,239 +215,77 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
-	if m.width == 0 || m.height == 0 {
-		return ""
-	}
-
-	contentWidth, contentHeight, listHeight, leftWidth, rightWidth, cardHeight := layoutBounds(m.width, m.height)
-	header := renderHeaderLine()
-	tabs := renderTabs(m.section)
-	footer := renderStatusBar(m.width, m.section)
-
-	var body string
+	header := renderHeader(m.sectionTitle())
+	footer := renderFooter(m.section)
 	switch m.section {
 	case sectionMenu:
-		body = m.renderMenuView(listHeight, leftWidth, rightWidth, contentWidth, cardHeight)
+		return layoutView(header, panelStyle.Render(m.menu.View()), footer)
 	case sectionDigital, sectionPhysical:
-		body = m.renderProjectView(listHeight, leftWidth, rightWidth, contentWidth, cardHeight)
-	case sectionDetail, sectionHome, sectionAbout, sectionContact:
-		body = m.renderContentView(contentWidth, contentHeight)
+		listView := m.projectList.View()
+		if len(m.projectList.Items()) == 0 {
+			listView = subtleStyle.Render("No projects available yet.")
+		}
+		return layoutView(header, panelStyle.Render(listView), footer)
+	case sectionDetail:
+		return layoutView(header, panelStyle.Render(m.viewport.View()), footer)
+	case sectionHome, sectionAbout, sectionContact:
+		return layoutView(header, panelStyle.Render(m.viewport.View()), footer)
+	default:
+		return ""
 	}
-
-	return lipgloss.JoinVertical(lipgloss.Left, header, tabs, body, footer)
 }
 
 func layoutView(title, body, footer string) string {
 	return lipgloss.JoinVertical(lipgloss.Left, title, "", body, "", footer)
 }
 
-func (m *model) handleResize(width, height int) {
-	m.width = width
-	m.height = height
-
-	contentWidth, contentHeight, listHeight, leftWidth, _, _ := layoutBounds(width, height)
-	listWidth := max(20, leftWidth-6)
-
-	m.menu.SetSize(listWidth, max(6, listHeight-4))
-	m.projectList.SetSize(listWidth, max(6, listHeight-4))
-	m.viewport.Width = max(20, contentWidth-6)
-	m.viewport.Height = max(8, contentHeight-4)
-}
-
-func layoutBounds(width, height int) (contentWidth, contentHeight, listHeight, leftWidth, rightWidth, cardHeight int) {
-	contentWidth = max(60, width-4)
-	contentHeight = max(18, height-6)
-	cardHeight = 8
-	listHeight = max(10, contentHeight-cardHeight-1)
-	leftWidth = max(26, contentWidth/2)
-	rightWidth = max(26, contentWidth-leftWidth-2)
-	return
-}
-
-func renderHeaderLine() string {
+func renderHeader(title string) string {
 	return lipgloss.JoinHorizontal(
 		lipgloss.Left,
-		titleStyle.Render("~ /emtupr"),
+		badgeStyle.Render("emtupr"),
+		" ",
+		headerStyle.Render(title),
 	)
 }
 
-func renderTabs(current section) string {
-	tabs := []struct {
-		label   string
-		section section
-	}{
-		{"Menu", sectionMenu},
-		{"Home", sectionHome},
-		{"Digital", sectionDigital},
-		{"Physical", sectionPhysical},
-		{"About", sectionAbout},
-		{"Contact", sectionContact},
-	}
-
-	rendered := make([]string, 0, len(tabs))
-	for _, tab := range tabs {
-		if tab.section == current {
-			rendered = append(rendered, tabActive.Render(tab.label))
-		} else {
-			rendered = append(rendered, tabStyle.Render(tab.label))
-		}
-	}
-	return lipgloss.JoinHorizontal(lipgloss.Left, rendered...)
-}
-
-func renderStatusBar(width int, current section) string {
-	left := statusLeft.Render("STATUS  Ready")
-	right := statusRight.Render(strings.ToUpper(sectionLabel(current)))
-	gap := width - lipgloss.Width(left) - lipgloss.Width(right)
-	if gap < 1 {
-		return lipgloss.JoinHorizontal(lipgloss.Left, left, right)
-	}
-	spacer := lipgloss.NewStyle().Width(gap).Render(" ")
-	return lipgloss.JoinHorizontal(lipgloss.Left, left, spacer, right)
-}
-
-func (m model) renderMenuView(listHeight, leftWidth, rightWidth, contentWidth, cardHeight int) string {
-	menuPanel := panelStyle.Copy().Width(leftWidth).Height(listHeight).Render(
-		lipgloss.JoinVertical(lipgloss.Left,
-			panelTitle.Render("Portfolio Menu"),
-			"",
-			m.menu.View(),
-		),
-	)
-
-	detailPanel := panelStyle.Copy().Width(rightWidth).Height(listHeight).Render(renderMenuDetail(m.menu.SelectedItem()))
-
-	topRow := lipgloss.JoinHorizontal(lipgloss.Top, menuPanel, " ", detailPanel)
-	cards := renderCards(contentWidth, cardHeight, cardsForSection(sectionMenu))
-	return lipgloss.JoinVertical(lipgloss.Left, topRow, "", cards)
-}
-
-func (m model) renderProjectView(listHeight, leftWidth, rightWidth, contentWidth, cardHeight int) string {
-	listView := m.projectList.View()
-	if len(m.projectList.Items()) == 0 {
-		listView = subtleStyle.Render("No projects available yet.")
-	}
-	listPanel := panelStyle.Copy().Width(leftWidth).Height(listHeight).Render(
-		lipgloss.JoinVertical(lipgloss.Left,
-			panelTitle.Render(sectionLabel(m.section)),
-			"",
-			listView,
-		),
-	)
-
-	detailPanel := panelStyle.Copy().Width(rightWidth).Height(listHeight).Render(renderProjectDetail(m.projectList.SelectedItem()))
-	topRow := lipgloss.JoinHorizontal(lipgloss.Top, listPanel, " ", detailPanel)
-	cards := renderCards(contentWidth, cardHeight, cardsForSection(m.section))
-	return lipgloss.JoinVertical(lipgloss.Left, topRow, "", cards)
-}
-
-func (m model) renderContentView(contentWidth, contentHeight int) string {
-	m.viewport.Width = max(20, contentWidth-6)
-	m.viewport.Height = max(8, contentHeight-2)
-	contentPanel := panelStyle.Copy().Width(contentWidth).Height(contentHeight).Render(
-		lipgloss.JoinVertical(lipgloss.Left,
-			panelTitle.Render(sectionLabel(m.section)),
-			"",
-			m.viewport.View(),
-		),
-	)
-	return contentPanel
-}
-
-func renderMenuDetail(item list.Item) string {
-	selected, ok := item.(menuItem)
-	if !ok {
-		return subtleStyle.Render("Select a section to view details.")
-	}
-	return lipgloss.JoinVertical(
-		lipgloss.Left,
-		headerStyle.Render(selected.title),
-		"",
-		selected.desc,
-		"",
-		subtleStyle.Render("Press enter to open this section."),
-	)
-}
-
-func renderProjectDetail(item list.Item) string {
-	selected, ok := item.(projectItem)
-	if !ok {
-		return subtleStyle.Render("Pick a project to preview its details.")
-	}
-	project := selected.project
-	lines := []string{
-		headerStyle.Render(project.Title),
-		subtleStyle.Render(fmt.Sprintf("%s · %s", project.Category, project.Period)),
-		"",
-		project.Description,
-	}
-	if project.Role != "" {
-		lines = append(lines, "", subtleStyle.Render("Role: "+project.Role))
-	}
-	if len(project.Tags) > 0 {
-		lines = append(lines, "", subtleStyle.Render("Tags: "+strings.Join(project.Tags, ", ")))
-	}
-	lines = append(lines, "", subtleStyle.Render("Press enter for full details."))
-	return lipgloss.JoinVertical(lipgloss.Left, lines...)
-}
-
-func cardsForSection(current section) []card {
+func renderFooter(current section) string {
+	var hint string
 	switch current {
 	case sectionMenu:
-		return []card{
-			{title: "Digital", body: "Video, audio, and photography work."},
-			{title: "Physical", body: "Infrastructure and product design."},
-			{title: "Contact", body: "Send a note or collaboration idea."},
-		}
+		hint = "enter open • q quit"
 	case sectionDigital, sectionPhysical:
-		return []card{
-			{title: "Filter", body: "Press / to search by skill or title."},
-			{title: "Navigate", body: "Use ↑/↓ to move between projects."},
-			{title: "Details", body: "Press enter to open a full brief."},
-		}
+		hint = "enter details • / filter • esc back • q quit"
 	default:
-		return []card{
-			{title: "Back", body: "Press esc to return to the menu."},
-			{title: "Theme", body: "Terminal colors adapt automatically."},
-			{title: "Tips", body: "Use q to quit anytime."},
+		hint = "esc back • q quit"
+	}
+	parts := strings.Split(hint, " • ")
+	for i, part := range parts {
+		segments := strings.SplitN(part, " ", 2)
+		if len(segments) == 2 {
+			parts[i] = keyStyle.Render(segments[0]) + " " + subtleStyle.Render(segments[1])
+		} else {
+			parts[i] = subtleStyle.Render(part)
 		}
 	}
+	return subtleStyle.Render("keys: ") + strings.Join(parts, subtleStyle.Render("  "))
 }
 
-func renderCards(width, height int, cards []card) string {
-	if len(cards) == 0 {
-		return ""
-	}
-	gap := 2
-	cardWidth := max(18, (width-(gap*(len(cards)-1)))/len(cards))
-	rendered := make([]string, 0, len(cards))
-	for _, c := range cards {
-		content := lipgloss.JoinVertical(lipgloss.Left, panelTitle.Render(c.title), "", subtleStyle.Render(c.body))
-		rendered = append(rendered, cardStyle.Copy().Width(cardWidth).Height(height).Render(content))
-	}
-	return lipgloss.JoinHorizontal(lipgloss.Top, rendered...)
-}
-
-func sectionLabel(current section) string {
-	switch current {
+func (m model) sectionTitle() string {
+	switch m.section {
 	case sectionMenu:
 		return "Portfolio Menu"
-	case sectionHome:
-		return "Home"
 	case sectionDigital:
-		return "Digital"
+		return "Digital Projects"
 	case sectionPhysical:
-		return "Physical"
+		return "Physical & Design"
 	case sectionDetail:
-		if current == sectionDetail {
-			return "Project Detail"
+		if m.current != nil {
+			return m.current.Title
 		}
-	case sectionAbout:
-		return "About"
-	case sectionContact:
-		return "Contact"
+		return m.contentTitle
+	default:
+		return m.contentTitle
 	}
-	return "emtupr"
 }
 
 func newMenuDelegate() list.DefaultDelegate {
