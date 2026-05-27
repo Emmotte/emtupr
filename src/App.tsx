@@ -1,7 +1,15 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence } from 'motion/react';
-// ... (existing imports)
+import Home from './pages/Home';
+import Digital from './pages/Digital';
+import Physical from './pages/Physical';
+import ProjectDetail from './pages/ProjectDetail';
+import Admin from './pages/Admin';
+import AsciiWave from './components/AsciiWave';
+import Navigation from './components/Navigation';
+import StyleSelector from './components/StyleSelector';
+import { ThemeProvider, useTheme } from './components/ThemeProvider';
 
 function RedirectHandler() {
   const navigate = useNavigate();
@@ -23,7 +31,10 @@ function AnimatedRoutes() {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
-        {/* ... */}
+        <Route path="/digital" element={<Digital />} />
+        <Route path="/physical" element={<Physical />} />
+        <Route path="/project/:id" element={<ProjectDetail />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </AnimatePresence>
   );
