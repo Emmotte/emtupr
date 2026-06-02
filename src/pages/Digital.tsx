@@ -40,6 +40,7 @@ export default function Digital() {
     project.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  return (
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
