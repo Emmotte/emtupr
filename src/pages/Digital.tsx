@@ -18,50 +18,6 @@ export const DIGITAL_PROJECTS = [
     content: '### Overview\nA candid photoshoot for my band, Wet Knee. We focused on raw urban textures to complement our sound.\n\n### Gallery\n- IMG_7755.jpg\n- IMG_7741.jpg\n- IMG_7777.jpg\n- IMG_7782.jpg\n- IMG_7850.jpg\n- IMG_7881.jpg\n- IMG_7889.jpg\n- IMG_7910.jpg\n- IMG_7912.jpg\n- IMG_7739.jpg\n- IMG_7844-3.jpg\n- IMG_7886.jpg\n- IMG_7902.jpg\n- IMG_7904.jpg\n- IMG_7908.jpg\n- IMG_7918.jpg\n- IMG_7922-2.jpg\n- IMG_7923.jpg\n- IMG_7835.jpg\n- IMG_7839-2.jpg\n- IMG_7840.jpg\n- IMG_7880.jpg\n- IMG_7780.jpg\n- IMG_7761.jpg\n- IMG_7751.jpg\n- IMG_7751-2.jpg\n- IMG_7761-2.jpg\n- IMG_7886-2.jpg\n- IMG_7894.jpg\n- IMG_7887.jpg',
     tags: ['Canon T2i', 'Lightroom', 'Band Photography'],
     thumbnail: '/IMG_7902-2.jpg'
-  },
-  {
-    id: 'digital-junk',
-    category: 'Video',
-    title: 'Digital Junk Collective',
-    role: 'Director / Editor',
-    period: '2023',
-    description: 'Directed and edited a stylized short film exploring the aesthetic of digital degradation and artifacts. Managed color grading and VFX pipelines.',
-    content: '### Direction\nExploring the beauty in broken things. We deliberately degraded 4K footage using analog tape workflows to create a unique texture.\n\n### Impact\nScreened at three underground video art festivals in 2023.',
-    tags: ['Premiere Pro', 'After Effects', 'Color Grading'],
-    thumbnail: '/IMG_6367.jpg'
-  },
-  {
-    id: 'urban',
-    category: 'Photography',
-    title: 'Urban Spaces & People',
-    role: 'Photographer',
-    period: '2016 — Present',
-    description: 'Ongoing photographic series documenting the intersection of modern architecture and human interaction. Exhibited in local galleries.',
-    content: '### Process\nShot entirely on 35mm film across various global cities. The focus is on finding stillness in chaotic environments.\n\n### Exhibitions\n- "Concrete & Glass", 2019\n- "The Spaces Between", 2021',
-    tags: ['Portraiture', 'Street Photography', 'Lightroom'],
-    thumbnail: '/IMG_6407.jpg'
-  },
-  {
-    id: 'live',
-    category: 'Audio',
-    title: 'Live Electronic Performances',
-    role: 'Performer & Sound Designer',
-    period: '2019 — Present',
-    description: 'Crafted improvisational live sets blending hip-hop beats with generative electronic soundscapes. Utilized analog synthesizers and custom software patches.',
-    content: '### Setup\nHardware-centric live setup using Elektron rhythm machines and Moog synthesizers sequenced via Ableton Live.\n\n### Philosophy\nNo two performances are ever the same. The generative elements allow for structured improvisation.',
-    tags: ['Ableton Live', 'Max/MSP', 'Sound Design'],
-    thumbnail: '/IMG_6406.jpg'
-  },
-  {
-    id: 'studio',
-    category: 'Audio',
-    title: 'Studio Mixing & Mastering',
-    role: 'Audio Engineer',
-    period: '2017 — Present',
-    description: 'Delivered professional mixing and mastering for independent artists. Focused on achieving pristine clarity and dynamic range across multiple genres.',
-    content: '### Technical Approach\nHybrid analog/digital workflow. Using high-end outboard gear for color and warmth, and precise digital EQs for surgical corrections.\n\n### Client Success\nSeveral tracks mixed in this studio have gone on to reach top spots on streaming playlists.',
-    tags: ['Pro Tools', 'Logic Pro', 'Mixing', 'Mastering'],
-    thumbnail: '/IMG_6514-2.jpg'
   }
 ];
 
