@@ -1,11 +1,13 @@
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { motion } from 'motion/react';
-import { Github, Linkedin, Mail, Sun, Moon } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Github, Linkedin, Mail, Sun, Moon, Menu, X } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 import DecryptedText from './DecryptedText';
 
 export default function Navigation() {
   const { theme, style, toggleTheme } = useTheme();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const links = [
     { name: 'Home', path: '/' },
@@ -14,7 +16,6 @@ export default function Navigation() {
   ];
 
   const is95 = style === '95';
-  const isRecursive = style === 'recursive';
 
   const containerClasses = is95 
     ? 'fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 py-4 border-b bg-[#c0c0c0] border-b-[#000] border-t-[#fff] border-t-2 border-b-2 shadow-[0_2px_4px_rgba(0,0,0,0.3)] font-sans'
@@ -44,6 +45,7 @@ export default function Navigation() {
         {is95 ? <DecryptedText text="Emmett Tupper" /> : "Emmett Tupper"}
       </div>
       
+      {/* Desktop Nav */}
       <nav className={`hidden md:flex items-center gap-8 text-xs uppercase tracking-widest ${is95 ? 'font-sans font-bold' : ''}`}>
         {links.map((link) => (
           <NavLink 
@@ -56,7 +58,35 @@ export default function Navigation() {
         ))}
       </nav>
 
-      <ul className={`flex items-center gap-4 ${is95 ? 'text-[#404040]' : ''}`}>
+      {/* Mobile Menu Toggle */}
+      <button className="md:hidden" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+        {isMobileMenuOpen ? <X className={iconClasses} /> : <Menu className={iconClasses} />}
+      </button>
+
+      {/* Mobile Nav */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.nav
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="absolute top-full left-0 w-full md:hidden border-b bg-white dark:bg-[#050505] flex flex-col items-center py-4 gap-4"
+          >
+            {links.map((link) => (
+              <NavLink 
+                key={link.name} 
+                to={link.path}
+                className={navLinkClasses}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {link.name}
+              </NavLink>
+            ))}
+          </motion.nav>
+        )}
+      </AnimatePresence>
+
+      <ul className={`hidden md:flex items-center gap-4 ${is95 ? 'text-[#404040]' : ''}`}>
         <li>
           <button onClick={toggleTheme} className={iconClasses} aria-label="Toggle Theme">
             {is95 ? <Moon className="w-4 h-4" /> : (theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />)}
