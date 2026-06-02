@@ -15,7 +15,7 @@ export const DIGITAL_PROJECTS = [
     role: 'Photographer',
     period: '2026',
     description: 'Band promotional shoot capturing raw energy and the local atmosphere.',
-    content: '### Overview\nA candid photoshoot for my band, Wet Knee. We focused on raw urban textures to complement our sound.\n\n### Gallery\n- IMG_7755.jpg\n- IMG_7741.jpg\n- IMG_7777.jpg\n- IMG_7782.jpg\n- IMG_7850.jpg\n- IMG_7881.jpg\n- IMG_7889.jpg\n- IMG_7910.jpg\n- IMG_7912.jpg\n- IMG_7739.jpg\n- IMG_7844-3.jpg\n- IMG_7886.jpg\n- IMG_7902.jpg\n- IMG_7904.jpg\n- IMG_7908.jpg\n- IMG_7918.jpg\n- IMG_7922-2.jpg\n- IMG_7923.jpg\n- IMG_7835.jpg\n- IMG_7839-2.jpg\n- IMG_7840.jpg\n- IMG_7880.jpg\n- IMG_7780.jpg\n- IMG_7761.jpg\n- IMG_7751.jpg\n- IMG_7751-2.jpg\n- IMG_7761-2.jpg\n- IMG_7886-2.jpg\n- IMG_7894.jpg\n- IMG_7887.jpg',
+    content: '### Overview\nA candid photoshoot for my band, Wet Knee. We focused on raw urban textures to complement our sound.\n\n### Gallery\n- /IMG_7755.jpg\n- /IMG_7741.jpg\n- /IMG_7777.jpg\n- /IMG_7782.jpg\n- /IMG_7850.jpg\n- /IMG_7881.jpg\n- /IMG_7889.jpg\n- /IMG_7910.jpg\n- /IMG_7912.jpg\n- /IMG_7739.jpg\n- /IMG_7844-3.jpg\n- /IMG_7886.jpg\n- /IMG_7902.jpg\n- /IMG_7904.jpg\n- /IMG_7908.jpg\n- /IMG_7918.jpg\n- /IMG_7922-2.jpg\n- /IMG_7923.jpg\n- /IMG_7835.jpg\n- /IMG_7839-2.jpg\n- /IMG_7840.jpg\n- /IMG_7880.jpg\n- /IMG_7780.jpg\n- /IMG_7761.jpg\n- /IMG_7751.jpg\n- /IMG_7751-2.jpg\n- /IMG_7761-2.jpg\n- /IMG_7886-2.jpg\n- /IMG_7894.jpg\n- /IMG_7887.jpg',
     tags: ['Canon T2i', 'Lightroom', 'Band Photography'],
     thumbnail: '/IMG_7902-2.jpg'
   },
