@@ -43,7 +43,9 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
   useEffect(() => {
     const root = window.document.documentElement;
+    // Remove all previous style classes
     root.classList.remove('style-recursive', 'style-95');
+    // Add the new style class
     root.classList.add(`style-${style}`);
     localStorage.setItem('style-preference', style);
   }, [style]);
@@ -54,6 +56,9 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
   const setStyle = (newStyle: Style) => {
     setStyleState(newStyle);
+    if (newStyle === '95') {
+      setTheme('light');
+    }
   };
 
   return (
