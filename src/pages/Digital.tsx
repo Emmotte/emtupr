@@ -40,7 +40,6 @@ export default function Digital() {
     project.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  return (
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -48,11 +47,33 @@ export default function Digital() {
       transition={{ duration: 0.5 }}
       className={`max-w-6xl mx-auto w-full relative ${theme === 'dark' ? 'px-6 py-24' : 'px-8 py-28'}`}
     >
-      <header className={`mb-24 relative z-10 text-center ${theme === 'dark' ? '' : 'scrapbook-cutout'}`}>
+      <header className={`mb-16 relative z-10 text-center ${theme === 'dark' ? '' : 'scrapbook-cutout'}`}>
         <h1 className={`text-6xl md:text-9xl font-black tracking-tighter mb-8 ${theme === 'dark' ? 'text-neutral-100' : 'text-black'}`}>
            {style === '95' ? <DecryptedText text="Visual & Audio Media" /> : "Visual & Audio Media"}
         </h1>
+        <p className={`text-lg md:text-xl max-w-2xl mx-auto ${theme === 'dark' ? 'text-neutral-400' : 'text-neutral-600'}`}>
+          A collection of creative works spanning videography, photography, and audio production. Exploring the intersection of digital artifacts and human emotion.
+        </p>
       </header>
+
+      <div className="mb-16 relative max-w-xl mx-auto">
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search className={`h-5 w-5 ${theme === 'dark' ? 'text-neutral-600' : 'text-neutral-400'}`} />
+            </div>
+            <input
+              type="text"
+              placeholder="Search projects..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={`w-full text-lg rounded-full pl-12 pr-6 py-4 focus:outline-none transition-all ${
+                theme === 'dark' 
+                ? 'bg-neutral-900 border border-neutral-800 text-white focus:border-neutral-600' 
+                : 'bg-white border-2 border-neutral-200 text-black focus:border-black'
+              }`}
+            />
+          </div>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16 pl-4">
         {filteredProjects.length > 0 ? filteredProjects.map((item, idx) => (
@@ -80,7 +101,7 @@ export default function Digital() {
             </div>
           </motion.div>
         )) : (
-          <div className={`md:col-span-2 font-mono text-sm ${theme === 'dark' ? 'text-neutral-500' : 'text-[#808080]'}`}>No media matching "{searchQuery}"</div>
+          <div className={`md:col-span-2 font-mono text-center py-20 ${theme === 'dark' ? 'text-neutral-500' : 'text-neutral-400'}`}>No media matching "{searchQuery}"</div>
         )}
       </div>
     </motion.div>
