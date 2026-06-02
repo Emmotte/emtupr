@@ -119,11 +119,11 @@ export default function ProjectDetail() {
           )}
         </div>
 
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-6 text-neutral-900 dark:text-neutral-100 font-display">
+        <h1 className={`text-4xl md:text-6xl font-bold tracking-tighter mb-6 font-display ${style === '95' ? 'text-black' : 'text-neutral-900 dark:text-neutral-100'}`}>
           {style === '95' ? <DecryptedText text={project.title} /> : project.title}
         </h1>
 
-        <p className="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 font-mono leading-relaxed mb-6">
+        <p className={`text-lg md:text-xl font-mono leading-relaxed mb-6 ${style === '95' ? 'text-black' : 'text-neutral-600 dark:text-neutral-400'}`}>
           {style === '95' ? <DecryptedText text={project.description} speed={30} /> : project.description}
         </p>
 
