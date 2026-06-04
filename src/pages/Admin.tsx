@@ -83,7 +83,7 @@ export default function Admin() {
   const [uploadingThumbnail, setUploadingThumbnail] = useState(false);
   const [thumbnailProgress, setThumbnailProgress] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [githubToken, setGithubToken] = useState(() => sessionStorage.getItem('github_upload_token') || '');
+
 
   // Observe auth state
   useEffect(() => {
@@ -219,7 +219,7 @@ export default function Admin() {
     setUploadingThumbnail(true);
     setThumbnailProgress('Uploading image...');
 
-    const token = githubToken.trim();
+    const token = import.meta.env.VITE_GITHUB_TOKEN;
 
     if (token) {
       // --- GitHub Contents API ---
@@ -790,40 +790,7 @@ export default function Admin() {
                     </div>
                   </div>
 
-                  {/* GitHub Token Input (session-only, never compiled into bundle) */}
-                  <details className="mb-2">
-                    <summary className="text-[10px] font-mono uppercase tracking-wider text-neutral-500 cursor-pointer hover:text-neutral-300">
-                      {githubToken ? 'GitHub token set' : 'Set GitHub upload token'}
-                    </summary>
-                    <div className="mt-1 flex gap-2">
-                      <input
-                        type="password"
-                        value={githubToken}
-                        onChange={(e) => {
-                          const val = e.target.value.trim();
-                          setGithubToken(val);
-                          sessionStorage.setItem('github_upload_token', val);
-                        }}
-                        placeholder="github_pat_..."
-                        className={`flex-1 px-2 py-1 text-xs font-mono focus:outline-none transition-colors ${
-                          theme === 'dark'
-                            ? 'bg-[#151515] border border-neutral-800 text-white focus:border-neutral-600'
-                            : 'bg-white border-2 border-b-[#c0c0c0] border-r-[#c0c0c0] border-t-[#000] border-l-[#000] text-black'
-                        }`}
-                      />
-                      {githubToken && (
-                        <button
-                          onClick={() => {
-                            setGithubToken('');
-                            sessionStorage.removeItem('github_upload_token');
-                          }}
-                          className="text-[10px] px-2 py-1 bg-red-900/50 text-red-300 hover:bg-red-800/50 rounded"
-                        >
-                          Clear
-                        </button>
-                      )}
-                    </div>
-                  </details>
+
 
                   {/* Thumbnail File upload dropzone */}
                   <div className="flex flex-col gap-1 text-xs">
