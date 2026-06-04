@@ -208,30 +208,86 @@ export default function Admin() {
     setErrorMessage(null);
   };
 
-  // Upload thumbnail image file (local fallback — Firebase Storage not available on Spark plan)
+  // Upload thumbnail image file
+  // Uses GitHub Contents API (commits to repo) when VITE_GITHUB_TOKEN is set,
+  // falls back to local /api/upload middleware for dev without token.
   const handleThumbnailUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setUploadingThumbnail(true);
     setThumbnailProgress('Uploading image...');
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      const res = await fetch('/api/upload', { method: 'POST', body: formData });
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || 'Upload failed');
+
+    const token = import.meta.env.VITE_GITHUB_TOKEN;
+
+    if (token) {
+      // --- GitHub Contents API ---
+      try {
+        setThumbnailProgress('Encoding image...');
+        const buffer = await file.arrayBuffer();
+        const bytes = new Uint8Array(buffer);
+        let binary = '';
+        for (let i = 0; i < bytes.length; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+        const base64 = btoa(binary);
+
+        const ext = file.name.split('.').pop() || 'jpg';
+        const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}.${ext}`;
+
+        setThumbnailProgress(`Committing ${filename} to repo...`);
+        const response = await fetch(
+          `https://api.github.com/repos/Emmotte/emtupr/contents/public/uploads/${filename}`,
+          {
+            method: 'PUT',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              message: `Upload ${filename}`,
+              content: base64,
+              branch: 'main',
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          const err = await response.json();
+          throw new Error(err.message || 'GitHub upload failed');
+        }
+
+        // Use raw.githubusercontent.com URL — image is available immediately
+        const url = `https://raw.githubusercontent.com/Emmotte/emtupr/main/public/uploads/${filename}`;
+        setThumbnail(url);
+        setThumbnailProgress(`Uploaded! Image available now at raw URL.`);
+      } catch (err: any) {
+        console.error(err);
+        setErrorMessage(`GitHub upload failed: ${err.message}`);
+        setThumbnailProgress(null);
+      } finally {
+        setUploadingThumbnail(false);
       }
-      const data = await res.json();
-      setThumbnail(data.url);
-      setThumbnailProgress('Upload successful!');
-    } catch (err: any) {
-      console.error(err);
-      setErrorMessage(`Thumbnail upload failed: ${err.message}`);
-      setThumbnailProgress(null);
-    } finally {
-      setUploadingThumbnail(false);
+    } else {
+      // --- Local /api/upload fallback (dev mode) ---
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error || 'Upload failed');
+        }
+        const data = await res.json();
+        setThumbnail(data.url);
+        setThumbnailProgress('Upload successful!');
+      } catch (err: any) {
+        console.error(err);
+        setErrorMessage(`Thumbnail upload failed: ${err.message}`);
+        setThumbnailProgress(null);
+      } finally {
+        setUploadingThumbnail(false);
+      }
     }
   };
 
