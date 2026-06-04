@@ -219,7 +219,7 @@ export default function Admin() {
     setUploadingThumbnail(true);
     setThumbnailProgress('Uploading image...');
 
-    const token = githubToken;
+    const token = githubToken.trim();
 
     if (token) {
       // --- GitHub Contents API ---
@@ -800,8 +800,9 @@ export default function Admin() {
                         type="password"
                         value={githubToken}
                         onChange={(e) => {
-                          setGithubToken(e.target.value);
-                          sessionStorage.setItem('github_upload_token', e.target.value);
+                          const val = e.target.value.trim();
+                          setGithubToken(val);
+                          sessionStorage.setItem('github_upload_token', val);
                         }}
                         placeholder="github_pat_..."
                         className={`flex-1 px-2 py-1 text-xs font-mono focus:outline-none transition-colors ${

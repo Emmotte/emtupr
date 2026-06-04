@@ -17,7 +17,7 @@ export default function NotionEditor({ markdown, onChange, projectId, theme }: N
   const lastProjectIdRef = useRef<string>('');
 
   const uploadFile = async (file: File): Promise<string> => {
-    const token = sessionStorage.getItem('github_upload_token');
+    const token = (sessionStorage.getItem('github_upload_token') || '').trim();
     if (!token) {
       throw new Error('No GitHub token set. Enter your token in the admin panel above the thumbnail section.');
     }
