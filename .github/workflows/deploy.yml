@@ -1,4 +1,4 @@
-name: Vite Github Pages Deploy
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -24,6 +24,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+        with:
+          static_site_generator: vite
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -34,9 +40,8 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+        env:
+          PAGES_BASE_URL: ${{ steps.pages.outputs.base_url }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
