@@ -2,8 +2,6 @@ import { useEffect, useRef } from 'react';
 import { useCreateBlockNote } from '@blocknote/react';
 import { BlockNoteView } from '@blocknote/mantine';
 import { MantineProvider } from '@mantine/core';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '../../firebase';
 import '@mantine/core/styles.css';
 import '@blocknote/core/fonts/inter.css';
 import '@blocknote/mantine/style.css';
@@ -19,10 +17,45 @@ export default function NotionEditor({ markdown, onChange, projectId, theme }: N
   const lastProjectIdRef = useRef<string>('');
 
   const uploadFile = async (file: File): Promise<string> => {
-    const cleanProjectId = projectId.trim() || 'temp';
-    const storageRef = ref(storage, `project-images/${cleanProjectId}/${Date.now()}-${file.name}`);
-    const snapshot = await uploadBytes(storageRef, file);
-    return getDownloadURL(snapshot.ref);
+    const token = sessionStorage.getItem('github_upload_token');
+    if (!token) {
+      throw new Error('No GitHub token set. Enter your token in the admin panel above the thumbnail section.');
+    }
+
+    // Encode file to base64
+    const buffer = await file.arrayBuffer();
+    const bytes = new Uint8Array(buffer);
+    let binary = '';
+    for (let i = 0; i < bytes.length; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    const base64 = btoa(binary);
+
+    const ext = file.name.split('.').pop() || 'jpg';
+    const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}.${ext}`;
+
+    const response = await fetch(
+      `https://api.github.com/repos/Emmotte/emtupr/contents/public/uploads/${filename}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: `Upload ${filename}`,
+          content: base64,
+          branch: 'main',
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.message || 'GitHub upload failed');
+    }
+
+    return `https://raw.githubusercontent.com/Emmotte/emtupr/main/public/uploads/${filename}`;
   };
 
   const editor = useCreateBlockNote({
