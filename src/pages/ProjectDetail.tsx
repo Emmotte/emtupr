@@ -39,6 +39,7 @@ export default function ProjectDetail() {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists() && docSnap.data().isPublic) {
           setProject(docSnap.data() as Project);
+          setLoading(false);
           return;
         }
       } catch (error) {

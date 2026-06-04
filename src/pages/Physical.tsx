@@ -1,23 +1,45 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Search, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../components/ThemeProvider';
+import { collection, query, where, orderBy, onSnapshot } from 'firebase/firestore';
+import { db } from '../firebase';
 
 import TextType from '../components/TextType';
 import DecryptedText from '../components/DecryptedText';
 
-export const PHYSICAL_PROJECTS = [
-// ... (content)
-];
+// Kept for ProjectDetail.tsx fallback — Firestore is now the primary source
+export const PHYSICAL_PROJECTS: any[] = [];
+
+const PHYSICAL_CATEGORIES = ['Design', 'Engineering'];
 
 export default function Physical() {
   const [searchQuery, setSearchQuery] = useState('');
   const { theme, style } = useTheme();
+  const [projects, setProjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredProjects = PHYSICAL_PROJECTS.filter(project => 
-    searchQuery === '' ? true : 
-    project.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
+  useEffect(() => {
+    const q = query(
+      collection(db, 'projects'),
+      where('isPublic', '==', true),
+      where('category', 'in', PHYSICAL_CATEGORIES),
+      orderBy('createdAt', 'desc')
+    );
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setProjects(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
+      setLoading(false);
+    }, (err) => {
+      console.error('Physical Firestore error:', err);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const filteredProjects = projects.filter(project =>
+    searchQuery === '' ? true :
+    (project.skills || project.tags || []).some((t: string) => t.toLowerCase().includes(searchQuery.toLowerCase())) ||
     project.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -76,7 +98,9 @@ export default function Physical() {
       </div>
 
       <div className="space-y-16">
-        {filteredProjects.length > 0 ? filteredProjects.map((item, idx) => (
+        {loading ? (
+          <div className={`font-mono text-sm animate-pulse ${theme === 'dark' ? 'text-neutral-500' : 'text-[#808080]'}`}>Loading projects...</div>
+        ) : filteredProjects.length > 0 ? filteredProjects.map((item, idx) => (
           <motion.div 
             key={item.id}
             initial={{ opacity: 0, y: 20 }}
@@ -109,7 +133,7 @@ export default function Physical() {
               </Link>
 
               <ul className="mt-6 flex flex-wrap gap-2" aria-label="Tags">
-                {item.tags.map(tag => (
+                {(item.skills || item.tags || []).map((tag: string) => (
                   <li key={tag}>
                     <div className={`flex items-center rounded-full px-3 py-1 text-xs font-medium leading-5 font-mono ${theme === 'dark' ? 'bg-neutral-900 border border-neutral-800 text-neutral-300' : 'border border-black bg-white text-black shadow-[2px_2px_0px_#000]'}`}>
                       {tag}
@@ -120,7 +144,9 @@ export default function Physical() {
             </div>
           </motion.div>
         )) : (
-          <div className={`font-mono text-sm ${theme === 'dark' ? 'text-neutral-500' : 'text-[#808080]'}`}>No projects matching "{searchQuery}"</div>
+          <div className={`font-mono text-sm ${theme === 'dark' ? 'text-neutral-500' : 'text-[#808080]'}`}>
+            {searchQuery ? `No projects matching "${searchQuery}"` : 'No projects published yet.'}
+          </div>
         )}
       </div>
     </motion.div>

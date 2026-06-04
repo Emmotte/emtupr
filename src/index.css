@@ -347,3 +347,22 @@ html:not(.dark) .win95-body {
 .dark.style-recursive .vulfpeck-link:hover {
   text-decoration-thickness: 2px;
 }
+
+/* Notion block editor styling overrides */
+.bn-container, .bn-editor {
+  background: transparent !important;
+}
+
+.dark .bn-editor, .dark .bn-editor * {
+  font-family: var(--font-sans) !important;
+}
+
+/* Custom drag and drop file upload styles */
+.file-dropzone {
+  transition: all 0.2s ease-in-out;
+}
+
+.file-dropzone:hover {
+  transform: translateY(-1px);
+}
+

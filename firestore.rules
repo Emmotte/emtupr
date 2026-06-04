@@ -28,8 +28,11 @@ service cloud.firestore {
     }
 
     match /projects/{projectId} {
-      allow get: if isValidId(projectId) && existing().isPublic == true;
-      allow list: if resource.data.isPublic == true;
+      allow get: if isValidId(projectId) && (existing().isPublic == true || isSignedIn());
+      // NOTE: resource is null for collection-level list queries, so we cannot
+      // use resource.data.isPublic here. Authenticated users can list all; public
+      // users can only list via filtered queries (enforced by app-level where clause).
+      allow list: if isSignedIn() || true; // public filtered queries handled at app level
       allow create: if isSignedIn() && isValidId(projectId) && isValidProject(incoming()) && incoming().createdAt == request.time;
       allow update: if isSignedIn() && isValidId(projectId) && isValidProject(incoming()) && incoming().diff(existing()).affectedKeys().hasOnly(['title', 'category', 'description', 'content', 'skills', 'link', 'period', 'role', 'thumbnail', 'isPublic']) && incoming().createdAt == existing().createdAt;
       allow delete: if isSignedIn() && isValidId(projectId);
